@@ -5,7 +5,6 @@ import ProductCard from './components/ProductCard';
 import Cart from './components/Cart';
 import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
-import DealOfTheDay from './components/DealOfTheDay';
 import { products as initialProducts, categories } from './data/products';
 import { motion } from 'framer-motion';
 
@@ -132,7 +131,6 @@ function App() {
       {/* Fixed Background for Performance */}
       <div className="fixed inset-0 z-[-1] bg-fixed-gradient pointer-events-none" />
       
-      <DealOfTheDay />
       <Navbar 
         cartCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)} 
         setIsCartOpen={setIsCartOpen}
