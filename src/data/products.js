@@ -54,7 +54,7 @@ export const products = [
     name: "KDD Thick Cooking Cream (1 Ltr)",
     category: "Milk Products",
     price: 16,
-    image: "/images/products/cooking-cream.svg",
+    image: "/images/products/kdd-thick-cream.png",
     description: "Thick cooking cream for rich gravies."
   },
   {
@@ -486,7 +486,7 @@ export const products = [
     name: "Amul Kool Cardamom Pet",
     category: "Amul Kool",
     price: 5,
-    image: "https://placehold.co/300x300/90EE90/black?text=Cardamom",
+    image: "/images/products/Amul Kool Cardamom Pet.png",
     description: "Cardamom flavored milk."
   },
   {
@@ -518,7 +518,7 @@ export const products = [
     name: "Amul Kool Almond Pet (180ml)",
     category: "Amul Kool",
     price: 6,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Almond+Pet",
+    image: "/images/products/Amul Kool Almond Pet (180ml).png",
     description: "Almond milk drink."
   },
   {
@@ -534,7 +534,7 @@ export const products = [
     name: "Amul Kool Cafe Pet",
     category: "Amul Kool",
     price: 6,
-    image: "https://placehold.co/300x300/6F4E37/white?text=Cafe+Pet",
+    image: "/images/products/Amul Kool Cafe Pet.png",
     description: "Coffee flavored milk."
   },
   {
@@ -598,7 +598,7 @@ export const products = [
     name: "Amul Fresh Cream (250ml)",
     category: "Amul",
     price: 7,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Fresh+Cream",
+    image: "/images/products/Amul Fresh Cream (250ml).png",
     description: "Rich fresh cream."
   },
   {
@@ -622,7 +622,7 @@ export const products = [
     name: "Amul Kesar Shrikhand (500g)",
     category: "Amul",
     price: 15,
-    image: "https://placehold.co/300x300/FFD700/black?text=Kesar+Shrikhand",
+    image: "/images/products/Amul Kesar Shrikhand (500g).png",
     description: "Saffron flavored yogurt dessert."
   },
   {
@@ -646,7 +646,7 @@ export const products = [
     name: "Amul Fresh Cream (1L)",
     category: "Amul",
     price: 22.50,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Fresh+Cream+1L",
+    image: "/images/products/Amul Fresh Cream (1L).png",
     description: "Rich fresh cream."
   },
   {
@@ -734,7 +734,7 @@ export const products = [
     name: "Amul Butter Scotch Bliss (500ml)",
     category: "Amul",
     price: 15,
-    image: "/images/products/Amul Butter (100g).png",
+    image: "/images/products/Amul Butter Scotch Bliss (500ml).png",
     description: "Butterscotch ice cream."
   },
   {
@@ -790,7 +790,7 @@ export const products = [
     name: "Amul Butter Scotch Bliss (125ml)",
     category: "Amul",
     price: 4,
-    image: "/images/products/Amul Butter (100g).png",
+    image: "/images/products/Amul Butter Scotch Bliss (125ml).png",
     description: "Butterscotch ice cream cup."
   },
   {
@@ -846,7 +846,7 @@ export const products = [
     name: "Amul Frositk Kulfi",
     category: "Amul",
     price: 5,
-    image: "https://placehold.co/300x300/ADD8E6/black?text=Frositk",
+    image: "/images/products/Amul Frositk Kulfi.png",
     description: "Frozen stick kulfi."
   },
   {
@@ -854,7 +854,7 @@ export const products = [
     name: "Amul Chocochips (1L)",
     category: "Amul",
     price: 22,
-    image: "https://placehold.co/300x300/8B4513/white?text=Chocochips",
+    image: "/images/products/Amul Chocochips (1L).png",
     description: "Chocolate chip ice cream."
   },
   {
@@ -886,7 +886,7 @@ export const products = [
     name: "Amul Fruit and Nut Fantasy (1L)",
     category: "Amul",
     price: 22,
-    image: "https://placehold.co/300x300/FF69B4/white?text=Fruit+Nut",
+    image: "/images/products/Amul Fruit and Nut Fantasy (1L).png",
     description: "Mixed fruit and nut ice cream."
   },
   {

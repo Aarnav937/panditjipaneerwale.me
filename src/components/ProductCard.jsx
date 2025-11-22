@@ -35,7 +35,7 @@ const ProductCard = ({ product, addToCart }) => {
           <div className="flex flex-col">
             <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">Price</span>
             <span className="text-2xl font-extrabold text-gray-900 dark:text-white">
-              ${product.price}
+              AED {product.price}
             </span>
           </div>
           

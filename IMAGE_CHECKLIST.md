@@ -1,125 +1,21 @@
 # Product Image Checklist
 
-**Total Products:** 159
-**Images Found & Updated:** 13
-**Images Missing:** 146
+Use this checklist to track which products have real images.
+**To update an image:**
+1.  Add the image file to `public/images/products/`.
+2.  Update `src/data/products.js` with the correct filename.
+3.  Mark the box below with an `x`.
 
-## ✅ Completed (Images Added)
-- [x] Fresh Paneer (500g)
-- [x] Fresh Khoa Mava (1kg)
-- [x] Fresh Malai Paneer (1kg)
-- [x] Fresh Khoa Mava (500gm)
-- [x] Amul Butter (100g)
-- [x] Amul Cheese Slices
-- [x] Amul Cheese Block (1kg)
-- [x] Amul Cheese Slice (200g)
-- [x] Amul Cheese Chiplet
-- [x] Amul Butter Scotch Bliss (500ml)
-- [x] Amul Badshahi Kulfi
-- [x] Amul Butter Scotch Bliss (125ml)
-- [x] Amul Badshahi Badan Royal (1L)
+## Milk Products
+- [x] Fresh Paneer (500g) (`fresh paneer.png`)
+- [x] Fresh Khoa Mava (1kg) (`fresh khoa mava .png`)
+- [x] Fresh Malai Paneer (1kg) (`fresh malai paneer.png`)
+- [x] KDD Thick Cooking Cream (1 Ltr) (`kdd-thick-cream.png`)
+- [x] Fresh Khoa Mava (500gm) (`fresh khoa mava .png`)
+- [ ] Organic Milk (1.5 Ltr) (Missing `milk.svg`)
 
-## ❌ Pending (Missing Images)
-To add an image:
-1. Save the image as `Product Name.png` (or .jpg)
-2. Place it in `public/images/products/`
-3. Update `src/data/products.js` manually OR run the update script again.
-
-- [ ] KDD Thick Cooking Cream (1 Ltr)
-- [ ] Organic Milk (1.5 Ltr)
-- [ ] Bikaji Bhujia
-- [ ] Chings Schezwan Chutney
-- [ ] Amul Kool Badam
-- [ ] Everest Tea Masala (100gm)
-- [ ] Everest Tikhalal (1kg)
-- [ ] Everest Turmeric Powder (1kg)
-- [ ] Everest Sabji Masala (100gm)
-- [ ] Everest Paw Bhaji Masala (100gm)
-- [ ] Everest Turmeric Powder (500gm)
-- [ ] Everest Chaat Masala (500gm)
-- [ ] Everest Pani Puri Masala (100gm)
-- [ ] Everest Dry Mango Powder (100gm)
-- [ ] Everest Sambhar Masala (100gm)
-- [ ] Everest Tikhalal (500gm)
-- [ ] Everest Chaat Masala (100gm)
-- [ ] Everest Kesari Milk Masala (100gm)
-- [ ] Everest Pav Bhaji Masala (500gm)
-- [ ] Everest Hingraj (100gm)
-- [ ] Everest Jaljira Powder (100gm)
-- [ ] Everest Tikhalal (200gm)
-- [ ] Everest Momo Masala (100gm)
-- [ ] Everest Royal Garam Masala (100gm)
-- [ ] Everest Rajma Masala (100gm)
-- [ ] Everest Shahi Paneer Masala (100gm)
-- [ ] Everest Kashmiri Chilli Powder (100gm)
-- [ ] Everest Chhole Masala (100gm)
-- [ ] Everest Coriander Powder (100gm)
-- [ ] Everest Coriander Powder (500gm)
-- [ ] Dhara Groundnut Oil (1 Ltr)
-- [ ] Satvik Kachi Ghani Mustard Oil (500gm)
-- [ ] Satvik Classic 1121 Basmati Rice (5kg)
-- [ ] Satvik Kachi Ghani Mustard Oil (1 Ltr)
-- [ ] Satvik Classic Basmati Rice (5kg)
-- [ ] Satvik Frozen Green Peas (2.5kg)
-- [ ] Satvik Wheat Flour Chakki Fresh Atta (5kg)
-- [ ] Satvik Frozen Green Peas (400g)
-- [ ] Satvik Mix Veg (2.5kg)
-- [ ] Ching's Green Chilli Sauce (680g)
-- [ ] Ching's Manchurian Noodles (240g)
-- [ ] Ching's Desi Chinese Combo Pack
-- [ ] Ching's Sweet Corn Soup (55g)
-- [ ] Ching's Manchurian Noodles (60g)
-- [ ] Ching's Hot Garlic Noodles (60g)
-- [ ] Ching's Schezwan Cooking Sauce Stir Fry
-- [ ] Ching's Dark Soy Sauce (750g)
-- [ ] Ching's Schezwan Noodles (50g)
-- [ ] Ching's Schezwan Fried Rice Masala
-- [ ] Amul Kool Koko (200ml)
-- [ ] Amul Kool Cafe (200ml)
-- [ ] Amul Kool Cardamom Pet
-- [ ] Amul Kadai Doodh (200ml)
-- [ ] Amul Saffron Latte (200ml)
-- [ ] Amul Pina Lolada Mocktail
-- [ ] Amul Kool Almond Pet (180ml)
-- [ ] Amul Kool Milk Shake Mango
-- [ ] Amul Kool Cafe Pet
-- [ ] Amul Kool Saffron Pet (180ml)
-- [ ] Amul Kool Milk Shake Badam
-- [ ] Amul Milk Shake Double Chocolate
-- [ ] Wagh Bakri Tea
-- [ ] Wagh Bakri Instant Cardamom Tea
-- [ ] Wagh Bakri Black Tea (350g)
-- [ ] Amul Mango Shrikhand (500g)
-- [ ] Amul Fresh Cream (250ml)
-- [ ] Amul Pure Ghee
-- [ ] Amul Kesar Shrikhand (500g)
-- [ ] Amul Taaza UHT Milk (1L)
-- [ ] Amul Fresh Cream (1L)
-- [ ] Amul Gulab Jamun (1kg)
-- [ ] Amul Gold UHT Milk (1L)
-- [ ] Amul Shrikhand Cardamom (500g)
-- [ ] Amul Pure Cow Ghee (1kg)
-- [ ] Amul Lactic Butter (500g)
-- [ ] Amul Salted Butter (500g)
-- [ ] Amul Rasmalai (500g)
-- [ ] Amul Unsalted Butter (500g)
-- [ ] Amul Strawberry Magic (1L)
-- [ ] Amul Punjabi Kulfi
-- [ ] Amul Shahista Pista Kulfi (1L)
-- [ ] Amul Kesar Pista Royal (1L)
-- [ ] Amul Shrikhand Almond Pista (500g)
-- [ ] Amul Rajbhog Kulfi
-- [ ] Amul Duetz Kulfi
-- [ ] Amul Kashmiri Kulfi
-- [ ] Amul Rajasthani Kulfi
-- [ ] Amul Rajbhog (1L)
-- [ ] Amul Vanilla Magic (1L)
-- [ ] Amul Frositk Kulfi
-- [ ] Amul Chocochips (1L)
-- [ ] Amul Kaju Draksh Gold (1L)
-- [ ] Amul Pista Malai Kulfi
-- [ ] Amul Moroccan Dry Fruit (1L)
-- [ ] Amul Fruit and Nut Fantasy (1L)
+## Bikaji Bikaneri
+- [ ] Bikaji Bhujia (Missing `bhujia.svg`)
 - [ ] Bikaji Pani Puri (240g)
 - [ ] Bikaji Paneer Kulcha (4pcs)
 - [ ] Bikaji Soya Shammi Kabab (6pcs)
@@ -171,3 +67,121 @@ To add an image:
 - [ ] Bikaji Masala Peanut (200g)
 - [ ] Bikaji Manchurian Balls (5pcs / 300g)
 - [ ] Bikaji Vegetable Cutlet (6pcs / 300g)
+
+## Amul
+ - [x] Amul Chocochips (1L) (`Amul Chocochips (1L).png`)
+ - [x] Amul Frositk Kulfi (`Amul Frositk Kulfi.png`)
+ - [x] Amul Fruit and Nut Fantasy (1L) (`Amul Fruit and Nut Fantasy (1L).png`)
+- [x] Amul Butter (100g) (`Amul Butter (100g).png`)
+- [x] Amul Cheese Slices (`Amul Cheese Slice (200g).png`)
+- [ ] Amul Mango Shrikhand (500g)
+- [x] Amul Fresh Cream (250ml) (`Amul Fresh Cream (250ml).png`)
+- [ ] Amul Pure Ghee
+- [x] Amul Cheese Block (1kg) (`Amul Cheese Block (1kg).png`)
+- [x] Amul Kesar Shrikhand (500g) (`Amul Kesar Shrikhand (500g).png`)
+- [ ] Amul Taaza UHT Milk (1L)
+- [x] Amul Cheese Slice (200g) (`Amul Cheese Slice (200g).png`)
+- [x] Amul Fresh Cream (1L) (`Amul Fresh Cream (1L).png`)
+- [ ] Amul Gulab Jamun (1kg)
+- [ ] Amul Gold UHT Milk (1L)
+- [x] Amul Cheese Chiplet (`Amul Cheese Chiplet.png`)
+- [ ] Amul Shrikhand Cardamom (500g)
+- [ ] Amul Pure Cow Ghee (1kg)
+- [ ] Amul Lactic Butter (500g)
+- [ ] Amul Salted Butter (500g)
+- [ ] Amul Rasmalai (500g)
+- [ ] Amul Unsalted Butter (500g)
+- [ ] Amul Strawberry Magic (1L)
+- [x] Amul Butter Scotch Bliss (500ml) (`Amul Butter Scotch Bliss (500ml).png`)
+- [ ] Amul Punjabi Kulfi
+- [ ] Amul Shahista Pista Kulfi (1L)
+- [ ] Amul Kesar Pista Royal (1L)
+- [x] Amul Badshahi Kulfi (`Amul Badshahi Kulfi.png`)
+- [ ] Amul Shrikhand Almond Pista (500g)
+- [ ] Amul Rajbhog Kulfi
+- [x] Amul Butter Scotch Bliss (125ml) (`Amul Butter Scotch Bliss (125ml).png`)
+- [x] Amul Badshahi Badan Royal (1L) (`Amul Badshahi Badan Royal (1L).png`)
+- [ ] Amul Duetz Kulfi
+- [ ] Amul Kashmiri Kulfi
+- [ ] Amul Rajasthani Kulfi
+- [ ] Amul Rajbhog (1L)
+- [ ] Amul Vanilla Magic (1L)
+- [ ] Amul Frositk Kulfi
+- [ ] Amul Chocochips (1L)
+- [ ] Amul Kaju Draksh Gold (1L)
+- [ ] Amul Pista Malai Kulfi
+- [ ] Amul Moroccan Dry Fruit (1L)
+- [ ] Amul Fruit and Nut Fantasy (1L)
+
+## Chings
+- [ ] Chings Schezwan Chutney (Missing `chutney.svg`)
+- [ ] Ching's Green Chilli Sauce (680g)
+- [ ] Ching's Manchurian Noodles (240g)
+- [ ] Ching's Desi Chinese Combo Pack
+- [ ] Ching's Sweet Corn Soup (55g)
+- [ ] Ching's Manchurian Noodles (60g)
+- [ ] Ching's Hot Garlic Noodles (60g)
+- [ ] Ching's Schezwan Cooking Sauce Stir Fry
+- [ ] Ching's Dark Soy Sauce (750g)
+- [ ] Ching's Schezwan Noodles (50g)
+- [ ] Ching's Schezwan Fried Rice Masala
+
+## Amul Kool
+- [ ] Amul Kool Badam
+- [ ] Amul Kool Koko (200ml)
+- [ ] Amul Kool Cafe (200ml)
+- [x] Amul Kool Cardamom Pet (`Amul Kool Cardamom Pet.png`)
+- [ ] Amul Kadai Doodh (200ml)
+- [ ] Amul Saffron Latte (200ml)
+- [ ] Amul Pina Lolada Mocktail
+- [x] Amul Kool Almond Pet (180ml) (`Amul Kool Almond Pet (180ml).png`)
+- [ ] Amul Kool Milk Shake Mango
+- [x] Amul Kool Cafe Pet (`Amul Kool Cafe Pet.png`)
+- [ ] Amul Kool Saffron Pet (180ml)
+- [ ] Amul Kool Milk Shake Badam
+- [ ] Amul Milk Shake Double Chocolate
+
+## Everest Spices
+- [ ] Everest Tea Masala (100gm)
+- [ ] Everest Tikhalal (1kg)
+- [ ] Everest Turmeric Powder (1kg)
+- [ ] Everest Sabji Masala (100gm)
+- [ ] Everest Paw Bhaji Masala (100gm)
+- [ ] Everest Turmeric Powder (500gm)
+- [ ] Everest Chaat Masala (500gm)
+- [ ] Everest Pani Puri Masala (100gm)
+- [ ] Everest Dry Mango Powder (100gm)
+- [ ] Everest Sambhar Masala (100gm)
+- [ ] Everest Tikhalal (500gm)
+- [ ] Everest Chaat Masala (100gm)
+- [ ] Everest Kesari Milk Masala (100gm)
+- [ ] Everest Pav Bhaji Masala (500gm)
+- [ ] Everest Hingraj (100gm)
+- [ ] Everest Jaljira Powder (100gm)
+- [ ] Everest Tikhalal (200gm)
+- [ ] Everest Momo Masala (100gm)
+- [ ] Everest Royal Garam Masala (100gm)
+- [ ] Everest Rajma Masala (100gm)
+- [ ] Everest Shahi Paneer Masala (100gm)
+- [ ] Everest Kashmiri Chilli Powder (100gm)
+- [ ] Everest Chhole Masala (100gm)
+- [ ] Everest Coriander Powder (100gm)
+- [ ] Everest Coriander Powder (500gm)
+
+## Dhara
+- [ ] Dhara Groundnut Oil (1 Ltr)
+
+## Satvik
+- [ ] Satvik Kachi Ghani Mustard Oil (500gm)
+- [ ] Satvik Classic 1121 Basmati Rice (5kg)
+- [ ] Satvik Kachi Ghani Mustard Oil (1 Ltr)
+- [ ] Satvik Classic Basmati Rice (5kg)
+- [ ] Satvik Frozen Green Peas (2.5kg)
+- [ ] Satvik Wheat Flour Chakki Fresh Atta (5kg)
+- [ ] Satvik Frozen Green Peas (400g)
+- [ ] Satvik Mix Veg (2.5kg)
+
+## Wagh Bakri
+- [ ] Wagh Bakri Tea
+- [ ] Wagh Bakri Instant Cardamom Tea
+- [ ] Wagh Bakri Black Tea (350g)
