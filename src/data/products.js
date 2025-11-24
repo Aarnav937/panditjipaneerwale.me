@@ -102,7 +102,7 @@ export const products = [
     name: "Amul Kool Badam",
     category: "Amul Kool",
     price: 5,
-    image: "https://placehold.co/300x300/FFC0CB/black?text=Kool+Badam",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Refreshing almond milk drink."
   },
   {
@@ -118,7 +118,7 @@ export const products = [
     name: "Everest Tea Masala (100gm)",
     category: "Everest Spices",
     price: 8,
-    image: "https://placehold.co/300x300/FF8C00/white?text=Tea+Masala",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Aromatic spice blend for the perfect cup of tea."
   },
   {
@@ -126,7 +126,7 @@ export const products = [
     name: "Everest Tikhalal (1kg)",
     category: "Everest Spices",
     price: 38,
-    image: "https://placehold.co/300x300/FF0000/white?text=Tikhalal+1kg",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spicy chilli powder."
   },
   {
@@ -134,7 +134,7 @@ export const products = [
     name: "Everest Turmeric Powder (1kg)",
     category: "Everest Spices",
     price: 24,
-    image: "https://placehold.co/300x300/FFD700/white?text=Turmeric+1kg",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Pure turmeric powder."
   },
   {
@@ -142,7 +142,7 @@ export const products = [
     name: "Everest Sabji Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "https://placehold.co/300x300/8B4513/white?text=Sabji+Masala",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Enhance the taste of your vegetables."
   },
   {
@@ -150,7 +150,7 @@ export const products = [
     name: "Everest Paw Bhaji Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "https://placehold.co/300x300/FF4500/white?text=Paw+Bhaji",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "For authentic Mumbai style Pav Bhaji."
   },
   {
@@ -158,7 +158,7 @@ export const products = [
     name: "Everest Turmeric Powder (500gm)",
     category: "Everest Spices",
     price: 13,
-    image: "https://placehold.co/300x300/FFD700/white?text=Turmeric+500gm",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Pure turmeric powder."
   },
   {
@@ -166,7 +166,7 @@ export const products = [
     name: "Everest Chaat Masala (500gm)",
     category: "Everest Spices",
     price: 22,
-    image: "https://placehold.co/300x300/A0522D/white?text=Chaat+Masala",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Tangy spice blend for chaats."
   },
   {
@@ -174,7 +174,7 @@ export const products = [
     name: "Everest Pani Puri Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "https://placehold.co/300x300/006400/white?text=Pani+Puri",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "For delicious Pani Puri water."
   },
   {
@@ -182,7 +182,7 @@ export const products = [
     name: "Everest Dry Mango Powder (100gm)",
     category: "Everest Spices",
     price: 7,
-    image: "https://placehold.co/300x300/F0E68C/black?text=Amchur",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Adds a tangy flavor to dishes."
   },
   {
@@ -190,7 +190,7 @@ export const products = [
     name: "Everest Sambhar Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "https://placehold.co/300x300/D2691E/white?text=Sambhar",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Authentic South Indian Sambhar taste."
   },
   {
@@ -198,7 +198,7 @@ export const products = [
     name: "Everest Tikhalal (500gm)",
     category: "Everest Spices",
     price: 20,
-    image: "https://placehold.co/300x300/FF0000/white?text=Tikhalal+500gm",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spicy chilli powder."
   },
   {
@@ -206,7 +206,7 @@ export const products = [
     name: "Everest Chaat Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "https://placehold.co/300x300/A0522D/white?text=Chaat+Masala",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Tangy spice blend for chaats."
   },
   {
@@ -214,7 +214,7 @@ export const products = [
     name: "Everest Kesari Milk Masala (100gm)",
     category: "Everest Spices",
     price: 31,
-    image: "https://placehold.co/300x300/FFD700/black?text=Milk+Masala",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Rich masala for milk with saffron."
   },
   {
@@ -222,7 +222,7 @@ export const products = [
     name: "Everest Pav Bhaji Masala (500gm)",
     category: "Everest Spices",
     price: 22,
-    image: "https://placehold.co/300x300/FF4500/white?text=Pav+Bhaji+500gm",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "For authentic Mumbai style Pav Bhaji."
   },
   {
@@ -230,7 +230,7 @@ export const products = [
     name: "Everest Hingraj (100gm)",
     category: "Everest Spices",
     price: 15,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Hingraj",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Strong asafoetida for digestion."
   },
   {
@@ -238,7 +238,7 @@ export const products = [
     name: "Everest Jaljira Powder (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "https://placehold.co/300x300/228B22/white?text=Jaljira",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Refreshing drink mix."
   },
   {
@@ -246,7 +246,7 @@ export const products = [
     name: "Everest Tikhalal (200gm)",
     category: "Everest Spices",
     price: 9,
-    image: "https://placehold.co/300x300/FF0000/white?text=Tikhalal+200gm",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spicy chilli powder."
   },
   {
@@ -254,7 +254,7 @@ export const products = [
     name: "Everest Momo Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "https://placehold.co/300x300/CD5C5C/white?text=Momo+Masala",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Perfect seasoning for momos."
   },
   {
@@ -262,7 +262,7 @@ export const products = [
     name: "Everest Royal Garam Masala (100gm)",
     category: "Everest Spices",
     price: 6,
-    image: "https://placehold.co/300x300/8B4513/white?text=Royal+Garam",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Premium blend of aromatic spices."
   },
   {
@@ -270,7 +270,7 @@ export const products = [
     name: "Everest Rajma Masala (100gm)",
     category: "Everest Spices",
     price: 6,
-    image: "https://placehold.co/300x300/8B0000/white?text=Rajma+Masala",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "For delicious Rajma curry."
   },
   {
@@ -278,7 +278,7 @@ export const products = [
     name: "Everest Shahi Paneer Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "https://placehold.co/300x300/FF8C00/white?text=Shahi+Paneer",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Rich spice blend for paneer dishes."
   },
   {
@@ -286,7 +286,7 @@ export const products = [
     name: "Everest Kashmiri Chilli Powder (100gm)",
     category: "Everest Spices",
     price: 7,
-    image: "https://placehold.co/300x300/DC143C/white?text=Kashmiri+Chilli",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Vibrant red color with mild heat."
   },
   {
@@ -294,7 +294,7 @@ export const products = [
     name: "Everest Chhole Masala (100gm)",
     category: "Everest Spices",
     price: 6,
-    image: "https://placehold.co/300x300/8B4513/white?text=Chhole+Masala",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "For authentic Punjabi Chhole."
   },
   {
@@ -302,7 +302,7 @@ export const products = [
     name: "Everest Coriander Powder (100gm)",
     category: "Everest Spices",
     price: 4,
-    image: "https://placehold.co/300x300/228B22/white?text=Coriander+100gm",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Fresh coriander powder."
   },
   {
@@ -310,7 +310,7 @@ export const products = [
     name: "Everest Coriander Powder (500gm)",
     category: "Everest Spices",
     price: 15,
-    image: "https://placehold.co/300x300/228B22/white?text=Coriander+500gm",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Fresh coriander powder."
   },
   {
@@ -318,7 +318,7 @@ export const products = [
     name: "Dhara Groundnut Oil (1 Ltr)",
     category: "Dhara",
     price: 16,
-    image: "https://placehold.co/300x300/FFA500/white?text=Dhara+Oil",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Pure groundnut oil for healthy cooking."
   },
   {
@@ -326,7 +326,7 @@ export const products = [
     name: "Satvik Kachi Ghani Mustard Oil (500gm)",
     category: "Satvik",
     price: 10,
-    image: "https://placehold.co/300x300/FFD700/black?text=Mustard+Oil",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Authentic mustard oil."
   },
   {
@@ -334,7 +334,7 @@ export const products = [
     name: "Satvik Classic 1121 Basmati Rice (5kg)",
     category: "Satvik",
     price: 25,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Basmati+Rice",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Premium long grain basmati rice."
   },
   {
@@ -342,7 +342,7 @@ export const products = [
     name: "Satvik Kachi Ghani Mustard Oil (1 Ltr)",
     category: "Satvik",
     price: 15,
-    image: "https://placehold.co/300x300/FFD700/black?text=Mustard+Oil+1L",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Authentic mustard oil."
   },
   {
@@ -350,7 +350,7 @@ export const products = [
     name: "Satvik Classic Basmati Rice (5kg)",
     category: "Satvik",
     price: 24,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Classic+Rice",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Classic basmati rice for daily use."
   },
   {
@@ -358,7 +358,7 @@ export const products = [
     name: "Satvik Frozen Green Peas (2.5kg)",
     category: "Satvik",
     price: 23,
-    image: "https://placehold.co/300x300/008000/white?text=Green+Peas",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Fresh frozen green peas."
   },
   {
@@ -366,7 +366,7 @@ export const products = [
     name: "Satvik Wheat Flour Chakki Fresh Atta (5kg)",
     category: "Satvik",
     price: 15,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Atta+5kg",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Whole wheat flour for soft rotis."
   },
   {
@@ -374,7 +374,7 @@ export const products = [
     name: "Satvik Frozen Green Peas (400g)",
     category: "Satvik",
     price: 6,
-    image: "https://placehold.co/300x300/008000/white?text=Green+Peas+400g",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Fresh frozen green peas."
   },
   {
@@ -382,7 +382,7 @@ export const products = [
     name: "Satvik Mix Veg (2.5kg)",
     category: "Satvik",
     price: 23,
-    image: "https://placehold.co/300x300/008000/white?text=Mix+Veg",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Mixed vegetables for quick cooking."
   },
   {
@@ -390,7 +390,7 @@ export const products = [
     name: "Ching's Green Chilli Sauce (680g)",
     category: "Chings",
     price: 8,
-    image: "https://placehold.co/300x300/006400/white?text=Chilli+Sauce",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spicy green chilli sauce."
   },
   {
@@ -398,7 +398,7 @@ export const products = [
     name: "Ching's Manchurian Noodles (240g)",
     category: "Chings",
     price: 7,
-    image: "https://placehold.co/300x300/8B0000/white?text=Manchurian+Noodles",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Noodles for Manchurian dishes."
   },
   {
@@ -406,7 +406,7 @@ export const products = [
     name: "Ching's Desi Chinese Combo Pack",
     category: "Chings",
     price: 8,
-    image: "https://placehold.co/300x300/FF0000/white?text=Combo+Pack",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Assorted Chinese spices and sauces."
   },
   {
@@ -414,7 +414,7 @@ export const products = [
     name: "Ching's Sweet Corn Soup (55g)",
     category: "Chings",
     price: 5,
-    image: "https://placehold.co/300x300/FFD700/black?text=Corn+Soup",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Instant sweet corn soup."
   },
   {
@@ -422,7 +422,7 @@ export const products = [
     name: "Ching's Manchurian Noodles (60g)",
     category: "Chings",
     price: 2,
-    image: "https://placehold.co/300x300/8B0000/white?text=Noodles+60g",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Single serve Manchurian noodles."
   },
   {
@@ -430,7 +430,7 @@ export const products = [
     name: "Ching's Hot Garlic Noodles (60g)",
     category: "Chings",
     price: 4,
-    image: "https://placehold.co/300x300/FF4500/white?text=Garlic+Noodles",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spicy garlic noodles."
   },
   {
@@ -438,7 +438,7 @@ export const products = [
     name: "Ching's Schezwan Cooking Sauce Stir Fry",
     category: "Chings",
     price: 10,
-    image: "https://placehold.co/300x300/8B0000/white?text=Schezwan+Sauce",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Stir fry sauce for Chinese dishes."
   },
   {
@@ -446,7 +446,7 @@ export const products = [
     name: "Ching's Dark Soy Sauce (750g)",
     category: "Chings",
     price: 10,
-    image: "https://placehold.co/300x300/000000/white?text=Soy+Sauce",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Rich dark soy sauce."
   },
   {
@@ -454,7 +454,7 @@ export const products = [
     name: "Ching's Schezwan Noodles (50g)",
     category: "Chings",
     price: 4,
-    image: "https://placehold.co/300x300/FF0000/white?text=Schezwan+Noodles",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spicy Schezwan noodles."
   },
   {
@@ -462,7 +462,7 @@ export const products = [
     name: "Ching's Schezwan Fried Rice Masala",
     category: "Chings",
     price: 10,
-    image: "https://placehold.co/300x300/FF4500/white?text=Fried+Rice+Masala",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spice mix for fried rice."
   },
   {
@@ -470,7 +470,7 @@ export const products = [
     name: "Amul Kool Koko (200ml)",
     category: "Amul Kool",
     price: 6,
-    image: "https://placehold.co/300x300/8B4513/white?text=Kool+Koko",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Chocolate milk drink."
   },
   {
@@ -478,7 +478,7 @@ export const products = [
     name: "Amul Kool Cafe (200ml)",
     category: "Amul Kool",
     price: 6,
-    image: "https://placehold.co/300x300/6F4E37/white?text=Kool+Cafe",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Coffee flavored milk."
   },
   {
@@ -494,7 +494,7 @@ export const products = [
     name: "Amul Kadai Doodh (200ml)",
     category: "Amul Kool",
     price: 6,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Kadai+Doodh",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Rich thickened milk."
   },
   {
@@ -502,7 +502,7 @@ export const products = [
     name: "Amul Saffron Latte (200ml)",
     category: "Amul Kool",
     price: 6,
-    image: "https://placehold.co/300x300/FFD700/black?text=Saffron+Latte",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Saffron flavored milk drink."
   },
   {
@@ -510,7 +510,7 @@ export const products = [
     name: "Amul Pina Lolada Mocktail",
     category: "Amul Kool",
     price: 6,
-    image: "https://placehold.co/300x300/FFFF00/black?text=Pina+Colada",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Non-alcoholic mocktail."
   },
   {
@@ -526,7 +526,7 @@ export const products = [
     name: "Amul Kool Milk Shake Mango",
     category: "Amul Kool",
     price: 6,
-    image: "https://placehold.co/300x300/FFA500/white?text=Mango+Shake",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Mango flavored milkshake."
   },
   {
@@ -542,7 +542,7 @@ export const products = [
     name: "Amul Kool Saffron Pet (180ml)",
     category: "Amul Kool",
     price: 6,
-    image: "https://placehold.co/300x300/FFD700/black?text=Saffron+Pet",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Saffron flavored milk."
   },
   {
@@ -550,7 +550,7 @@ export const products = [
     name: "Amul Kool Milk Shake Badam",
     category: "Amul Kool",
     price: 6,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Badam+Shake",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Almond flavored milkshake."
   },
   {
@@ -558,7 +558,7 @@ export const products = [
     name: "Amul Milk Shake Double Chocolate",
     category: "Amul Kool",
     price: 6,
-    image: "https://placehold.co/300x300/8B4513/white?text=Double+Choco",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Rich chocolate milkshake."
   },
   {
@@ -566,7 +566,7 @@ export const products = [
     name: "Wagh Bakri Tea",
     category: "Wagh Bakri",
     price: 10,
-    image: "https://placehold.co/300x300/8B4513/white?text=Wagh+Bakri",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Premium tea leaves."
   },
   {
@@ -574,7 +574,7 @@ export const products = [
     name: "Wagh Bakri Instant Cardamom Tea",
     category: "Wagh Bakri",
     price: 13.50,
-    image: "https://placehold.co/300x300/90EE90/black?text=Instant+Tea",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Instant tea with cardamom flavor."
   },
   {
@@ -582,7 +582,7 @@ export const products = [
     name: "Wagh Bakri Black Tea (350g)",
     category: "Wagh Bakri",
     price: 15,
-    image: "https://placehold.co/300x300/000000/white?text=Black+Tea",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Strong black tea."
   },
   {
@@ -590,7 +590,7 @@ export const products = [
     name: "Amul Mango Shrikhand (500g)",
     category: "Amul",
     price: 15,
-    image: "https://placehold.co/300x300/FFA500/white?text=Mango+Shrikhand",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Sweet mango flavored yogurt dessert."
   },
   {
@@ -606,7 +606,7 @@ export const products = [
     name: "Amul Pure Ghee",
     category: "Amul",
     price: 35,
-    image: "https://placehold.co/300x300/FFD700/black?text=Pure+Ghee",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Aromatic pure ghee."
   },
   {
@@ -630,7 +630,7 @@ export const products = [
     name: "Amul Taaza UHT Milk (1L)",
     category: "Amul",
     price: 6,
-    image: "https://placehold.co/300x300/0000FF/white?text=Taaza+Milk",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Toned milk, long life."
   },
   {
@@ -654,7 +654,7 @@ export const products = [
     name: "Amul Gulab Jamun (1kg)",
     category: "Amul",
     price: 22.50,
-    image: "https://placehold.co/300x300/8B4513/white?text=Gulab+Jamun",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Traditional Indian sweet."
   },
   {
@@ -662,7 +662,7 @@ export const products = [
     name: "Amul Gold UHT Milk (1L)",
     category: "Amul",
     price: 6,
-    image: "https://placehold.co/300x300/FFD700/black?text=Gold+Milk",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Full cream milk."
   },
   {
@@ -678,7 +678,7 @@ export const products = [
     name: "Amul Shrikhand Cardamom (500g)",
     category: "Amul",
     price: 14,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Elaichi+Shrikhand",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Cardamom flavored yogurt dessert."
   },
   {
@@ -686,7 +686,7 @@ export const products = [
     name: "Amul Pure Cow Ghee (1kg)",
     category: "Amul",
     price: 38,
-    image: "https://placehold.co/300x300/FFD700/black?text=Cow+Ghee",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Pure cow ghee."
   },
   {
@@ -694,7 +694,7 @@ export const products = [
     name: "Amul Lactic Butter (500g)",
     category: "Amul",
     price: 23,
-    image: "https://placehold.co/300x300/FFFF00/black?text=Lactic+Butter",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Cultured butter."
   },
   {
@@ -702,7 +702,7 @@ export const products = [
     name: "Amul Salted Butter (500g)",
     category: "Amul",
     price: 20,
-    image: "https://placehold.co/300x300/FFFF00/black?text=Salted+Butter",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Classic salted butter."
   },
   {
@@ -710,7 +710,7 @@ export const products = [
     name: "Amul Rasmalai (500g)",
     category: "Amul",
     price: 20,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Rasmalai",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Soft cottage cheese dumplings in milk."
   },
   {
@@ -718,7 +718,7 @@ export const products = [
     name: "Amul Unsalted Butter (500g)",
     category: "Amul",
     price: 20,
-    image: "https://placehold.co/300x300/FFFFE0/black?text=Unsalted+Butter",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Cooking butter."
   },
   {
@@ -726,7 +726,7 @@ export const products = [
     name: "Amul Strawberry Magic (1L)",
     category: "Amul",
     price: 22,
-    image: "https://placehold.co/300x300/FFC0CB/black?text=Strawberry+Magic",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Strawberry flavored ice cream."
   },
   {
@@ -742,7 +742,7 @@ export const products = [
     name: "Amul Punjabi Kulfi",
     category: "Amul",
     price: 4,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Punjabi+Kulfi",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Traditional kulfi."
   },
   {
@@ -750,7 +750,7 @@ export const products = [
     name: "Amul Shahista Pista Kulfi (1L)",
     category: "Amul",
     price: 22,
-    image: "https://placehold.co/300x300/90EE90/black?text=Pista+Kulfi",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Pistachio kulfi."
   },
   {
@@ -758,7 +758,7 @@ export const products = [
     name: "Amul Kesar Pista Royal (1L)",
     category: "Amul",
     price: 22,
-    image: "https://placehold.co/300x300/FFD700/black?text=Kesar+Pista",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Saffron and pistachio ice cream."
   },
   {
@@ -774,7 +774,7 @@ export const products = [
     name: "Amul Shrikhand Almond Pista (500g)",
     category: "Amul",
     price: 15,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Almond+Pista",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Almond and pistachio shrikhand."
   },
   {
@@ -782,7 +782,7 @@ export const products = [
     name: "Amul Rajbhog Kulfi",
     category: "Amul",
     price: 4,
-    image: "https://placehold.co/300x300/FFD700/black?text=Rajbhog+Kulfi",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Saffron and dry fruit kulfi."
   },
   {
@@ -806,7 +806,7 @@ export const products = [
     name: "Amul Duetz Kulfi",
     category: "Amul",
     price: 4,
-    image: "https://placehold.co/300x300/FFA500/white?text=Duetz+Kulfi",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Double flavored kulfi."
   },
   {
@@ -814,7 +814,7 @@ export const products = [
     name: "Amul Kashmiri Kulfi",
     category: "Amul",
     price: 4,
-    image: "https://placehold.co/300x300/FFC0CB/black?text=Kashmiri+Kulfi",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Apple and dry fruit kulfi."
   },
   {
@@ -822,7 +822,7 @@ export const products = [
     name: "Amul Rajasthani Kulfi",
     category: "Amul",
     price: 4,
-    image: "https://placehold.co/300x300/FFD700/black?text=Rajasthani+Kulfi",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Traditional Rajasthani kulfi."
   },
   {
@@ -830,7 +830,7 @@ export const products = [
     name: "Amul Rajbhog (1L)",
     category: "Amul",
     price: 22,
-    image: "https://placehold.co/300x300/FFD700/black?text=Rajbhog",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Saffron and dry fruit ice cream."
   },
   {
@@ -838,7 +838,7 @@ export const products = [
     name: "Amul Vanilla Magic (1L)",
     category: "Amul",
     price: 20,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Vanilla+Magic",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Classic vanilla ice cream."
   },
   {
@@ -862,7 +862,7 @@ export const products = [
     name: "Amul Kaju Draksh Gold (1L)",
     category: "Amul",
     price: 22,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Kaju+Draksh",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Cashew and raisin ice cream."
   },
   {
@@ -870,7 +870,7 @@ export const products = [
     name: "Amul Pista Malai Kulfi",
     category: "Amul",
     price: 22,
-    image: "https://placehold.co/300x300/90EE90/black?text=Pista+Malai",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Creamy pistachio kulfi."
   },
   {
@@ -878,7 +878,7 @@ export const products = [
     name: "Amul Moroccan Dry Fruit (1L)",
     category: "Amul",
     price: 22,
-    image: "https://placehold.co/300x300/D2691E/white?text=Moroccan+Dry+Fruit",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Exotic dry fruit ice cream."
   },
   {
@@ -894,7 +894,7 @@ export const products = [
     name: "Bikaji Pani Puri (240g)",
     category: "Bikaji Bikaneri",
     price: 15,
-    image: "https://placehold.co/300x300/FFA500/white?text=Pani+Puri",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Ready to eat Pani Puri kit."
   },
   {
@@ -902,7 +902,7 @@ export const products = [
     name: "Bikaji Paneer Kulcha (4pcs)",
     category: "Bikaji Bikaneri",
     price: 17,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Paneer+Kulcha",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Soft paneer stuffed kulchas."
   },
   {
@@ -910,7 +910,7 @@ export const products = [
     name: "Bikaji Soya Shammi Kabab (6pcs)",
     category: "Bikaji Bikaneri",
     price: 12,
-    image: "https://placehold.co/300x300/8B4513/white?text=Soya+Kabab",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Delicious soya kebabs."
   },
   {
@@ -918,7 +918,7 @@ export const products = [
     name: "Bikaji Gobi Paratha (4pcs / 400g)",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Gobi+Paratha",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Cauliflower stuffed parathas."
   },
   {
@@ -926,7 +926,7 @@ export const products = [
     name: "Bikaji Veg Spinach Shammi Kabab (6pcs)",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "https://placehold.co/300x300/006400/white?text=Spinach+Kabab",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Healthy spinach kebabs."
   },
   {
@@ -934,7 +934,7 @@ export const products = [
     name: "Bikaji Panjabi Tadka (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FF4500/white?text=Panjabi+Tadka",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spicy namkeen mix."
   },
   {
@@ -942,7 +942,7 @@ export const products = [
     name: "Bikaji Masala Khakhara (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Masala+Khakhara",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Crispy spiced wheat crisps."
   },
   {
@@ -950,7 +950,7 @@ export const products = [
     name: "Bikaji Tandoori Roti (6pcs)",
     category: "Bikaji Bikaneri",
     price: 8.50,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Tandoori+Roti",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Authentic tandoori roti."
   },
   {
@@ -958,7 +958,7 @@ export const products = [
     name: "Bikaji Aloo Laccha (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FFD700/black?text=Aloo+Laccha",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spicy potato sticks."
   },
   {
@@ -966,7 +966,7 @@ export const products = [
     name: "Bikaji Chana Chur (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FFA500/white?text=Chana+Chur",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spicy gram flour snack."
   },
   {
@@ -974,7 +974,7 @@ export const products = [
     name: "Bikaji Pindi Chole Kathi Roll",
     category: "Bikaji Bikaneri",
     price: 12,
-    image: "https://placehold.co/300x300/8B4513/white?text=Chole+Roll",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spicy chickpea roll."
   },
   {
@@ -982,7 +982,7 @@ export const products = [
     name: "Bikaji Bombay Mix (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FFA500/white?text=Bombay+Mix",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Classic Bombay mix namkeen."
   },
   {
@@ -990,7 +990,7 @@ export const products = [
     name: "Bikaji Mix Veg Kulcha (4pcs)",
     category: "Bikaji Bikaneri",
     price: 11.50,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Veg+Kulcha",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Mixed vegetable stuffed kulcha."
   },
   {
@@ -998,7 +998,7 @@ export const products = [
     name: "Bikaji Sadabahar Soan Papdi",
     category: "Bikaji Bikaneri",
     price: 8,
-    image: "https://placehold.co/300x300/FFD700/black?text=Soan+Papdi",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Flaky sweet delicacy."
   },
   {
@@ -1006,7 +1006,7 @@ export const products = [
     name: "Bikaji Dal Biji (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FFA500/white?text=Dal+Biji",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Crunchy lentil snack."
   },
   {
@@ -1014,7 +1014,7 @@ export const products = [
     name: "Bikaji Mawa Burfee (360g)",
     category: "Bikaji Bikaneri",
     price: 20,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Mawa+Burfee",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Rich milk fudge sweet."
   },
   {
@@ -1022,7 +1022,7 @@ export const products = [
     name: "Bikaji Moong Dal Kachori (6pcs)",
     category: "Bikaji Bikaneri",
     price: 13,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Kachori",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Crispy stuffed pastry."
   },
   {
@@ -1030,7 +1030,7 @@ export const products = [
     name: "Bikaji Spinach Samosa (360g)",
     category: "Bikaji Bikaneri",
     price: 20,
-    image: "https://placehold.co/300x300/006400/white?text=Spinach+Samosa",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spinach filled samosas."
   },
   {
@@ -1038,7 +1038,7 @@ export const products = [
     name: "Bikaji Salted Peanuts (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Salted+Peanuts",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Classic salted peanuts."
   },
   {
@@ -1046,7 +1046,7 @@ export const products = [
     name: "Bikaji Paneer Schzwan Roll",
     category: "Bikaji Bikaneri",
     price: 12,
-    image: "https://placehold.co/300x300/FF4500/white?text=Paneer+Roll",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spicy paneer roll."
   },
   {
@@ -1054,7 +1054,7 @@ export const products = [
     name: "Bikaji Aloo Paratha (4pcs)",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Aloo+Paratha",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Potato stuffed paratha."
   },
   {
@@ -1062,7 +1062,7 @@ export const products = [
     name: "Bikaji Ajwain Khakhara (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Ajwain+Khakhara",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Carom seeds flavored crisps."
   },
   {
@@ -1070,7 +1070,7 @@ export const products = [
     name: "Bikaji Phulka Roti (12pcs)",
     category: "Bikaji Bikaneri",
     price: 8.50,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Phulka+Roti",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Soft homemade style roti."
   },
   {
@@ -1078,7 +1078,7 @@ export const products = [
     name: "Bikaji Tandoori Naan (5pcs)",
     category: "Bikaji Bikaneri",
     price: 12,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Tandoori+Naan",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Soft tandoori naan."
   },
   {
@@ -1086,7 +1086,7 @@ export const products = [
     name: "Bikaji Papad Super (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Papad+Super",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Crispy papad."
   },
   {
@@ -1094,7 +1094,7 @@ export const products = [
     name: "Bikaji Moong Dal (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FFFF00/black?text=Moong+Dal",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Fried moong dal snack."
   },
   {
@@ -1102,7 +1102,7 @@ export const products = [
     name: "Bikaji Chowpati Bhelpuri",
     category: "Bikaji Bikaneri",
     price: 8,
-    image: "https://placehold.co/300x300/FFA500/white?text=Bhelpuri",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Instant bhelpuri mix."
   },
   {
@@ -1110,7 +1110,7 @@ export const products = [
     name: "Bikaji Meljol (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FFA500/white?text=Meljol",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Mixed savory snack."
   },
   {
@@ -1118,7 +1118,7 @@ export const products = [
     name: "Bikaji Cheese Samosa (18pcs)",
     category: "Bikaji Bikaneri",
     price: 18,
-    image: "https://placehold.co/300x300/FFA500/white?text=Cheese+Samosa",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Cheese filled mini samosas."
   },
   {
@@ -1126,7 +1126,7 @@ export const products = [
     name: "Bikaji Onion Paratha (4pcs)",
     category: "Bikaji Bikaneri",
     price: 10.50,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Onion+Paratha",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Onion stuffed paratha."
   },
   {
@@ -1134,7 +1134,7 @@ export const products = [
     name: "Bikaji Aloo Tikki (8pcs)",
     category: "Bikaji Bikaneri",
     price: 10.50,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Aloo+Tikki",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Potato patties."
   },
   {
@@ -1142,7 +1142,7 @@ export const products = [
     name: "Bikaji Mix Veg Kathi Roll (6pcs)",
     category: "Bikaji Bikaneri",
     price: 12.50,
-    image: "https://placehold.co/300x300/008000/white?text=Veg+Roll",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Mixed vegetable roll."
   },
   {
@@ -1150,7 +1150,7 @@ export const products = [
     name: "Bikaji Soya Sticks (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Soya+Sticks",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Crunchy soya sticks."
   },
   {
@@ -1158,7 +1158,7 @@ export const products = [
     name: "Bikaji Bikaneri Bhujia (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FF0000/white?text=Bhujia+200g",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Authentic Bikaneri bhujia."
   },
   {
@@ -1166,7 +1166,7 @@ export const products = [
     name: "Bikaji Sub Kuch (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FFA500/white?text=Sub+Kuch",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "All in one mix."
   },
   {
@@ -1174,7 +1174,7 @@ export const products = [
     name: "Bikaji Gulab Jamun (1kg)",
     category: "Bikaji Bikaneri",
     price: 22,
-    image: "https://placehold.co/300x300/8B4513/white?text=Gulab+Jamun",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Sweet dumplings in syrup."
   },
   {
@@ -1182,7 +1182,7 @@ export const products = [
     name: "Bikaji Tana Tan (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FFA500/white?text=Tana+Tan",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spicy snack mix."
   },
   {
@@ -1190,7 +1190,7 @@ export const products = [
     name: "Bikaji Dahi Kebab (18pcs / 360g)",
     category: "Bikaji Bikaneri",
     price: 15,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Dahi+Kebab",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Yogurt based kebabs."
   },
   {
@@ -1198,7 +1198,7 @@ export const products = [
     name: "Bikaji Jeera Khakhara (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Jeera+Khakhara",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Cumin flavored crisps."
   },
   {
@@ -1206,7 +1206,7 @@ export const products = [
     name: "Bikaji Dahi Bhalla (20pcs / 300g)",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Dahi+Bhalla",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Soft lentil dumplings."
   },
   {
@@ -1214,7 +1214,7 @@ export const products = [
     name: "Bikaji Papad Baat Cheet (250g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Papad+Baat+Cheet",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Crispy papad."
   },
   {
@@ -1222,7 +1222,7 @@ export const products = [
     name: "Bikaji Vegetable Cutlet (6pcs)",
     category: "Bikaji Bikaneri",
     price: 13,
-    image: "https://placehold.co/300x300/008000/white?text=Veg+Cutlet",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Crispy vegetable cutlets."
   },
   {
@@ -1230,7 +1230,7 @@ export const products = [
     name: "Bikaji Panjabi Samosa (6pcs)",
     category: "Bikaji Bikaneri",
     price: 12,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Panjabi+Samosa",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Classic Punjabi samosas."
   },
   {
@@ -1238,7 +1238,7 @@ export const products = [
     name: "Bikaji Mini Papad (100g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Mini+Papad",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Small crispy papads."
   },
   {
@@ -1246,7 +1246,7 @@ export const products = [
     name: "Bikaji Papad Dil Khush (250g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FFFDD0/black?text=Papad+Dil+Khush",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Crispy papad."
   },
   {
@@ -1254,7 +1254,7 @@ export const products = [
     name: "Bikaji Bikaneri Bhujia (400g)",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "https://placehold.co/300x300/FF0000/white?text=Bhujia+400g",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Authentic Bikaneri bhujia."
   },
   {
@@ -1262,7 +1262,7 @@ export const products = [
     name: "Bikaji Kolkata Chana Chur Mix (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/FFA500/white?text=Kolkata+Mix",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Kolkata style spicy mix."
   },
   {
@@ -1270,7 +1270,7 @@ export const products = [
     name: "Bikaji Home Style Paratha (400g)",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Home+Paratha",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Homestyle parathas."
   },
   {
@@ -1278,7 +1278,7 @@ export const products = [
     name: "Bikaji Masala Peanut (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "https://placehold.co/300x300/F5DEB3/black?text=Masala+Peanut",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spicy coated peanuts."
   },
   {
@@ -1286,7 +1286,7 @@ export const products = [
     name: "Bikaji Manchurian Balls (5pcs / 300g)",
     category: "Bikaji Bikaneri",
     price: 13,
-    image: "https://placehold.co/300x300/8B0000/white?text=Manchurian+Balls",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Veg manchurian balls."
   },
   {
@@ -1294,7 +1294,7 @@ export const products = [
     name: "Bikaji Vegetable Cutlet (6pcs / 300g)",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "https://placehold.co/300x300/008000/white?text=Veg+Cutlet+300g",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Crispy vegetable cutlets."
   },
 ];
