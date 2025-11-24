@@ -30,7 +30,7 @@ export const products = [
     name: "Fresh Paneer (500g)",
     category: "Milk Products",
     price: 15,
-    image: "/images/products/fresh paneer.png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Soft and fresh paneer, perfect for curries."
   },
   {
@@ -38,7 +38,7 @@ export const products = [
     name: "Fresh Khoa Mava (1kg)",
     category: "Milk Products",
     price: 50,
-    image: "/images/products/fresh khoa mava .png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Rich and fresh Khoa Mava for sweets."
   },
   {
@@ -46,7 +46,7 @@ export const products = [
     name: "Fresh Malai Paneer (1kg)",
     category: "Milk Products",
     price: 30,
-    image: "/images/products/fresh malai paneer.png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Soft and creamy Malai Paneer."
   },
   {
@@ -54,7 +54,7 @@ export const products = [
     name: "KDD Thick Cooking Cream (1 Ltr)",
     category: "Milk Products",
     price: 16,
-    image: "/images/products/kdd-thick-cream.png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Thick cooking cream for rich gravies."
   },
   {
@@ -62,7 +62,7 @@ export const products = [
     name: "Fresh Khoa Mava (500gm)",
     category: "Milk Products",
     price: 30,
-    image: "/images/products/fresh khoa mava .png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Rich and fresh Khoa Mava for sweets."
   },
   {
@@ -70,7 +70,7 @@ export const products = [
     name: "Organic Milk (1.5 Ltr)",
     category: "Milk Products",
     price: 20,
-    image: "/images/products/milk.svg",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Fresh and healthy organic milk."
   },
   {
@@ -78,7 +78,7 @@ export const products = [
     name: "Bikaji Bhujia",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "/images/products/bhujia.svg",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Crispy and spicy snack."
   },
   {
@@ -86,7 +86,7 @@ export const products = [
     name: "Amul Butter (100g)",
     category: "Amul",
     price: 18,
-    image: "/images/products/Amul Butter (100g).png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Utterly butterly delicious."
   },
   {
@@ -94,7 +94,7 @@ export const products = [
     name: "Chings Schezwan Chutney",
     category: "Chings",
     price: 14,
-    image: "/images/products/chutney.svg",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Spicy chutney for chinese dishes."
   },
   {
@@ -110,7 +110,7 @@ export const products = [
     name: "Amul Cheese Slices",
     category: "Amul",
     price: 22,
-    image: "/images/products/Amul Cheese Slice (200g).png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Processed cheese slices for sandwiches."
   },
   {
@@ -486,7 +486,7 @@ export const products = [
     name: "Amul Kool Cardamom Pet",
     category: "Amul Kool",
     price: 5,
-    image: "/images/products/Amul Kool Cardamom Pet.png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Cardamom flavored milk."
   },
   {
@@ -518,7 +518,7 @@ export const products = [
     name: "Amul Kool Almond Pet (180ml)",
     category: "Amul Kool",
     price: 6,
-    image: "/images/products/Amul Kool Almond Pet (180ml).png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Almond milk drink."
   },
   {
@@ -534,7 +534,7 @@ export const products = [
     name: "Amul Kool Cafe Pet",
     category: "Amul Kool",
     price: 6,
-    image: "/images/products/Amul Kool Cafe Pet.png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Coffee flavored milk."
   },
   {
@@ -598,7 +598,7 @@ export const products = [
     name: "Amul Fresh Cream (250ml)",
     category: "Amul",
     price: 7,
-    image: "/images/products/Amul Fresh Cream (250ml).png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Rich fresh cream."
   },
   {
@@ -614,7 +614,7 @@ export const products = [
     name: "Amul Cheese Block (1kg)",
     category: "Amul",
     price: 40,
-    image: "/images/products/Amul Cheese Block (1kg).png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Block of processed cheese."
   },
   {
@@ -622,7 +622,7 @@ export const products = [
     name: "Amul Kesar Shrikhand (500g)",
     category: "Amul",
     price: 15,
-    image: "/images/products/Amul Kesar Shrikhand (500g).png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Saffron flavored yogurt dessert."
   },
   {
@@ -638,7 +638,7 @@ export const products = [
     name: "Amul Cheese Slice (200g)",
     category: "Amul",
     price: 14,
-    image: "/images/products/Amul Cheese Slice (200g).png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Cheese slices for sandwiches."
   },
   {
@@ -646,7 +646,7 @@ export const products = [
     name: "Amul Fresh Cream (1L)",
     category: "Amul",
     price: 22.50,
-    image: "/images/products/Amul Fresh Cream (1L).png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Rich fresh cream."
   },
   {
@@ -670,7 +670,7 @@ export const products = [
     name: "Amul Cheese Chiplet",
     category: "Amul",
     price: 14,
-    image: "/images/products/Amul Cheese Chiplet.png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Cheese cubes."
   },
   {
@@ -734,7 +734,7 @@ export const products = [
     name: "Amul Butter Scotch Bliss (500ml)",
     category: "Amul",
     price: 15,
-    image: "/images/products/Amul Butter Scotch Bliss (500ml).png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Butterscotch ice cream."
   },
   {
@@ -766,7 +766,7 @@ export const products = [
     name: "Amul Badshahi Kulfi",
     category: "Amul",
     price: 4,
-    image: "/images/products/Amul Badshahi Kulfi.png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Royal kulfi treat."
   },
   {
@@ -790,7 +790,7 @@ export const products = [
     name: "Amul Butter Scotch Bliss (125ml)",
     category: "Amul",
     price: 4,
-    image: "/images/products/Amul Butter Scotch Bliss (125ml).png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Butterscotch ice cream cup."
   },
   {
@@ -798,7 +798,7 @@ export const products = [
     name: "Amul Badshahi Badan Royal (1L)",
     category: "Amul",
     price: 22,
-    image: "/images/products/Amul Badshahi Badan Royal (1L).png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Almond royal ice cream."
   },
   {
@@ -846,7 +846,7 @@ export const products = [
     name: "Amul Frositk Kulfi",
     category: "Amul",
     price: 5,
-    image: "/images/products/Amul Frositk Kulfi.png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Frozen stick kulfi."
   },
   {
@@ -854,7 +854,7 @@ export const products = [
     name: "Amul Chocochips (1L)",
     category: "Amul",
     price: 22,
-    image: "/images/products/Amul Chocochips (1L).png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Chocolate chip ice cream."
   },
   {
@@ -886,7 +886,7 @@ export const products = [
     name: "Amul Fruit and Nut Fantasy (1L)",
     category: "Amul",
     price: 22,
-    image: "/images/products/Amul Fruit and Nut Fantasy (1L).png",
+    image: "https://via.placeholder.com/300x200?text=Product+Image",
     description: "Mixed fruit and nut ice cream."
   },
   {
