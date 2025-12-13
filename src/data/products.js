@@ -30,7 +30,7 @@ export const products = [
     name: "Fresh Paneer (500g)",
     category: "Milk Products",
     price: 15,
-    image: "https://via.placeholder.com/300x200?text=Product+Image",
+    image: "/images/products/Fresh Paneer (500g).png",
     description: "Soft and fresh paneer, perfect for curries."
   },
   {
@@ -198,7 +198,7 @@ export const products = [
     name: "Everest Tikhalal (500gm)",
     category: "Everest Spices",
     price: 20,
-    image: "https://via.placeholder.com/300x200?text=Product+Image",
+    image: "/images/products/Fresh Paneer (500g).png",
     description: "Spicy chilli powder."
   },
   {
@@ -206,7 +206,7 @@ export const products = [
     name: "Everest Chaat Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "https://via.placeholder.com/300x200?text=Product+Image",
+    image: "/images/products/Fresh Paneer (500g).png",
     description: "Tangy spice blend for chaats."
   },
   {
@@ -214,7 +214,7 @@ export const products = [
     name: "Everest Kesari Milk Masala (100gm)",
     category: "Everest Spices",
     price: 31,
-    image: "https://via.placeholder.com/300x200?text=Product+Image",
+    image: "/images/products/Fresh Paneer (500g).png",
     description: "Rich masala for milk with saffron."
   },
   {
@@ -222,7 +222,7 @@ export const products = [
     name: "Everest Pav Bhaji Masala (500gm)",
     category: "Everest Spices",
     price: 22,
-    image: "https://via.placeholder.com/300x200?text=Product+Image",
+    image: "/images/products/Fresh Paneer (500g).png",
     description: "For authentic Mumbai style Pav Bhaji."
   },
   {
@@ -230,7 +230,7 @@ export const products = [
     name: "Everest Hingraj (100gm)",
     category: "Everest Spices",
     price: 15,
-    image: "https://via.placeholder.com/300x200?text=Product+Image",
+    image: "/images/products/Fresh Paneer (500g).png",
     description: "Strong asafoetida for digestion."
   },
   {
@@ -238,7 +238,7 @@ export const products = [
     name: "Everest Jaljira Powder (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "https://via.placeholder.com/300x200?text=Product+Image",
+    image: "/images/products/Fresh Paneer (500g).png",
     description: "Refreshing drink mix."
   },
   {
@@ -246,7 +246,7 @@ export const products = [
     name: "Everest Tikhalal (200gm)",
     category: "Everest Spices",
     price: 9,
-    image: "https://via.placeholder.com/300x200?text=Product+Image",
+    image: "/images/products/Fresh Paneer (500g).png",
     description: "Spicy chilli powder."
   },
   {
@@ -254,7 +254,7 @@ export const products = [
     name: "Everest Momo Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "https://via.placeholder.com/300x200?text=Product+Image",
+    image: "/images/products/Fresh Paneer (500g).png",
     description: "Perfect seasoning for momos."
   },
   {
@@ -262,7 +262,7 @@ export const products = [
     name: "Everest Royal Garam Masala (100gm)",
     category: "Everest Spices",
     price: 6,
-    image: "https://via.placeholder.com/300x200?text=Product+Image",
+    image: "/images/products/Fresh Paneer (500g).png",
     description: "Premium blend of aromatic spices."
   },
   {
@@ -270,7 +270,7 @@ export const products = [
     name: "Everest Rajma Masala (100gm)",
     category: "Everest Spices",
     price: 6,
-    image: "https://via.placeholder.com/300x200?text=Product+Image",
+    image: "/images/products/Fresh Paneer (500g).png",
     description: "For delicious Rajma curry."
   },
   {

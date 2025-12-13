@@ -13,6 +13,27 @@ Your project uses a two-branch system. It is vital to understand this to avoid l
 
 ---
 
+## 🖼️ Adding Product Images (The Easy Way!)
+
+You now have an AI-powered image sync tool! Just:
+
+1.  **Drop images** into `uploads/incoming/`
+2.  **Run the preview:**
+    ```powershell
+    npm run images
+    ```
+3.  **Review** what the AI detected and confirm to apply
+
+The tool will automatically:
+- Detect the product in each image
+- Match it to your database
+- Move and rename the file correctly
+- Update `products.js` with the new path
+
+📖 **Full guide:** See `IMAGE_SYNC_GUIDE.md` for detailed instructions.
+
+---
+
 ## 🛠️ How to Make Changes (The Edit Cycle)
 
 Whenever you want to update the site (change a price, add a photo, fix a typo):

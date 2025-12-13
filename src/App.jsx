@@ -6,7 +6,7 @@ import Cart from './components/Cart';
 import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 import { products as initialProducts, categories } from './data/products';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function App() {
   const [products, setProducts] = useState(() => {
@@ -14,19 +14,26 @@ function App() {
     return saved ? JSON.parse(saved) : initialProducts;
   });
   const [isAdminMode, setIsAdminMode] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+  
+  // Initialize cart from local storage (Lazy Initialization)
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const savedCart = localStorage.getItem('cart');
+      console.log('🛒 [Debug] Loading cart from storage:', savedCart);
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (error) {
+      console.error('🛒 [Debug] Error loading cart:', error);
+      return [];
+    }
+  });
+
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Load cart from local storage on mount
+  // Load dark mode preference on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
-    }
-    
     // Check system preference for dark mode
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       setIsDarkMode(true);
@@ -35,6 +42,7 @@ function App() {
 
   // Save cart to local storage whenever it changes
   useEffect(() => {
+    console.log('🛒 [Debug] Saving cart to storage:', cartItems);
     localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
@@ -46,6 +54,13 @@ function App() {
       document.documentElement.classList.remove('dark');
     }
   }, [isDarkMode]);
+
+  // Reset category to All when searching
+  useEffect(() => {
+    if (searchQuery) {
+      setSelectedCategory('All');
+    }
+  }, [searchQuery]);
 
   const updateProductImage = (id, newUrl) => {
     const updatedProducts = products.map(p => 
@@ -63,18 +78,62 @@ function App() {
 
   const toggleTheme = React.useCallback(() => setIsDarkMode(prev => !prev), []);
 
-  const addToCart = React.useCallback((product) => {
-    setCartItems(prev => {
-      const existing = prev.find(item => item.id === product.id);
-      if (existing) {
-        return prev.map(item => 
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
+  // Helper to parse weight/volume from product name
+  const parseProductUnit = (name) => {
+    const match = name.match(/(\d+(\.\d+)?)\s*(kg|g|gm|ltr|l|ml)/i);
+    if (!match) return { weight: 0, volume: 0 };
+
+    const value = parseFloat(match[1]);
+    const unit = match[3].toLowerCase();
+
+    if (unit === 'kg') return { weight: value, volume: 0 };
+    if (unit === 'g' || unit === 'gm') return { weight: value / 1000, volume: 0 };
+    if (unit === 'ltr' || unit === 'l') return { weight: 0, volume: value };
+    if (unit === 'ml') return { weight: 0, volume: value / 1000 };
+    
+    return { weight: 0, volume: 0 };
+  };
+
+  const checkLimits = (newCartItems) => {
+    let totalWeight = 0;
+    let totalVolume = 0;
+    let totalQuantity = 0;
+
+    newCartItems.forEach(item => {
+      const { weight, volume } = parseProductUnit(item.name);
+      totalWeight += weight * item.quantity;
+      totalVolume += volume * item.quantity;
+      totalQuantity += item.quantity;
     });
-    setIsCartOpen(true);
-  }, []);
+
+    if (totalQuantity > 50) return "Limit reached: You can only order up to 50 items in total.";
+    if (totalWeight > 50) return "Limit reached: Total weight cannot exceed 50kg.";
+    if (totalVolume > 50) return "Limit reached: Total volume cannot exceed 50 liters.";
+    
+    return null;
+  };
+
+  const addToCart = React.useCallback((product) => {
+    let newCartItems = [...cartItems];
+    const existingIndex = newCartItems.findIndex(item => item.id === product.id);
+    
+    if (existingIndex >= 0) {
+      newCartItems[existingIndex] = { 
+        ...newCartItems[existingIndex], 
+        quantity: newCartItems[existingIndex].quantity + 1 
+      };
+    } else {
+      newCartItems.push({ ...product, quantity: 1 });
+    }
+
+    const error = checkLimits(newCartItems);
+    if (error) {
+      alert(error);
+      return;
+    }
+
+    setCartItems(newCartItems);
+  }, [cartItems]);
 
   const removeFromCart = React.useCallback((id) => {
     setCartItems(prev => prev.filter(item => item.id !== id));
@@ -85,10 +144,19 @@ function App() {
       removeFromCart(id);
       return;
     }
-    setCartItems(prev => 
-      prev.map(item => item.id === id ? { ...item, quantity: newQuantity } : item)
+
+    const newCartItems = cartItems.map(item => 
+      item.id === id ? { ...item, quantity: newQuantity } : item
     );
-  }, [removeFromCart]);
+
+    const error = checkLimits(newCartItems);
+    if (error) {
+      alert(error);
+      return;
+    }
+
+    setCartItems(newCartItems);
+  }, [cartItems, removeFromCart]);
 
   const sortedCategories = React.useMemo(() => {
     return ['All', ...categories.filter(c => c !== 'All').sort()];
@@ -140,7 +208,17 @@ function App() {
         toggleTheme={toggleTheme}
       />
       
-      <Hero />
+      <AnimatePresence>
+        {!searchQuery && (
+          <motion.div
+            initial={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
+            transition={{ duration: 0.3 }}
+          >
+            <Hero />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <main className="flex-1 container mx-auto px-4 py-12" id="products">
         
@@ -189,9 +267,21 @@ function App() {
           {/* Product Grid */}
           <div className="flex-1">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
-                {selectedCategory} Products
-                <span className="text-lg font-normal text-gray-500 dark:text-gray-400 ml-3">({filteredProducts.length} items)</span>
+              <h2 className="text-3xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
+                {searchQuery ? (
+                  <>
+                    Results for "{searchQuery}"
+                    <button 
+                      onClick={() => setSearchQuery('')}
+                      className="text-sm bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-gray-600 dark:text-gray-300"
+                    >
+                      Clear
+                    </button>
+                  </>
+                ) : (
+                  `${selectedCategory} Products`
+                )}
+                <span className="text-lg font-normal text-gray-500 dark:text-gray-400">({filteredProducts.length} items)</span>
               </h2>
             </div>
 
@@ -225,61 +315,65 @@ function App() {
         </div>
       </main>
 
-      <section id="about" className="bg-white dark:bg-brand-card py-20 transition-colors duration-300">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl font-bold text-brand-dark dark:text-brand-orange mb-8">About Pandit Ji Paneer Wale</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-12">
-              We are dedicated to providing the freshest paneer and highest quality dairy products to our community. 
-              With a passion for authentic flavors and a commitment to excellence, we ensure that every product 
-              that reaches your kitchen is pure, fresh, and delicious.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <motion.div whileHover={{ y: -10 }} className="p-8 bg-brand-light dark:bg-gray-800 rounded-2xl shadow-sm">
-                <h3 className="font-bold text-2xl mb-3 text-brand-orange">Freshness Guaranteed</h3>
-                <p className="text-gray-600 dark:text-gray-400">Farm-fresh products delivered daily to ensure maximum quality.</p>
-              </motion.div>
-              <motion.div whileHover={{ y: -10 }} className="p-8 bg-brand-light dark:bg-gray-800 rounded-2xl shadow-sm">
-                <h3 className="font-bold text-2xl mb-3 text-brand-orange">Authentic Taste</h3>
-                <p className="text-gray-600 dark:text-gray-400">Traditional recipes and pure ingredients for that homemade feel.</p>
-              </motion.div>
-              <motion.div whileHover={{ y: -10 }} className="p-8 bg-brand-light dark:bg-gray-800 rounded-2xl shadow-sm">
-                <h3 className="font-bold text-2xl mb-3 text-brand-orange">Fast Delivery</h3>
-                <p className="text-gray-600 dark:text-gray-400">Quick and reliable delivery service to your doorstep.</p>
-              </motion.div>
+      {!searchQuery && (
+        <>
+          <section id="about" className="bg-white dark:bg-brand-card py-20 transition-colors duration-300">
+            <div className="container mx-auto px-4">
+              <div className="max-w-4xl mx-auto text-center">
+                <h2 className="text-4xl font-bold text-brand-dark dark:text-brand-orange mb-8">About Pandit Ji Paneer Wale</h2>
+                <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-12">
+                  We are dedicated to providing the freshest paneer and highest quality dairy products to our community. 
+                  With a passion for authentic flavors and a commitment to excellence, we ensure that every product 
+                  that reaches your kitchen is pure, fresh, and delicious.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <motion.div whileHover={{ y: -10 }} className="p-8 bg-brand-light dark:bg-gray-800 rounded-2xl shadow-sm">
+                    <h3 className="font-bold text-2xl mb-3 text-brand-orange">Freshness Guaranteed</h3>
+                    <p className="text-gray-600 dark:text-gray-400">Farm-fresh products delivered daily to ensure maximum quality.</p>
+                  </motion.div>
+                  <motion.div whileHover={{ y: -10 }} className="p-8 bg-brand-light dark:bg-gray-800 rounded-2xl shadow-sm">
+                    <h3 className="font-bold text-2xl mb-3 text-brand-orange">Authentic Taste</h3>
+                    <p className="text-gray-600 dark:text-gray-400">Traditional recipes and pure ingredients for that homemade feel.</p>
+                  </motion.div>
+                  <motion.div whileHover={{ y: -10 }} className="p-8 bg-brand-light dark:bg-gray-800 rounded-2xl shadow-sm">
+                    <h3 className="font-bold text-2xl mb-3 text-brand-orange">Fast Delivery</h3>
+                    <p className="text-gray-600 dark:text-gray-400">Quick and reliable delivery service to your doorstep.</p>
+                  </motion.div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      <section id="contact" className="bg-brand-orange text-white py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-12">Get in Touch</h2>
-          <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
-            <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
-              <div className="bg-white text-brand-orange p-6 rounded-full mb-6 shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          <section id="contact" className="bg-brand-orange text-white py-20">
+            <div className="container mx-auto px-4 text-center">
+              <h2 className="text-4xl font-bold mb-12">Get in Touch</h2>
+              <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
+                <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
+                  <div className="bg-white text-brand-orange p-6 rounded-full mb-6 shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  </div>
+                  <h3 className="font-bold text-2xl mb-2">Call Us</h3>
+                  <p className="text-lg">+971 52 467 6306</p>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
+                  <div className="bg-white text-brand-orange p-6 rounded-full mb-6 shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  </div>
+                  <h3 className="font-bold text-2xl mb-2">Visit Us</h3>
+                  <p className="text-lg">F9QJ+M5J, Al Zahiyah - E16 02<br/>Abu Dhabi, UAE</p>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
+                  <div className="bg-white text-brand-orange p-6 rounded-full mb-6 shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                  </div>
+                  <h3 className="font-bold text-2xl mb-2">Email Us</h3>
+                  <p className="text-lg">rrc.inttrading@gmail.com</p>
+                </motion.div>
               </div>
-              <h3 className="font-bold text-2xl mb-2">Call Us</h3>
-              <p className="text-lg">+971 52 467 6306</p>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
-              <div className="bg-white text-brand-orange p-6 rounded-full mb-6 shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-              </div>
-              <h3 className="font-bold text-2xl mb-2">Visit Us</h3>
-              <p className="text-lg">F9QJ+M5J, Al Zahiyah - E16 02<br/>Abu Dhabi, UAE</p>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
-              <div className="bg-white text-brand-orange p-6 rounded-full mb-6 shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-              </div>
-              <h3 className="font-bold text-2xl mb-2">Email Us</h3>
-              <p className="text-lg">rrc.inttrading@gmail.com</p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+            </div>
+          </section>
+        </>
+      )}
 
       <Footer />
       <FloatingWhatsApp />
