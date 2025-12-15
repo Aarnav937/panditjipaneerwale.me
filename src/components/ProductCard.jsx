@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const ProductCard = ({ product, addToCart }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   // Guard clause in case product data is missing
   if (!product) return null;
 
@@ -9,26 +11,35 @@ const ProductCard = ({ product, addToCart }) => {
       {/* Image Container with Gradient Overlay */}
       <div className="relative h-52 w-full bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-brand-card p-4 overflow-hidden">
         <div className="absolute inset-0 bg-brand-orange/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <img 
-          src={product.image} 
-          alt={product.name} 
-          className="w-full h-full object-contain drop-shadow-md transform group-hover:scale-110 transition-transform duration-500 ease-out"
+
+        {/* Skeleton Loader - shows while image is loading */}
+        {!imageLoaded && (
+          <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse" />
+        )}
+
+        <img
+          src={product.image}
+          alt={product.name}
+          className={`w-full h-full object-contain drop-shadow-md transform group-hover:scale-110 transition-all duration-500 ease-out ${imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+          onLoad={() => setImageLoaded(true)}
+          onError={() => setImageLoaded(true)} // Hide skeleton even on error
         />
         {/* Quick Action Overlay (Optional) */}
         <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-           <span className="bg-white dark:bg-gray-800 text-xs font-bold px-2 py-1 rounded-full shadow text-brand-orange">
-             {product.category || 'Fresh'}
-           </span>
+          <span className="bg-white dark:bg-gray-800 text-xs font-bold px-2 py-1 rounded-full shadow text-brand-orange">
+            {product.category || 'Fresh'}
+          </span>
         </div>
       </div>
-      
+
       <div className="p-5 flex flex-col flex-grow relative">
         <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-1 leading-tight line-clamp-2 group-hover:text-brand-orange transition-colors">
           {product.name}
         </h3>
-        
+
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">
-           {product.description || 'Premium quality product'}
+          {product.description || 'Premium quality product'}
         </p>
 
         <div className="mt-auto flex items-center justify-between gap-3">
@@ -38,7 +49,7 @@ const ProductCard = ({ product, addToCart }) => {
               AED {product.price}
             </span>
           </div>
-          
+
           <button
             onClick={() => addToCart(product)}
             className="flex-1 bg-gradient-to-r from-brand-orange to-red-500 hover:from-brand-dark hover:to-red-600 text-white font-bold py-2.5 px-4 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2"

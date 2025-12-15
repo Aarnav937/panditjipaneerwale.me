@@ -1,15 +1,15 @@
 import React from 'react';
-import { ShoppingCart, Search, Menu, X, Moon, Sun } from 'lucide-react';
+import { ShoppingCart, Search, Menu, X, Moon, Sun, Package } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const Navbar = ({ cartCount, setIsCartOpen, searchQuery, setSearchQuery, isDarkMode, toggleTheme, onExport }) => {
+const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, searchQuery, setSearchQuery, isDarkMode, toggleTheme }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   return (
     <nav className="bg-white/80 dark:bg-brand-darker/80 backdrop-blur-md text-gray-800 dark:text-white sticky top-0 z-50 shadow-lg border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <motion.div 
+          <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             className="text-2xl font-bold font-sans text-brand-orange"
@@ -31,19 +31,27 @@ const Navbar = ({ cartCount, setIsCartOpen, searchQuery, setSearchQuery, isDarkM
         </div>
 
         <div className="hidden md:flex items-center gap-6 font-medium">
-          {/* Save Button */}
           <a href="#" className="hover:text-brand-orange transition">Home</a>
           <a href="#about" className="hover:text-brand-orange transition">About</a>
           <a href="#contact" className="hover:text-brand-orange transition">Contact</a>
-          
-          <button 
+
+          <button
             onClick={toggleTheme}
             className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
 
-          <button 
+          {/* Order History Button */}
+          <button
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition hover:scale-110"
+            onClick={() => setIsOrderHistoryOpen(true)}
+            title="Order History"
+          >
+            <Package className="w-6 h-6" />
+          </button>
+
+          <button
             className="relative hover:scale-110 transition-transform"
             onClick={() => setIsCartOpen(true)}
           >
@@ -58,13 +66,20 @@ const Navbar = ({ cartCount, setIsCartOpen, searchQuery, setSearchQuery, isDarkM
 
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center gap-4">
-          <button 
+          <button
             onClick={toggleTheme}
             className="p-2"
           >
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-          <button 
+          <button
+            className="p-2"
+            onClick={() => setIsOrderHistoryOpen(true)}
+            title="Order History"
+          >
+            <Package className="w-5 h-5" />
+          </button>
+          <button
             className="relative"
             onClick={() => setIsCartOpen(true)}
           >
@@ -83,7 +98,7 @@ const Navbar = ({ cartCount, setIsCartOpen, searchQuery, setSearchQuery, isDarkM
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <motion.div 
+        <motion.div
           initial={{ height: 0 }}
           animate={{ height: 'auto' }}
           className="md:hidden bg-white dark:bg-brand-darker border-t dark:border-gray-700 overflow-hidden"
@@ -99,6 +114,12 @@ const Navbar = ({ cartCount, setIsCartOpen, searchQuery, setSearchQuery, isDarkM
             <button className="text-left hover:text-brand-orange" onClick={() => window.scrollTo(0, 0)}>Home</button>
             <a href="#about" className="text-left hover:text-brand-orange">About</a>
             <a href="#contact" className="text-left hover:text-brand-orange">Contact</a>
+            <button
+              className="text-left hover:text-brand-orange flex items-center gap-2"
+              onClick={() => { setIsOrderHistoryOpen(true); setIsMobileMenuOpen(false); }}
+            >
+              <Package size={16} /> Order History
+            </button>
           </div>
         </motion.div>
       )}
