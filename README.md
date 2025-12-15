@@ -43,3 +43,5 @@ This is a modern, responsive e-commerce website for Pandit Ji Paneer Wale, built
 - Tailwind CSS
 - Framer Motion (Animations)
 - Lucide React (Icons)
+
+<!-- Test change for GitHub update demo -->
