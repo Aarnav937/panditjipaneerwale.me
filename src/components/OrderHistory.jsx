@@ -5,11 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 const OrderHistory = ({ isOpen, onClose, onReorder }) => {
     const [orders, setOrders] = React.useState([]);
 
+    console.log('[OrderHistory] Component loaded', { isOpen });
+
     // Load orders from localStorage when modal opens
     React.useEffect(() => {
         if (isOpen) {
             const savedOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
             setOrders(savedOrders);
+            console.log('[OrderHistory] Loaded orders:', savedOrders);
         }
     }, [isOpen]);
 

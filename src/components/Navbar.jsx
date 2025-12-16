@@ -45,7 +45,10 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, searchQuery, 
           {/* Order History Button */}
           <button
             className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition hover:scale-110"
-            onClick={() => setIsOrderHistoryOpen(true)}
+            onClick={() => {
+              console.log('[Navbar] Order History button clicked');
+              setIsOrderHistoryOpen(true);
+            }}
             title="Order History"
           >
             <Package className="w-6 h-6" />
