@@ -26,7 +26,7 @@ npm install
 ### 4. Upload Images
 Drop your product images into:
 ```
-uploads/incoming/
+images/incoming/
 ```
 
 ### 5. Preview & Sync
@@ -55,13 +55,25 @@ This will:
 ## 📁 Folder Structure
 
 ```
-uploads/
+images/
 ├── incoming/     ← Drop your images here
 ├── processed/    ← Successfully matched images (backup)
 └── unmatched/    ← Images that couldn't be matched
 
 public/images/products/    ← Where matched images go
 ```
+
+---
+
+## ⚙️ Configuration Options
+
+In your `.env` file, you can set:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `GEMINI_API_KEY` | (required) | Your Gemini API key |
+| `GEMINI_MODEL` | `gemini-2.5-flash` | Model to use (`gemini-2.5-flash` or `gemini-2.5-pro`) |
+| `GEMINI_DELAY_MS` | `2000` | Delay between API calls in ms (rate limiting) |
 
 ---
 
