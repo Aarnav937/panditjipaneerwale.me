@@ -31,12 +31,16 @@ const __dirname = path.dirname(__filename);
 
 // Configuration
 const CONFIG = {
-  INCOMING_DIR: path.join(__dirname, 'uploads', 'incoming'),
-  PROCESSED_DIR: path.join(__dirname, 'uploads', 'processed'),
-  UNMATCHED_DIR: path.join(__dirname, 'uploads', 'unmatched'),
+  INCOMING_DIR: path.join(__dirname, 'images', 'incoming'),
+  PROCESSED_DIR: path.join(__dirname, 'images', 'processed'),
+  UNMATCHED_DIR: path.join(__dirname, 'images', 'unmatched'),
   PRODUCTS_DIR: path.join(__dirname, 'public', 'images', 'products'),
   PRODUCTS_FILE: path.join(__dirname, 'src', 'data', 'products.js'),
   SUPPORTED_FORMATS: ['.jpg', '.jpeg', '.png', '.webp', '.gif'],
+  // Rate limiting
+  DELAY_MS: parseInt(process.env.GEMINI_DELAY_MS) || 1500, // Delay between API calls
+  MAX_RETRIES: 3,
+  RETRY_DELAY_MS: 2000, // Initial retry delay (doubles each retry)
 };
 
 // ANSI color codes for console output
@@ -73,17 +77,17 @@ function ensureDirectories() {
 // Load products from products.js
 function loadProducts() {
   const content = fs.readFileSync(CONFIG.PRODUCTS_FILE, 'utf-8');
-  
+
   // Extract the products array using regex
   const productsMatch = content.match(/export\s+const\s+products\s*=\s*(\[[\s\S]*?\]);?\s*$/m);
   if (!productsMatch) {
     throw new Error('Could not find products array in products.js');
   }
-  
+
   // Parse the products array (eval is safe here as we control the file)
   const productsCode = productsMatch[1];
   const products = eval(productsCode);
-  
+
   return products;
 }
 
@@ -92,7 +96,7 @@ function getIncomingImages() {
   if (!fs.existsSync(CONFIG.INCOMING_DIR)) {
     return [];
   }
-  
+
   return fs.readdirSync(CONFIG.INCOMING_DIR)
     .filter(file => CONFIG.SUPPORTED_FORMATS.includes(path.extname(file).toLowerCase()))
     .map(file => path.join(CONFIG.INCOMING_DIR, file));
@@ -140,7 +144,8 @@ async function analyzeImageWithGemini(imagePath, products) {
   }
 
   const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+  const model = genAI.getGenerativeModel({ model: modelName });
 
   // Prepare product list for the prompt
   const productList = products.map(p => `- ID ${p.id}: "${p.name}" (${p.category})`).join('\n');
@@ -180,19 +185,48 @@ Respond ONLY with a JSON object in this exact format:
     ]);
 
     const responseText = result.response.text();
-    
+
     // Extract JSON from response (handle markdown code blocks)
     let jsonStr = responseText;
     const jsonMatch = responseText.match(/```(?:json)?\s*([\s\S]*?)```/);
     if (jsonMatch) {
       jsonStr = jsonMatch[1].trim();
     }
-    
+
     return JSON.parse(jsonStr);
   } catch (error) {
+    // Check for rate limit error
+    if (error.message && error.message.includes('429')) {
+      log.warning('Rate limit hit, will retry...');
+      throw error; // Re-throw to trigger retry logic
+    }
     log.error(`Gemini API error: ${error.message}`);
     return null;
   }
+}
+
+// Sleep function for rate limiting
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Retry wrapper with exponential backoff
+async function withRetry(fn, maxRetries = CONFIG.MAX_RETRIES) {
+  let lastError;
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      lastError = error;
+      if (attempt < maxRetries - 1) {
+        const delay = CONFIG.RETRY_DELAY_MS * Math.pow(2, attempt);
+        log.warning(`  Retry ${attempt + 1}/${maxRetries} in ${delay / 1000}s...`);
+        await sleep(delay);
+      }
+    }
+  }
+  log.error(`  Failed after ${maxRetries} retries`);
+  return null;
 }
 
 // Generate a safe filename from product name
@@ -206,19 +240,19 @@ function generateFilename(productName, extension) {
 // Update products.js with new image path
 function updateProductImage(productId, imagePath) {
   let content = fs.readFileSync(CONFIG.PRODUCTS_FILE, 'utf-8');
-  
+
   // Find the product and update its image
   const imageFilename = path.basename(imagePath);
   const newImagePath = `/images/products/${imageFilename}`;
-  
+
   // Use regex to find and replace the image for this specific product
   // Match the product block by ID and replace its image
   const productRegex = new RegExp(
     `(\\{[^}]*id:\\s*${productId}[^}]*image:\\s*")[^"]*(")`
-  , 'g');
-  
+    , 'g');
+
   const updatedContent = content.replace(productRegex, `$1${newImagePath}$2`);
-  
+
   if (updatedContent !== content) {
     fs.writeFileSync(CONFIG.PRODUCTS_FILE, updatedContent, 'utf-8');
     return true;
@@ -230,7 +264,7 @@ function updateProductImage(productId, imagePath) {
 function moveFile(source, destDir, newFilename = null) {
   const filename = newFilename || path.basename(source);
   const destination = path.join(destDir, filename);
-  
+
   // If file already exists, add a timestamp
   let finalDest = destination;
   if (fs.existsSync(destination)) {
@@ -238,17 +272,17 @@ function moveFile(source, destDir, newFilename = null) {
     const base = path.basename(filename, ext);
     finalDest = path.join(destDir, `${base}_${Date.now()}${ext}`);
   }
-  
+
   fs.copyFileSync(source, finalDest);
   fs.unlinkSync(source);
-  
+
   return finalDest;
 }
 
 // Main sync function
 async function syncImages() {
   log.header('🖼️  Pandit Ji Paneer Wale - Smart Image Sync');
-  
+
   // Load environment variables
   try {
     const dotenv = await import('dotenv');
@@ -269,18 +303,18 @@ async function syncImages() {
 
   // Ensure directories exist
   ensureDirectories();
-  
+
   // Get incoming images
   const images = getIncomingImages();
-  
+
   if (images.length === 0) {
-    log.warning('No images found in uploads/incoming/');
+    log.warning('No images found in images/incoming/');
     log.info('Drop your product images there and run this script again.');
     return;
   }
-  
+
   log.info(`Found ${images.length} image(s) to process`);
-  
+
   // Load products
   let products;
   try {
@@ -290,57 +324,63 @@ async function syncImages() {
     log.error(`Failed to load products: ${error.message}`);
     return;
   }
-  
+
   console.log(''); // Empty line for readability
-  
+
   // Process each image
   const results = {
     matched: [],
     unmatched: [],
     errors: [],
   };
-  
+
   for (let i = 0; i < images.length; i++) {
     const imagePath = images[i];
     const filename = path.basename(imagePath);
-    
+
     log.step(i + 1, `Analyzing: ${filename}`);
-    
-    // Analyze with Gemini
-    const analysis = await analyzeImageWithGemini(imagePath, products);
-    
+
+    // Analyze with Gemini (with retry logic)
+    const analysis = await withRetry(() => analyzeImageWithGemini(imagePath, products));
+
     if (!analysis) {
       results.errors.push({ filename, error: 'API error' });
       log.error(`  Could not analyze image`);
       continue;
     }
-    
+
+    // Rate limiting delay before next API call
+    if (i < images.length - 1) {
+      log.info(`  ⏱️ Waiting ${CONFIG.DELAY_MS / 1000}s before next image (rate limiting)...`);
+      await sleep(CONFIG.DELAY_MS);
+    }
+
     console.log(`  ${colors.cyan}Detected:${colors.reset} ${analysis.detectedProduct}`);
     console.log(`  ${colors.cyan}Brand:${colors.reset} ${analysis.detectedBrand || 'Unknown'}`);
     console.log(`  ${colors.cyan}Confidence:${colors.reset} ${analysis.confidence}%`);
     console.log(`  ${colors.cyan}Reasoning:${colors.reset} ${analysis.reasoning}`);
-    
+
     if (analysis.productId > 0 && analysis.confidence >= 70) {
       // Find the matched product
       const matchedProduct = products.find(p => p.id === analysis.productId);
-      
+
       if (matchedProduct) {
         log.success(`  Matched: "${matchedProduct.name}" (ID: ${matchedProduct.id})`);
-        
+
         // Generate new filename
         const ext = path.extname(filename);
         const newFilename = generateFilename(matchedProduct.name, ext);
-        
+
         // Move to products directory
         const newPath = moveFile(imagePath, CONFIG.PRODUCTS_DIR, newFilename);
-        
+
         // Update products.js
         const updated = updateProductImage(matchedProduct.id, newPath);
-        
+
         if (updated) {
           log.success(`  Updated products.js with new image path`);
         }
-        
+
         results.matched.push({
           filename,
           product: matchedProduct.name,
@@ -361,30 +401,30 @@ async function syncImages() {
         reason: analysis.reasoning,
       });
     }
-    
+
     console.log(''); // Empty line between images
   }
-  
+
   // Print summary
   log.header('📊 Summary');
   console.log(`  ${colors.green}✓ Matched:${colors.reset}   ${results.matched.length}`);
   console.log(`  ${colors.yellow}⚠ Unmatched:${colors.reset} ${results.unmatched.length}`);
   console.log(`  ${colors.red}✗ Errors:${colors.reset}    ${results.errors.length}`);
-  
+
   if (results.matched.length > 0) {
     console.log(`\n${colors.bright}Matched Products:${colors.reset}`);
     results.matched.forEach(m => {
       console.log(`  • ${m.product} (${m.confidence}% confidence)`);
     });
   }
-  
+
   if (results.unmatched.length > 0) {
     console.log(`\n${colors.bright}Unmatched Images (moved to uploads/unmatched/):${colors.reset}`);
     results.unmatched.forEach(u => {
       console.log(`  • ${u.filename}: ${u.detected || u.reason}`);
     });
   }
-  
+
   console.log('');
   log.info('Done! Run "npm run dev" to preview your changes.');
 }

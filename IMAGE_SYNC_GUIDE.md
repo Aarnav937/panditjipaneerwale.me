@@ -26,7 +26,7 @@ npm install
 ### 4. Upload Images
 Drop your product images into:
 ```
-uploads/incoming/
+images/incoming/
 ```
 
 ### 5. Preview & Sync
@@ -55,12 +55,28 @@ This will:
 ## 📁 Folder Structure
 
 ```
-uploads/
+images/
 ├── incoming/     ← Drop your images here
 ├── processed/    ← Successfully matched images (backup)
-└── unmatched/    ← Images that couldn't be matched
+├── unmatched/    ← Images that couldn't be matched
+└── products/     ← Note: This is in public/images/products/
 
-public/images/products/    ← Where matched images go
+public/images/products/    ← Where matched images go (served by website)
+```
+
+---
+
+## ⚡ Rate Limiting
+
+The script automatically handles Gemini API rate limits:
+- **1.5 second delay** between API calls (configurable via `GEMINI_DELAY_MS`)
+- **Automatic retry** with exponential backoff on rate limit errors
+- **Max 3 retries** per image
+
+To adjust, add to your `.env` file:
+```
+GEMINI_DELAY_MS=2000  # Increase delay if hitting limits
+GEMINI_MODEL=gemini-2.5-flash  # Change model if needed
 ```
 
 ---
