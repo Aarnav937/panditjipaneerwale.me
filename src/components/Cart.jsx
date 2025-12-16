@@ -3,6 +3,10 @@ import { X, Trash2, MessageCircle, ShoppingBag, ArrowRight, Plus, Minus, Clock }
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 
+// Fallback image for broken/placeholder images
+const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23f3f4f6' width='300' height='200'/%3E%3Ctext x='150' y='95' text-anchor='middle' fill='%239ca3af' font-family='sans-serif' font-size='14'%3EProduct%3C/text%3E%3Cpath d='M130 110 L150 90 L170 110 L160 110 L160 130 L140 130 L140 110 Z' fill='%23d1d5db'/%3E%3C/svg%3E";
+
+// Get image source with fallback
 // Time slot options
 const TIME_SLOTS = [
   { id: 'morning', label: 'Morning (9AM - 12PM)', value: 'Morning (9AM - 12PM)' },
@@ -146,7 +150,12 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
                       className="flex gap-4 bg-white dark:bg-gray-800/50 p-4 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm"
                     >
                       <div className="w-24 h-24 flex-shrink-0 bg-gray-100 dark:bg-gray-700 rounded-xl overflow-hidden">
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                        <img
+                          src={item.image?.includes('placeholder') ? FALLBACK_IMAGE : item.image}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => { e.target.src = FALLBACK_IMAGE; }}
+                        />
                       </div>
                       <div className="flex-1 flex flex-col justify-between">
                         <div>

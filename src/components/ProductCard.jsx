@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 
+// Fallback image as data URI (simple product placeholder)
+const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23f3f4f6' width='300' height='200'/%3E%3Ctext x='150' y='95' text-anchor='middle' fill='%239ca3af' font-family='sans-serif' font-size='14'%3EProduct Image%3C/text%3E%3Cpath d='M130 110 L150 90 L170 110 L160 110 L160 130 L140 130 L140 110 Z' fill='%23d1d5db'/%3E%3C/svg%3E";
+
 const ProductCard = ({ product, addToCart }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const { t } = useLanguage();
 
   // Guard clause in case product data is missing
   if (!product) return null;
+
+  // Determine the image source - use fallback if error or if it's a placeholder URL
+  const imageSrc = imageError || product.image?.includes('placeholder')
+    ? FALLBACK_IMAGE
+    : product.image;
 
   return (
     <div className="group relative bg-white dark:bg-brand-card border border-gray-100 dark:border-gray-700 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
@@ -20,12 +29,12 @@ const ProductCard = ({ product, addToCart }) => {
         )}
 
         <img
-          src={product.image}
+          src={imageSrc}
           alt={product.name}
           className={`w-full h-full object-contain drop-shadow-md transform group-hover:scale-110 transition-all duration-500 ease-out ${imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
           onLoad={() => setImageLoaded(true)}
-          onError={() => setImageLoaded(true)} // Hide skeleton even on error
+          onError={() => { setImageError(true); setImageLoaded(true); }}
         />
         {/* Quick Action Overlay (Optional) */}
         <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
