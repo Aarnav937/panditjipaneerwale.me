@@ -8,6 +8,7 @@ import FloatingWhatsApp from './components/FloatingWhatsApp';
 import OrderHistory from './components/OrderHistory';
 import { products as initialProducts, categories } from './data/products';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from './context/LanguageContext';
 
 function App() {
   const [products, setProducts] = useState(() => {
@@ -33,6 +34,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { t } = useLanguage();
 
   // Load dark mode preference on mount
   useEffect(() => {
