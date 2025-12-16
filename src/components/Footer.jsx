@@ -1,7 +1,10 @@
 import React from 'react';
 import { Phone, MapPin, Mail } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const Footer = ({ onToggleAdmin }) => {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-gray-900 text-white pt-12 pb-6">
       <div className="container mx-auto px-4">
@@ -12,9 +15,9 @@ const Footer = ({ onToggleAdmin }) => {
               Bringing the freshest paneer and authentic spices to your kitchen. Quality you can trust.
             </p>
           </div>
-          
+
           <div>
-            <h4 className="text-xl font-bold mb-4">Contact Us</h4>
+            <h4 className="text-xl font-bold mb-4">{t('contactUs')}</h4>
             <div className="space-y-3 text-gray-400">
               <div className="flex items-start gap-3">
                 <MapPin className="mt-1 flex-shrink-0 text-brand-orange" size={20} />
@@ -32,19 +35,19 @@ const Footer = ({ onToggleAdmin }) => {
           </div>
 
           <div>
-            <h4 className="text-xl font-bold mb-4">Quick Links</h4>
+            <h4 className="text-xl font-bold mb-4">{t('quickLinks')}</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><a href="#" className="hover:text-brand-orange transition">Home</a></li>
-              <li><a href="#" className="hover:text-brand-orange transition">About Us</a></li>
+              <li><a href="#" className="hover:text-brand-orange transition">{t('home')}</a></li>
+              <li><a href="#" className="hover:text-brand-orange transition">{t('about')}</a></li>
               <li><a href="#" className="hover:text-brand-orange transition">Products</a></li>
-              <li><a href="#" className="hover:text-brand-orange transition">Contact</a></li>
+              <li><a href="#" className="hover:text-brand-orange transition">{t('contact')}</a></li>
             </ul>
           </div>
         </div>
-        
+
         <div className="border-t border-gray-800 pt-6 text-center text-gray-500 text-sm flex flex-col items-center gap-2">
-          <span>&copy; {new Date().getFullYear()} Pandit Ji Paneer Wale. All rights reserved.</span>
-          <button 
+          <span>&copy; {new Date().getFullYear()} Pandit Ji Paneer Wale. {t('rightsReserved')}</span>
+          <button
             onClick={onToggleAdmin}
             className="text-gray-800 hover:text-gray-700 text-xs"
           >

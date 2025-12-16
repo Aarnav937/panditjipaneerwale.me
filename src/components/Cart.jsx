@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Trash2, MessageCircle, ShoppingBag, ArrowRight, Plus, Minus, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 // Time slot options
 const TIME_SLOTS = [
@@ -15,6 +16,7 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
   const [customerName, setCustomerName] = React.useState(() => localStorage.getItem('customerName') || '');
   const [address, setAddress] = React.useState(() => localStorage.getItem('customerAddress') || '');
   const [timeSlot, setTimeSlot] = React.useState(() => localStorage.getItem('deliveryTimeSlot') || 'morning');
+  const { t } = useLanguage();
 
   // Save to localStorage whenever they change
   React.useEffect(() => {
@@ -100,8 +102,8 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
                   <ShoppingBag className="text-brand-orange w-6 h-6" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">Your Cart</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{cartItems.length} items</p>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('yourCart')}</h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{cartItems.length} {t('items')}</p>
                 </div>
               </div>
               <button
@@ -120,16 +122,16 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
                     <ShoppingBag className="w-12 h-12 text-gray-400" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Your cart is empty</h3>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('cartEmpty')}</h3>
                     <p className="text-gray-500 dark:text-gray-400 max-w-xs mx-auto">
-                      Looks like you haven't added anything to your cart yet.
+                      {t('cartEmptyMsg')}
                     </p>
                   </div>
                   <button
                     onClick={onClose}
                     className="px-8 py-3 bg-brand-orange text-white rounded-full font-bold hover:bg-brand-dark transition-colors shadow-lg shadow-brand-orange/30 flex items-center gap-2"
                   >
-                    Start Shopping <ArrowRight size={18} />
+                    {t('startShopping')} <ArrowRight size={18} />
                   </button>
                 </div>
               ) : (
@@ -178,7 +180,7 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
                             </button>
                           </div>
                           <div className="text-sm font-medium text-gray-500 dark:text-gray-400 ml-auto">
-                            Total: <span className="text-gray-900 dark:text-white font-bold">AED {item.price * item.quantity}</span>
+                            {t('total')}: <span className="text-gray-900 dark:text-white font-bold">AED {item.price * item.quantity}</span>
                           </div>
                         </div>
                       </div>
@@ -195,21 +197,21 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
                 {/* Delivery Details Inputs */}
                 <div className="space-y-3 mb-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name (Optional)</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('nameLabel')}</label>
                     <input
                       type="text"
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
-                      placeholder="Enter your name"
+                      placeholder={t('namePlaceholder')}
                       className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Delivery Address <span className="text-red-500">*</span></label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('addressLabel')} <span className="text-red-500">*</span></label>
                     <textarea
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
-                      placeholder="Building, Street, Area..."
+                      placeholder={t('addressPlaceholder')}
                       rows="2"
                       className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all resize-none"
                     />
@@ -218,7 +220,7 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       <span className="flex items-center gap-2">
                         <Clock size={14} />
-                        Preferred Delivery Time
+                        {t('timeLabel')}
                       </span>
                     </label>
                     <select
@@ -227,7 +229,7 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
                       className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all cursor-pointer"
                     >
                       {TIME_SLOTS.map(slot => (
-                        <option key={slot.id} value={slot.id}>{slot.label}</option>
+                        <option key={slot.id} value={slot.id}>{t(slot.id)}</option>
                       ))}
                     </select>
                   </div>
@@ -235,15 +237,15 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
 
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between text-gray-500 dark:text-gray-400">
-                    <span>Subtotal</span>
+                    <span>{t('subtotal')}</span>
                     <span>AED {total}</span>
                   </div>
                   <div className="flex justify-between text-gray-500 dark:text-gray-400">
-                    <span>Delivery</span>
-                    <span className="text-green-500 font-medium">Free</span>
+                    <span>{t('delivery')}</span>
+                    <span className="text-green-500 font-medium">{t('free')}</span>
                   </div>
                   <div className="flex justify-between items-center text-2xl font-bold text-gray-900 dark:text-white pt-3 border-t border-gray-100 dark:border-gray-800">
-                    <span>Total</span>
+                    <span>{t('total')}</span>
                     <span>AED {total}</span>
                   </div>
                 </div>
@@ -252,10 +254,10 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
                   className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all transform hover:scale-[1.02] shadow-lg shadow-green-500/30"
                 >
                   <MessageCircle size={24} />
-                  <span>Checkout via WhatsApp</span>
+                  <span>{t('checkoutWhatsApp')}</span>
                 </button>
                 <p className="text-center text-xs text-gray-400 mt-4">
-                  Secure checkout powered by WhatsApp
+                  {t('secureCheckout')}
                 </p>
               </div>
             )}

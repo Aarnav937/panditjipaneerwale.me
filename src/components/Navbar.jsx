@@ -1,9 +1,11 @@
 import React from 'react';
-import { ShoppingCart, Search, Menu, X, Moon, Sun, Package } from 'lucide-react';
+import { ShoppingCart, Search, Menu, X, Moon, Sun, Package, Languages } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, searchQuery, setSearchQuery, isDarkMode, toggleTheme }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const { language, toggleLanguage, t } = useLanguage();
 
   return (
     <nav className="bg-white/80 dark:bg-brand-darker/80 backdrop-blur-md text-gray-800 dark:text-white sticky top-0 z-50 shadow-lg border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
@@ -22,18 +24,29 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, searchQuery, 
         <div className="hidden md:flex flex-1 max-w-md mx-8 relative">
           <input
             type="text"
-            placeholder="Search for paneer, spices..."
+            placeholder={t('searchPlaceholder')}
             className="w-full px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <Search className="absolute right-3 top-2.5 text-gray-500 w-5 h-5" />
+          <div className={`absolute top-2.5 text-gray-500 ${language === 'ar' ? 'left-3' : 'right-3'}`}>
+            <Search className="w-5 h-5" />
+          </div>
         </div>
 
         <div className="hidden md:flex items-center gap-6 font-medium">
-          <a href="#" className="hover:text-brand-orange transition">Home</a>
-          <a href="#about" className="hover:text-brand-orange transition">About</a>
-          <a href="#contact" className="hover:text-brand-orange transition">Contact</a>
+          <a href="#" className="hover:text-brand-orange transition">{t('home')}</a>
+          <a href="#about" className="hover:text-brand-orange transition">{t('about')}</a>
+          <a href="#contact" className="hover:text-brand-orange transition">{t('contact')}</a>
+
+          <button
+            onClick={toggleLanguage}
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition flex items-center gap-1 font-bold text-sm"
+            title="Switch Language"
+          >
+            <Languages size={20} />
+            <span>{language === 'en' ? 'AR' : 'EN'}</span>
+          </button>
 
           <button
             onClick={toggleTheme}
@@ -46,7 +59,7 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, searchQuery, 
           <button
             className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition hover:scale-110"
             onClick={() => setIsOrderHistoryOpen(true)}
-            title="Order History"
+            title={t('orderHistory')}
           >
             <Package className="w-6 h-6" />
           </button>
@@ -67,6 +80,12 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, searchQuery, 
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center gap-4">
           <button
+            onClick={toggleLanguage}
+            className="p-2 font-bold text-sm"
+          >
+            {language === 'en' ? 'AR' : 'EN'}
+          </button>
+          <button
             onClick={toggleTheme}
             className="p-2"
           >
@@ -75,7 +94,7 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, searchQuery, 
           <button
             className="p-2"
             onClick={() => setIsOrderHistoryOpen(true)}
-            title="Order History"
+            title={t('orderHistory')}
           >
             <Package className="w-5 h-5" />
           </button>
@@ -106,19 +125,19 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, searchQuery, 
           <div className="px-4 py-4 flex flex-col gap-4">
             <input
               type="text"
-              placeholder="Search..."
+              placeholder={t('searchPlaceholder')}
               className="w-full px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button className="text-left hover:text-brand-orange" onClick={() => window.scrollTo(0, 0)}>Home</button>
-            <a href="#about" className="text-left hover:text-brand-orange">About</a>
-            <a href="#contact" className="text-left hover:text-brand-orange">Contact</a>
+            <button className="text-left hover:text-brand-orange" onClick={() => window.scrollTo(0, 0)}>{t('home')}</button>
+            <a href="#about" className="text-left hover:text-brand-orange">{t('about')}</a>
+            <a href="#contact" className="text-left hover:text-brand-orange">{t('contact')}</a>
             <button
               className="text-left hover:text-brand-orange flex items-center gap-2"
               onClick={() => { setIsOrderHistoryOpen(true); setIsMobileMenuOpen(false); }}
             >
-              <Package size={16} /> Order History
+              <Package size={16} /> {t('orderHistory')}
             </button>
           </div>
         </motion.div>

@@ -334,7 +334,7 @@ function App() {
                     : 'bg-white dark:bg-brand-card text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-brand-orange'
                     }`}
                 >
-                  {category}
+                  {t(category)}
                 </button>
               ))}
             </div>
@@ -354,7 +354,7 @@ function App() {
           {/* Sidebar Filters - Desktop Only */}
           <aside className="hidden md:block w-64 flex-shrink-0">
             <div className="bg-white dark:bg-brand-card p-6 rounded-2xl shadow-lg sticky top-24 transition-colors duration-300">
-              <h3 className="font-bold text-xl mb-4 text-brand-dark dark:text-brand-orange">Categories</h3>
+              <h3 className="font-bold text-xl mb-4 text-brand-dark dark:text-brand-orange">{t('categories')}</h3>
               <div className="space-y-2">
                 {sortedCategories.map(category => (
                   <button
@@ -365,7 +365,7 @@ function App() {
                       : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
                       }`}
                   >
-                    {category}
+                    {t(category)}
                   </button>
                 ))}
               </div>
@@ -428,7 +428,7 @@ function App() {
           <section id="about" className="bg-white dark:bg-brand-card py-20 transition-colors duration-300">
             <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-4xl font-bold text-brand-dark dark:text-brand-orange mb-8">About Pandit Ji Paneer Wale</h2>
+                <h2 className="text-4xl font-bold text-brand-dark dark:text-brand-orange mb-8">{t('aboutTitle')}</h2>
                 <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-12">
                   We are dedicated to providing the freshest paneer and highest quality dairy products to our community.
                   With a passion for authentic flavors and a commitment to excellence, we ensure that every product
@@ -454,7 +454,7 @@ function App() {
 
           <section id="contact" className="bg-brand-orange text-white py-20">
             <div className="container mx-auto px-4 text-center">
-              <h2 className="text-4xl font-bold mb-12">Get in Touch</h2>
+              <h2 className="text-4xl font-bold mb-12">{t('getInTouch')}</h2>
               <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
                 <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
                   <div className="bg-white text-brand-orange p-6 rounded-full mb-6 shadow-lg">

@@ -1,9 +1,11 @@
 import React from 'react';
-import { X, Clock, RotateCcw, ShoppingBag, Package } from 'lucide-react';
+import { X, Clock, RotateCcw, Package } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 const OrderHistory = ({ isOpen, onClose, onReorder }) => {
     const [orders, setOrders] = React.useState([]);
+    const { t } = useLanguage();
 
     // Load orders from localStorage when modal opens
     React.useEffect(() => {
@@ -63,7 +65,7 @@ const OrderHistory = ({ isOpen, onClose, onReorder }) => {
                                     <Package className="text-brand-orange w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">Order History</h2>
+                                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('orderHistory')}</h2>
                                     <p className="text-sm text-gray-500 dark:text-gray-400">{orders.length} orders</p>
                                 </div>
                             </div>
@@ -83,9 +85,9 @@ const OrderHistory = ({ isOpen, onClose, onReorder }) => {
                                         <Package className="w-12 h-12 text-gray-400" />
                                     </div>
                                     <div>
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">No orders yet</h3>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('noOrders')}</h3>
                                         <p className="text-gray-500 dark:text-gray-400 max-w-xs mx-auto">
-                                            Your order history will appear here after you place your first order.
+                                            {t('noOrdersMsg')}
                                         </p>
                                     </div>
                                 </div>
@@ -114,7 +116,7 @@ const OrderHistory = ({ isOpen, onClose, onReorder }) => {
                                                     className="flex items-center gap-2 px-4 py-2 bg-brand-orange text-white rounded-full text-sm font-bold hover:bg-brand-dark transition-colors shadow-lg shadow-orange-500/20"
                                                 >
                                                     <RotateCcw size={14} />
-                                                    Reorder
+                                                    {t('reorder')}
                                                 </button>
                                             </div>
 
@@ -152,7 +154,7 @@ const OrderHistory = ({ isOpen, onClose, onReorder }) => {
                                     onClick={clearHistory}
                                     className="w-full py-3 text-red-500 hover:text-red-600 text-sm font-medium transition-colors"
                                 >
-                                    Clear Order History
+                                    {t('clearHistory')}
                                 </button>
                             </div>
                         )}
