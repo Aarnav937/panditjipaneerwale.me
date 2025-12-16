@@ -8,6 +8,7 @@ import FloatingWhatsApp from './components/FloatingWhatsApp';
 import OrderHistory from './components/OrderHistory';
 import { products as initialProducts, categories } from './data/products';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from './context/LanguageContext';
 
 function App() {
   const [products, setProducts] = useState(() => {
@@ -33,6 +34,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { t } = useLanguage();
 
   // Load dark mode preference on mount
   useEffect(() => {
@@ -188,20 +190,47 @@ function App() {
     // Calculate similarity ratio
     const similarityScore = (matchedChars / queryLower.length) * 100;
 
-    // Also check for typo tolerance (allow 1-2 character differences for short queries)
+    // Levenshtein distance for typo tolerance
+    const levenshteinDistance = (s1, s2) => {
+      const len1 = s1.length, len2 = s2.length;
+      const dp = Array(len1 + 1).fill(null).map(() => Array(len2 + 1).fill(0));
+
+      for (let i = 0; i <= len1; i++) dp[i][0] = i;
+      for (let j = 0; j <= len2; j++) dp[0][j] = j;
+
+      for (let i = 1; i <= len1; i++) {
+        for (let j = 1; j <= len2; j++) {
+          if (s1[i - 1] === s2[j - 1]) {
+            dp[i][j] = dp[i - 1][j - 1];
+          } else {
+            dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1;
+          }
+        }
+      }
+      return dp[len1][len2];
+    };
+
+    // Check each word in the text for typo tolerance
     const words = textLower.split(' ');
     for (const word of words) {
       if (word.length >= 3 && queryLower.length >= 3) {
-        // Check if first 2-3 characters match (catches "paner" -> "paneer")
-        if (word.startsWith(queryLower.substring(0, 3)) ||
-          queryLower.startsWith(word.substring(0, 3))) {
-          return { matches: true, score: 80 };
+        // Calculate edit distance
+        const distance = levenshteinDistance(word, queryLower);
+        const maxLength = Math.max(word.length, queryLower.length);
+
+        // Allow 1-2 character differences based on length
+        const tolerance = queryLower.length <= 5 ? 1 : 2;
+
+        if (distance <= tolerance) {
+          const score = 100 - (distance / maxLength * 20); // Score decreases with distance
+          return { matches: true, score: Math.max(score, 75) };
         }
       }
     }
 
     return { matches: similarityScore >= 70, score: similarityScore };
   }, []);
+
 
   const filteredProducts = React.useMemo(() => {
     if (!searchQuery) {
@@ -307,7 +336,7 @@ function App() {
                     : 'bg-white dark:bg-brand-card text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-brand-orange'
                     }`}
                 >
-                  {category}
+                  {t(category)}
                 </button>
               ))}
             </div>
@@ -327,7 +356,7 @@ function App() {
           {/* Sidebar Filters - Desktop Only */}
           <aside className="hidden md:block w-64 flex-shrink-0">
             <div className="bg-white dark:bg-brand-card p-6 rounded-2xl shadow-lg sticky top-24 transition-colors duration-300">
-              <h3 className="font-bold text-xl mb-4 text-brand-dark dark:text-brand-orange">Categories</h3>
+              <h3 className="font-bold text-xl mb-4 text-brand-dark dark:text-brand-orange">{t('categories')}</h3>
               <div className="space-y-2">
                 {sortedCategories.map(category => (
                   <button
@@ -338,7 +367,7 @@ function App() {
                       : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
                       }`}
                   >
-                    {category}
+                    {t(category)}
                   </button>
                 ))}
               </div>
@@ -401,7 +430,7 @@ function App() {
           <section id="about" className="bg-white dark:bg-brand-card py-20 transition-colors duration-300">
             <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-4xl font-bold text-brand-dark dark:text-brand-orange mb-8">About Pandit Ji Paneer Wale</h2>
+                <h2 className="text-4xl font-bold text-brand-dark dark:text-brand-orange mb-8">{t('aboutTitle')}</h2>
                 <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-12">
                   We are dedicated to providing the freshest paneer and highest quality dairy products to our community.
                   With a passion for authentic flavors and a commitment to excellence, we ensure that every product
@@ -427,7 +456,7 @@ function App() {
 
           <section id="contact" className="bg-brand-orange text-white py-20">
             <div className="container mx-auto px-4 text-center">
-              <h2 className="text-4xl font-bold mb-12">Get in Touch</h2>
+              <h2 className="text-4xl font-bold mb-12">{t('getInTouch')}</h2>
               <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
                 <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
                   <div className="bg-white text-brand-orange p-6 rounded-full mb-6 shadow-lg">
