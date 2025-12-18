@@ -124,3 +124,6 @@ public
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Image sync - pending uploads (don't commit raw images)
+pending_images/
