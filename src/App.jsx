@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProductCard from './components/ProductCard';
@@ -6,6 +6,8 @@ import Cart from './components/Cart';
 import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 import OrderHistory from './components/OrderHistory';
+import Toast from './components/Toast';
+import BottomNav from './components/BottomNav';
 import { products as initialProducts, categories } from './data/products';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from './context/LanguageContext';
@@ -34,6 +36,13 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Toast notification state
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [lastAddedProduct, setLastAddedProduct] = useState(null);
+  const [cartPulse, setCartPulse] = useState(false);
+
   const { t } = useLanguage();
 
   // Load dark mode preference on mount
@@ -117,7 +126,7 @@ function App() {
     return null;
   };
 
-  const addToCart = React.useCallback((product) => {
+  const addToCart = useCallback((product) => {
     let newCartItems = [...cartItems];
     const existingIndex = newCartItems.findIndex(item => item.id === product.id);
 
@@ -137,11 +146,45 @@ function App() {
     }
 
     setCartItems(newCartItems);
+
+    // Show toast notification
+    setLastAddedProduct(product);
+    setToastMessage(`${product.name} added to cart!`);
+    setShowToast(true);
+
+    // Trigger cart icon pulse
+    setCartPulse(true);
+    setTimeout(() => setCartPulse(false), 300);
   }, [cartItems]);
 
-  const removeFromCart = React.useCallback((id) => {
+  const removeFromCart = useCallback((id) => {
     setCartItems(prev => prev.filter(item => item.id !== id));
   }, []);
+
+  // Undo last add to cart action
+  const undoAddToCart = useCallback(() => {
+    if (!lastAddedProduct) return;
+
+    setCartItems(prev => {
+      const existingIndex = prev.findIndex(item => item.id === lastAddedProduct.id);
+      if (existingIndex >= 0) {
+        const item = prev[existingIndex];
+        if (item.quantity === 1) {
+          // Remove item completely
+          return prev.filter(i => i.id !== lastAddedProduct.id);
+        } else {
+          // Decrease quantity by 1
+          return prev.map(i =>
+            i.id === lastAddedProduct.id
+              ? { ...i, quantity: i.quantity - 1 }
+              : i
+          );
+        }
+      }
+      return prev;
+    });
+    setLastAddedProduct(null);
+  }, [lastAddedProduct]);
 
   const updateQuantity = React.useCallback((id, newQuantity) => {
     if (newQuantity < 1) {
@@ -297,6 +340,7 @@ function App() {
         setSearchQuery={setSearchQuery}
         isDarkMode={isDarkMode}
         toggleTheme={toggleTheme}
+        cartPulse={cartPulse}
       />
 
       <AnimatePresence>
@@ -505,6 +549,24 @@ function App() {
           setIsCartOpen(true);
         }}
       />
+
+      {/* Toast Notification */}
+      <Toast
+        show={showToast}
+        message={toastMessage}
+        onClose={() => setShowToast(false)}
+        onUndo={undoAddToCart}
+      />
+
+      {/* Mobile Bottom Navigation */}
+      <BottomNav
+        cartCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+        onCartClick={() => setIsCartOpen(true)}
+        onOrderHistoryClick={() => setIsOrderHistoryOpen(true)}
+      />
+
+      {/* Spacer for bottom nav on mobile */}
+      <div className="md:hidden h-20" />
     </div>
   );
 }
