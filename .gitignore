@@ -101,7 +101,7 @@ assets
 
 # Docusaurus cache and generated files
 .cache
-public
+# public  # REMOVED - was incorrectly ignoring our public/images folder!
 
 # Serverless directories
 .serverless
