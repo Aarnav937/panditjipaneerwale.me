@@ -1,13 +1,13 @@
 /**
- * AI Image Sync Tool
- * ===================
- * Automatically identifies, crops, and organizes product images using Gemini AI.
+ * AI Image Sync Tool (Hybrid: Filename + AI Vision)
+ * ===================================================
+ * Uses filename matching FIRST, then falls back to Gemini AI vision for verification.
  * 
- * Usage: node sync_by_name.js
- * 
- * Place images in ./pending_images/ folder and run this script.
- * - Matched images → public/images/products/
- * - Uncertain images → pending_images/needs_review/
+ * USAGE:
+ * 1. Name your image files to match the product name
+ *    Example: "Bikaji Bhujia.jpg" or "Fresh Paneer (500g).png"
+ * 2. Drop images into ./pending_images/
+ * 3. Run: npm run images:sync
  */
 
 import 'dotenv/config';
@@ -27,9 +27,10 @@ const CONFIG = {
     outputDir: path.join(__dirname, 'public', 'images', 'products'),
     productsFile: path.join(__dirname, 'src', 'data', 'products.js'),
     supportedFormats: ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.bmp', '.tiff'],
-    outputSize: 800, // Square output size
-    confidenceThreshold: 0.8,
-    apiDelay: parseInt(process.env.GEMINI_DELAY_MS) || 2000,
+    outputSize: 800,
+    matchThreshold: 0.75,
+    aiConfidenceThreshold: 0.7,
+    apiDelay: parseInt(process.env.GEMINI_DELAY_MS) || 1500,
 };
 
 // ===== Gemini Setup =====
@@ -43,21 +44,17 @@ if (!API_KEY) {
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 const model = genAI.getGenerativeModel({
-    model: process.env.GEMINI_MODEL || 'gemini-2.0-flash-exp'
+    model: process.env.GEMINI_MODEL || 'gemini-2.0-flash'
 });
+
+console.log(`🤖 Using Gemini model: ${process.env.GEMINI_MODEL || 'gemini-2.0-flash'}`);
 
 // ===== Utility Functions =====
 
-/**
- * Sleep for specified milliseconds
- */
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-/**
- * Delete file with retry logic (handles Windows EBUSY errors)
- */
 async function safeDelete(filePath, maxRetries = 5, delayMs = 500) {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
@@ -65,11 +62,11 @@ async function safeDelete(filePath, maxRetries = 5, delayMs = 500) {
             return true;
         } catch (error) {
             if (error.code === 'EBUSY' && attempt < maxRetries) {
-                await sleep(delayMs * attempt); // Exponential backoff
+                await sleep(delayMs * attempt);
                 continue;
             }
             if (error.code === 'ENOENT') {
-                return true; // Already deleted
+                return true;
             }
             throw error;
         }
@@ -77,9 +74,6 @@ async function safeDelete(filePath, maxRetries = 5, delayMs = 500) {
     return false;
 }
 
-/**
- * Move file with retry logic (handles Windows EBUSY errors)
- */
 async function safeMove(sourcePath, destPath, maxRetries = 5, delayMs = 500) {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
@@ -87,7 +81,7 @@ async function safeMove(sourcePath, destPath, maxRetries = 5, delayMs = 500) {
             return true;
         } catch (error) {
             if (error.code === 'EBUSY' && attempt < maxRetries) {
-                await sleep(delayMs * attempt); // Exponential backoff
+                await sleep(delayMs * attempt);
                 continue;
             }
             throw error;
@@ -96,20 +90,165 @@ async function safeMove(sourcePath, destPath, maxRetries = 5, delayMs = 500) {
     return false;
 }
 
-/**
- * Load products from products.js file
- */
+function normalize(text) {
+    return text
+        .toLowerCase()
+        .replace(/[_\-\.]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .replace(/(\d+)\s*(g|gm|gram|gms|kg|ml|l|ltr|pcs|pc)/gi, '$1$2')
+        .replace(/gm\b/gi, 'g')
+        .replace(/gram\b/gi, 'g')
+        .replace(/gms\b/gi, 'g')
+        .replace(/ltr\b/gi, 'l')
+        .replace(/pcs\b/gi, 'pc')
+        .trim();
+}
+
+function levenshteinDistance(str1, str2) {
+    const m = str1.length;
+    const n = str2.length;
+    const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
+
+    for (let i = 0; i <= m; i++) dp[i][0] = i;
+    for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            if (str1[i - 1] === str2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1];
+            } else {
+                dp[i][j] = 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+            }
+        }
+    }
+    return dp[m][n];
+}
+
+function calculateSimilarity(str1, str2) {
+    const norm1 = normalize(str1);
+    const norm2 = normalize(str2);
+
+    if (norm1 === norm2) return 1.0;
+
+    if (norm1.includes(norm2) || norm2.includes(norm1)) {
+        const longer = Math.max(norm1.length, norm2.length);
+        const shorter = Math.min(norm1.length, norm2.length);
+        return 0.8 + (0.2 * (shorter / longer));
+    }
+
+    const distance = levenshteinDistance(norm1, norm2);
+    const maxLen = Math.max(norm1.length, norm2.length);
+    return maxLen > 0 ? 1 - (distance / maxLen) : 1;
+}
+
+function extractProductName(filename) {
+    const nameWithoutExt = path.basename(filename, path.extname(filename));
+    return nameWithoutExt
+        .replace(/[_\-]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function findBestMatch(filename, products) {
+    const searchName = extractProductName(filename);
+
+    let bestMatch = null;
+    let bestScore = 0;
+
+    for (const product of products) {
+        const score = calculateSimilarity(searchName, product.name);
+        if (score > bestScore) {
+            bestScore = score;
+            bestMatch = product;
+        }
+    }
+
+    if (bestScore >= CONFIG.matchThreshold) {
+        return { product: bestMatch, score: bestScore };
+    }
+
+    return null;
+}
+
+// ===== AI Functions =====
+
+async function imageToBase64(imagePath) {
+    const imageBuffer = await fs.readFile(imagePath);
+    return imageBuffer.toString('base64');
+}
+
+function getMimeType(filePath) {
+    const ext = path.extname(filePath).toLowerCase();
+    const mimeTypes = {
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.png': 'image/png',
+        '.webp': 'image/webp',
+        '.gif': 'image/gif',
+        '.bmp': 'image/bmp',
+        '.tiff': 'image/tiff',
+    };
+    return mimeTypes[ext] || 'image/jpeg';
+}
+
+async function identifyProductWithAI(imagePath, products) {
+    const base64Image = await imageToBase64(imagePath);
+    const mimeType = getMimeType(imagePath);
+
+    const productList = products.map(p => `ID:${p.id} - ${p.name} (${p.category})`).join('\n');
+
+    const prompt = `You are a product identification AI for an Indian grocery store.
+
+Analyze this product image and match it to ONE of these products:
+
+${productList}
+
+IMPORTANT RULES:
+1. Look for brand names, product names, and weight/quantity on the packaging
+2. Pay attention to weight/size variants (500g vs 1kg, 100ml vs 1L, etc.)
+3. Match the EXACT product including size/weight
+4. If you see multiple products or cannot identify clearly, set product_id to null
+
+Respond ONLY with this JSON (no other text):
+{
+  "product_id": <number or null>,
+  "confidence": <0.0 to 1.0>,
+  "matched_name": "<product name or null>",
+  "reasoning": "<brief explanation>"
+}`;
+
+    try {
+        const result = await model.generateContent([
+            { text: prompt },
+            {
+                inlineData: {
+                    mimeType,
+                    data: base64Image
+                }
+            }
+        ]);
+
+        const response = await result.response;
+        const text = response.text();
+
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) {
+            console.log('⚠️ Could not parse AI response');
+            return null;
+        }
+
+        return JSON.parse(jsonMatch[0]);
+    } catch (error) {
+        console.error('❌ Gemini API error:', error.message);
+        return null;
+    }
+}
+
+// ===== File Functions =====
+
 async function loadProducts() {
     try {
         const content = await fs.readFile(CONFIG.productsFile, 'utf-8');
-
-        // Extract products array using regex
-        const match = content.match(/export\s+const\s+products\s*=\s*\[([\s\S]*?)\];/);
-        if (!match) {
-            throw new Error('Could not find products array in file');
-        }
-
-        // Parse the products - we need to extract id, name, category from the file
         const products = [];
         const productRegex = /\{\s*id:\s*(\d+),\s*name:\s*"([^"]+)",\s*category:\s*"([^"]+)",\s*price:\s*([\d.]+),\s*image:\s*"([^"]*)",\s*description:\s*"([^"]*)"\s*\}/g;
 
@@ -133,9 +272,6 @@ async function loadProducts() {
     }
 }
 
-/**
- * Get list of images in pending folder
- */
 async function getPendingImages() {
     try {
         const files = await fs.readdir(CONFIG.pendingDir);
@@ -153,165 +289,36 @@ async function getPendingImages() {
     }
 }
 
-/**
- * Convert image to base64 for Gemini API
- */
-async function imageToBase64(imagePath) {
-    const imageBuffer = await fs.readFile(imagePath);
-    return imageBuffer.toString('base64');
-}
-
-/**
- * Get MIME type from file extension
- */
-function getMimeType(filePath) {
-    const ext = path.extname(filePath).toLowerCase();
-    const mimeTypes = {
-        '.jpg': 'image/jpeg',
-        '.jpeg': 'image/jpeg',
-        '.png': 'image/png',
-        '.webp': 'image/webp',
-        '.gif': 'image/gif',
-        '.bmp': 'image/bmp',
-        '.tiff': 'image/tiff',
-    };
-    return mimeTypes[ext] || 'image/jpeg';
-}
-
-/**
- * Use Gemini to identify product and get crop coordinates
- */
-async function identifyProduct(imagePath, products) {
-    const base64Image = await imageToBase64(imagePath);
-    const mimeType = getMimeType(imagePath);
-
-    // Create product list for prompt
-    const productList = products.map(p => `ID:${p.id} - ${p.name} (${p.category})`).join('\n');
-
-    const prompt = `You are a product identification AI for an Indian grocery store. 
-
-Analyze this product image and match it to one of these products:
-
-${productList}
-
-IMPORTANT RULES:
-1. Look for brand names, product names, and weight/quantity on the packaging
-2. Pay attention to weight/size variants (500g vs 1kg, 100ml vs 1L, etc.)
-3. Match the EXACT product including size/weight
-4. If you see multiple products or cannot identify clearly, respond with UNSURE
-
-Respond in this EXACT JSON format:
-{
-  "product_id": <number or null if unsure>,
-  "confidence": <0.0 to 1.0>,
-  "matched_name": "<the product name you matched or null>",
-  "reasoning": "<brief explanation of why you matched this product>",
-  "crop_box": {
-    "x": <left position 0-100%>,
-    "y": <top position 0-100%>,
-    "width": <width 0-100%>,
-    "height": <height 0-100%>
-  }
-}
-
-The crop_box should focus on the main product, removing any background/table/clutter.
-If unsure, set product_id to null and confidence to 0.`;
-
-    try {
-        const result = await model.generateContent([
-            { text: prompt },
-            {
-                inlineData: {
-                    mimeType,
-                    data: base64Image
-                }
-            }
-        ]);
-
-        const response = await result.response;
-        const text = response.text();
-
-        // Extract JSON from response
-        const jsonMatch = text.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) {
-            console.log('⚠️ Could not parse AI response');
-            return null;
-        }
-
-        const parsed = JSON.parse(jsonMatch[0]);
-        return parsed;
-    } catch (error) {
-        console.error('❌ Gemini API error:', error.message);
-        return null;
-    }
-}
-
-/**
- * Process and crop image using sharp
- * Note: We read the buffer first to avoid file locking issues on Windows
- */
-async function processImage(inputPath, cropBox) {
-    // Read file into buffer first to release file handle quickly
+async function processImage(inputPath) {
     const inputBuffer = await fs.readFile(inputPath);
 
     try {
-        const image = sharp(inputBuffer);
-        const metadata = await image.metadata();
-
-        // Convert percentage crop to pixels
-        const cropX = Math.round((cropBox.x / 100) * metadata.width);
-        const cropY = Math.round((cropBox.y / 100) * metadata.height);
-        const cropWidth = Math.round((cropBox.width / 100) * metadata.width);
-        const cropHeight = Math.round((cropBox.height / 100) * metadata.height);
-
-        // Ensure crop dimensions are valid
-        const safeCropWidth = Math.min(Math.max(cropWidth, 1), metadata.width - cropX);
-        const safeCropHeight = Math.min(Math.max(cropHeight, 1), metadata.height - cropY);
-
-        if (safeCropWidth < 10 || safeCropHeight < 10) {
-            // Invalid crop, use full image
-            return sharp(inputBuffer)
-                .resize(CONFIG.outputSize, CONFIG.outputSize, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 1 } })
-                .webp({ quality: 90 })
-                .toBuffer();
-        }
-
         return sharp(inputBuffer)
-            .extract({ left: cropX, top: cropY, width: safeCropWidth, height: safeCropHeight })
-            .resize(CONFIG.outputSize, CONFIG.outputSize, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 1 } })
+            .resize(CONFIG.outputSize, CONFIG.outputSize, {
+                fit: 'contain',
+                background: { r: 255, g: 255, b: 255, alpha: 1 }
+            })
             .webp({ quality: 90 })
             .toBuffer();
     } catch (error) {
         console.error('❌ Image processing error:', error.message);
-        // Fallback: just resize without cropping
-        return sharp(inputBuffer)
-            .resize(CONFIG.outputSize, CONFIG.outputSize, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 1 } })
-            .webp({ quality: 90 })
-            .toBuffer();
+        throw error;
     }
 }
 
-/**
- * Update products.js file with new image path
- */
-async function updateProductsFile(productId, imagePath, rawContent) {
+async function updateProductsFile(productId, rawContent) {
     const relativePath = `images/products/product-${productId}.webp`;
 
-    // Find and replace the image field for this product
     const regex = new RegExp(
         `(id:\\s*${productId},\\s*name:\\s*"[^"]+",\\s*category:\\s*"[^"]+",\\s*price:\\s*[\\d.]+,\\s*image:\\s*)"([^"]*)"`,
         'g'
     );
 
     const updatedContent = rawContent.replace(regex, `$1"${relativePath}"`);
-
     await fs.writeFile(CONFIG.productsFile, updatedContent, 'utf-8');
     return relativePath;
 }
 
-/**
- * Move file to needs_review folder
- */
 async function moveToReview(imagePath, filename, reason) {
     await fs.mkdir(CONFIG.reviewDir, { recursive: true });
     const destPath = path.join(CONFIG.reviewDir, filename);
@@ -320,8 +327,7 @@ async function moveToReview(imagePath, filename, reason) {
         console.log(`📁 Moved to review: ${filename}`);
         console.log(`   Reason: ${reason}`);
     } catch (error) {
-        console.log(`⚠️ Could not move ${filename} to review (may already be processed)`);
-        console.log(`   Reason for review: ${reason}`);
+        console.log(`⚠️ Could not move ${filename} to review`);
     }
 }
 
@@ -329,16 +335,14 @@ async function moveToReview(imagePath, filename, reason) {
 
 async function main() {
     console.log('');
-    console.log('🚀 AI Image Sync Tool');
-    console.log('====================');
+    console.log('🚀 AI Image Sync Tool (Hybrid: Filename + AI Vision)');
+    console.log('====================================================');
     console.log('');
 
-    // Ensure directories exist
     await fs.mkdir(CONFIG.pendingDir, { recursive: true });
     await fs.mkdir(CONFIG.reviewDir, { recursive: true });
     await fs.mkdir(CONFIG.outputDir, { recursive: true });
 
-    // Load products
     let productsData;
     try {
         productsData = await loadProducts();
@@ -346,15 +350,15 @@ async function main() {
         process.exit(1);
     }
 
-    // Get pending images
     const pendingImages = await getPendingImages();
 
     if (pendingImages.length === 0) {
         console.log('📭 No images found in pending_images/ folder');
         console.log('');
         console.log('To use this tool:');
-        console.log('1. Drop your product images into ./pending_images/');
-        console.log('2. Run: npm run images:sync');
+        console.log('1. Name your image file to match the product name');
+        console.log('2. Drop images into ./pending_images/');
+        console.log('3. Run: npm run images:sync');
         console.log('');
         return;
     }
@@ -368,50 +372,59 @@ async function main() {
 
     for (const filename of pendingImages) {
         const imagePath = path.join(CONFIG.pendingDir, filename);
-        console.log(`🔍 Processing: ${filename}`);
+        console.log(`\n🔍 Processing: ${filename}`);
 
         try {
-            // Identify product using AI
-            const identification = await identifyProduct(imagePath, productsData.products);
+            // Step 1: Try filename matching first
+            const filenameMatch = findBestMatch(filename, productsData.products);
 
-            if (!identification || identification.product_id === null || identification.confidence < CONFIG.confidenceThreshold) {
-                // Not confident enough - move to review
-                const reason = identification
-                    ? `Low confidence (${(identification.confidence * 100).toFixed(0)}%): ${identification.reasoning}`
-                    : 'Could not identify product';
-                await moveToReview(imagePath, filename, reason);
-                reviewNeeded++;
+            let finalProduct = null;
+            let matchMethod = '';
+
+            if (filenameMatch && filenameMatch.score >= 0.95) {
+                // High confidence filename match - use directly
+                finalProduct = filenameMatch.product;
+                matchMethod = `Filename (${(filenameMatch.score * 100).toFixed(0)}%)`;
+                console.log(`   📝 Filename match: ${finalProduct.name} (${(filenameMatch.score * 100).toFixed(0)}%)`);
             } else {
-                // High confidence match
-                const product = productsData.products.find(p => p.id === identification.product_id);
+                // Use AI to identify product
+                console.log(`   🤖 Using AI to identify...`);
+                const aiResult = await identifyProductWithAI(imagePath, productsData.products);
 
-                if (!product) {
-                    await moveToReview(imagePath, filename, `Product ID ${identification.product_id} not found in database`);
-                    reviewNeeded++;
-                    continue;
+                if (aiResult && aiResult.product_id && aiResult.confidence >= CONFIG.aiConfidenceThreshold) {
+                    finalProduct = productsData.products.find(p => p.id === aiResult.product_id);
+                    matchMethod = `AI (${(aiResult.confidence * 100).toFixed(0)}%)`;
+                    console.log(`   🤖 AI identified: ${aiResult.matched_name} (${(aiResult.confidence * 100).toFixed(0)}%)`);
+                    console.log(`   💡 Reason: ${aiResult.reasoning}`);
+                } else if (filenameMatch) {
+                    // Fall back to lower-confidence filename match
+                    finalProduct = filenameMatch.product;
+                    matchMethod = `Filename fallback (${(filenameMatch.score * 100).toFixed(0)}%)`;
+                    console.log(`   📝 Using filename fallback: ${finalProduct.name}`);
                 }
 
-                console.log(`✅ Matched: ${product.name} (${(identification.confidence * 100).toFixed(0)}% confident)`);
-                console.log(`   Reason: ${identification.reasoning}`);
+                // Rate limiting for AI calls
+                await sleep(CONFIG.apiDelay);
+            }
 
-                // Process and save image
-                const cropBox = identification.crop_box || { x: 0, y: 0, width: 100, height: 100 };
-                const processedBuffer = await processImage(imagePath, cropBox);
+            if (!finalProduct) {
+                await moveToReview(imagePath, filename, 'Could not identify product');
+                reviewNeeded++;
+            } else {
+                console.log(`\n✅ MATCHED: ${finalProduct.name}`);
+                console.log(`   Method: ${matchMethod}`);
 
-                const outputFilename = `product-${product.id}.webp`;
+                const processedBuffer = await processImage(imagePath);
+                const outputFilename = `product-${finalProduct.id}.webp`;
                 const outputPath = path.join(CONFIG.outputDir, outputFilename);
 
                 await fs.writeFile(outputPath, processedBuffer);
                 console.log(`📸 Saved: ${outputFilename}`);
 
-                // Update products.js
-                const relativePath = await updateProductsFile(product.id, outputPath, productsData.rawContent);
+                const relativePath = await updateProductsFile(finalProduct.id, productsData.rawContent);
                 console.log(`📝 Updated products.js: ${relativePath}`);
 
-                // Reload products file content for next iteration
                 productsData = await loadProducts();
-
-                // Delete original file with retry logic
                 await safeDelete(imagePath);
 
                 matched++;
@@ -419,27 +432,20 @@ async function main() {
 
             processed++;
 
-            // Rate limiting
-            if (pendingImages.indexOf(filename) < pendingImages.length - 1) {
-                await sleep(CONFIG.apiDelay);
-            }
-
         } catch (error) {
             console.error(`❌ Error processing ${filename}:`, error.message);
             await moveToReview(imagePath, filename, `Error: ${error.message}`);
             reviewNeeded++;
         }
-
-        console.log('');
     }
 
-    // Summary
-    console.log('====================');
+    console.log('\n');
+    console.log('====================================================');
     console.log('📊 Summary');
-    console.log('====================');
-    console.log(`Total processed: ${processed}`);
+    console.log('====================================================');
+    console.log(`Total processed:      ${processed}`);
     console.log(`Successfully matched: ${matched}`);
-    console.log(`Needs review: ${reviewNeeded}`);
+    console.log(`Needs review:         ${reviewNeeded}`);
 
     if (reviewNeeded > 0) {
         console.log('');
@@ -450,5 +456,4 @@ async function main() {
     console.log('');
 }
 
-// Run
 main().catch(console.error);
