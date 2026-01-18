@@ -14,9 +14,13 @@ import FloatingWhatsApp from './components/FloatingWhatsApp';
 import OrderHistory from './components/OrderHistory';
 import Toast from './components/Toast';
 import BottomNav from './components/BottomNav';
+import AdminDashboard from './components/admin/AdminDashboard';
+import Wishlist from './components/Wishlist';
 import { products as initialProducts, categories } from './data/products';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from './context/LanguageContext';
+import { useAdmin } from './context/AdminContext';
+import { useWishlist } from './context/WishlistContext';
 
 function App() {
   const [products, setProducts] = useState(() => {
@@ -39,6 +43,8 @@ function App() {
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
+  const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState(false);
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -50,6 +56,14 @@ function App() {
   const [cartPulse, setCartPulse] = useState(false);
 
   const { t } = useLanguage();
+  const { isAdmin } = useAdmin();
+
+  // Auto-open admin dashboard when admin access is granted
+  useEffect(() => {
+    if (isAdmin && !isAdminDashboardOpen) {
+      setIsAdminDashboardOpen(true);
+    }
+  }, [isAdmin]);
 
   // Load dark mode preference on mount
   useEffect(() => {
@@ -342,6 +356,8 @@ function App() {
         cartCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
         setIsCartOpen={setIsCartOpen}
         setIsOrderHistoryOpen={setIsOrderHistoryOpen}
+        setIsWishlistOpen={setIsWishlistOpen}
+        setIsAdminDashboardOpen={setIsAdminDashboardOpen}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         isDarkMode={isDarkMode}
@@ -554,6 +570,19 @@ function App() {
           setCartItems(items.map(item => ({ ...item })));
           setIsCartOpen(true);
         }}
+      />
+
+      {/* Admin Dashboard */}
+      <AdminDashboard
+        isOpen={isAdminDashboardOpen}
+        onClose={() => setIsAdminDashboardOpen(false)}
+      />
+
+      {/* Wishlist */}
+      <Wishlist
+        isOpen={isWishlistOpen}
+        onClose={() => setIsWishlistOpen(false)}
+        onAddToCart={addToCart}
       />
 
       {/* Toast Notification */}

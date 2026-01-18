@@ -1,11 +1,15 @@
 import React from 'react';
-import { ShoppingCart, Search, Menu, X, Moon, Sun, Package, Languages } from 'lucide-react';
+import { ShoppingCart, Search, Menu, X, Moon, Sun, Package, Languages, Heart, Settings2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import { useWishlist } from '../context/WishlistContext';
+import { useAdmin } from '../context/AdminContext';
 
-const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, searchQuery, setSearchQuery, isDarkMode, toggleTheme, cartPulse }) => {
+const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, setIsWishlistOpen, setIsAdminDashboardOpen, searchQuery, setSearchQuery, isDarkMode, toggleTheme, cartPulse }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const { language, toggleLanguage, t } = useLanguage();
+  const { wishlistCount } = useWishlist();
+  const { isAdmin } = useAdmin();
 
   return (
     <>
@@ -64,6 +68,35 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, searchQuery, 
             >
               <Package className="w-6 h-6" />
             </button>
+
+            {/* Wishlist Button */}
+            <button
+              className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition hover:scale-110"
+              onClick={() => setIsWishlistOpen(true)}
+              title="Wishlist"
+            >
+              <Heart className="w-6 h-6" />
+              {wishlistCount > 0 && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"
+                >
+                  {wishlistCount}
+                </motion.span>
+              )}
+            </button>
+
+            {/* Admin Dashboard Button - Only visible when logged in as admin */}
+            {isAdmin && (
+              <button
+                className="relative p-2 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white hover:scale-110 transition-all shadow-lg"
+                onClick={() => setIsAdminDashboardOpen(true)}
+                title="Admin Dashboard"
+              >
+                <Settings2 className="w-5 h-5" />
+              </button>
+            )}
 
             <button
               className="relative hover:scale-110 transition-transform"

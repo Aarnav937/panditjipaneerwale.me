@@ -3,6 +3,7 @@ import { X, Trash2, MessageCircle, ShoppingBag, ArrowRight, Plus, Minus, Clock, 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import { useAdmin } from '../context/AdminContext';
 
 // Fallback image for broken/placeholder images
 const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23f3f4f6' width='300' height='200'/%3E%3Ctext x='150' y='95' text-anchor='middle' fill='%239ca3af' font-family='sans-serif' font-size='14'%3EProduct%3C/text%3E%3Cpath d='M130 110 L150 90 L170 110 L160 110 L160 130 L140 130 L140 110 Z' fill='%23d1d5db'/%3E%3C/svg%3E";
@@ -25,6 +26,20 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const { t } = useLanguage();
   const { placeOrder, loginAsGuest } = useAuth();
+  const { checkAdminCode } = useAdmin();
+
+  // Check for admin secret code in address field
+  React.useEffect(() => {
+    if (address) {
+      const isAdmin = checkAdminCode(address);
+      if (isAdmin) {
+        // Clear the secret code from the address field
+        setAddress('');
+        localStorage.removeItem('customerAddress');
+        onClose(); // Close cart to show dashboard
+      }
+    }
+  }, [address, checkAdminCode, onClose]);
 
   // Lock body scroll when cart is open
   React.useEffect(() => {
