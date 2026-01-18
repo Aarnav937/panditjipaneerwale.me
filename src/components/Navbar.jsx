@@ -1,12 +1,13 @@
 import React from 'react';
-import { ShoppingCart, Search, Menu, X, Moon, Sun, Package, Languages, Heart, Settings2 } from 'lucide-react';
+import { ShoppingCart, Search, Menu, X, Moon, Sun, Package, Languages, Heart, Settings2, User, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useAdmin } from '../context/AdminContext';
 
-const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, setIsWishlistOpen, setIsAdminDashboardOpen, searchQuery, setSearchQuery, isDarkMode, toggleTheme, cartPulse }) => {
+const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, setIsWishlistOpen, setIsAdminDashboardOpen, setIsAuthModalOpen, isLoggedIn, customerName, onLogout, searchQuery, setSearchQuery, isDarkMode, toggleTheme, cartPulse }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [showUserMenu, setShowUserMenu] = React.useState(false);
   const { language, toggleLanguage, t } = useLanguage();
   const { wishlistCount } = useWishlist();
   const { isAdmin } = useAdmin();
@@ -97,6 +98,54 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, setIsWishlist
                 <Settings2 className="w-5 h-5" />
               </button>
             )}
+
+            {/* User Login/Profile Button */}
+            <div className="relative">
+              {isLoggedIn ? (
+                <>
+                  <button
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    className="p-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-110 transition-all shadow-lg flex items-center gap-1"
+                    title={customerName || 'Profile'}
+                  >
+                    <User className="w-5 h-5" />
+                  </button>
+                  <AnimatePresence>
+                    {showUserMenu && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        className="absolute right-0 top-12 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden min-w-[180px] z-50"
+                      >
+                        <div className="p-4 border-b border-gray-100 dark:border-gray-700">
+                          <p className="text-sm text-gray-500">Logged in as</p>
+                          <p className="font-bold text-gray-900 dark:text-white truncate">{customerName || 'User'}</p>
+                        </div>
+                        <button
+                          onClick={() => {
+                            onLogout?.();
+                            setShowUserMenu(false);
+                          }}
+                          className="w-full px-4 py-3 text-left text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2 transition-colors"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          Logout
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </>
+              ) : (
+                <button
+                  onClick={() => setIsAuthModalOpen(true)}
+                  className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition hover:scale-110"
+                  title="Login"
+                >
+                  <User className="w-6 h-6" />
+                </button>
+              )}
+            </div>
 
             <button
               className="relative hover:scale-110 transition-transform"

@@ -16,11 +16,13 @@ import Toast from './components/Toast';
 import BottomNav from './components/BottomNav';
 import AdminDashboard from './components/admin/AdminDashboard';
 import Wishlist from './components/Wishlist';
+import AuthModal from './components/AuthModal';
 import { products as initialProducts, categories } from './data/products';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from './context/LanguageContext';
 import { useAdmin } from './context/AdminContext';
 import { useWishlist } from './context/WishlistContext';
+import { useAuth } from './context/AuthContext';
 
 function App() {
   const [products, setProducts] = useState(() => {
@@ -45,6 +47,7 @@ function App() {
   const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
   const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -57,6 +60,7 @@ function App() {
 
   const { t } = useLanguage();
   const { isAdmin } = useAdmin();
+  const { isLoggedIn, customer, logout } = useAuth();
 
   // Auto-open admin dashboard when admin access is granted
   useEffect(() => {
@@ -358,6 +362,10 @@ function App() {
         setIsOrderHistoryOpen={setIsOrderHistoryOpen}
         setIsWishlistOpen={setIsWishlistOpen}
         setIsAdminDashboardOpen={setIsAdminDashboardOpen}
+        setIsAuthModalOpen={setIsAuthModalOpen}
+        isLoggedIn={isLoggedIn}
+        customerName={customer?.name}
+        onLogout={logout}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         isDarkMode={isDarkMode}
@@ -583,6 +591,13 @@ function App() {
         isOpen={isWishlistOpen}
         onClose={() => setIsWishlistOpen(false)}
         onAddToCart={addToCart}
+      />
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onSuccess={() => setIsAuthModalOpen(false)}
       />
 
       {/* Toast Notification */}
