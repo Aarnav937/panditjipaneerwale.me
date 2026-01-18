@@ -6,7 +6,7 @@ import { supabase } from '../lib/supabase';
 const AuthModal = ({ isOpen, onClose, onSuccess }) => {
     const [step, setStep] = useState('email'); // email, otp, success
     const [email, setEmail] = useState('');
-    const [otp, setOtp] = useState(['', '', '', '', '', '']);
+    const [otp, setOtp] = useState(new Array(8).fill('')); // Increased to 8 for safety
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [countdown, setCountdown] = useState(0);
@@ -17,58 +17,21 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
             setTimeout(() => {
                 setStep('email');
                 setEmail('');
-                setOtp(['', '', '', '', '', '']);
+                setOtp(new Array(8).fill(''));
                 setError(null);
             }, 300);
         }
     }, [isOpen]);
 
-    // Countdown timer for resend
-    useEffect(() => {
-        if (countdown > 0) {
-            const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-            return () => clearTimeout(timer);
-        }
-    }, [countdown]);
+    // ... (keep useEffect for countdown)
 
-    // Send OTP to email
-    const handleSendOTP = async (e) => {
-        e.preventDefault();
-        if (!email.trim() || !email.includes('@')) {
-            setError('Please enter a valid email');
-            return;
-        }
-
-        setLoading(true);
-        setError(null);
-
-        try {
-            if (supabase) {
-                const { error } = await supabase.auth.signInWithOtp({
-                    email: email.trim(),
-                    options: {
-                        shouldCreateUser: true,
-                    }
-                });
-
-                if (error) throw error;
-            }
-
-            setStep('otp');
-            setCountdown(60);
-        } catch (err) {
-            console.error('OTP send error:', err);
-            setError(err.message || 'Failed to send OTP. Please try again.');
-        } finally {
-            setLoading(false);
-        }
-    };
+    // ... (keep handleSendOTP)
 
     // Verify OTP
     const handleVerifyOTP = async () => {
         const otpValue = otp.join('');
-        if (otpValue.length !== 6) {
-            setError('Please enter the complete 6-digit code');
+        if (otpValue.length < 6) { // Allow 6 to 8 length
+            setError('Please enter the complete code');
             return;
         }
 
@@ -89,9 +52,7 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
                 localStorage.setItem('userEmail', email);
                 localStorage.setItem('isLoggedIn', 'true');
             } else {
-                // Demo mode
-                localStorage.setItem('userEmail', email);
-                localStorage.setItem('isLoggedIn', 'true');
+                // Demo mode verification
             }
 
             setStep('success');
@@ -109,21 +70,35 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
 
     // Handle OTP input
     const handleOtpChange = (index, value) => {
-        if (value.length > 1) value = value[0];
         if (!/^\d*$/.test(value)) return;
+
+        // Handle Paste
+        if (value.length > 1) {
+            const pastedData = value.split('').slice(0, 8); // Take max 8
+            const newOtp = [...otp];
+            pastedData.forEach((char, i) => {
+                if (index + i < 8) newOtp[index + i] = char;
+            });
+            setOtp(newOtp);
+
+            // Focus last filled or next empty
+            const nextIndex = Math.min(index + pastedData.length, 7);
+            document.getElementById(`otp-${nextIndex}`)?.focus();
+
+            // Auto-verify if full
+            if (newOtp.join('').length >= 6) {
+                // Optional: auto trigger verify
+            }
+            return;
+        }
 
         const newOtp = [...otp];
         newOtp[index] = value;
         setOtp(newOtp);
 
         // Auto-focus next input
-        if (value && index < 5) {
+        if (value && index < 7) {
             document.getElementById(`otp-${index + 1}`)?.focus();
-        }
-
-        // Auto-verify when complete
-        if (value && index === 5) {
-            setTimeout(handleVerifyOTP, 100);
         }
     };
 
@@ -292,7 +267,7 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
 
                                             <button
                                                 onClick={handleVerifyOTP}
-                                                disabled={loading || otp.join('').length !== 6}
+                                                disabled={loading || otp.join('').length < 6}
                                                 className="w-full py-4 bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:from-orange-600 hover:to-red-700 transition-all shadow-lg shadow-orange-500/30 disabled:opacity-50"
                                             >
                                                 {loading ? (
