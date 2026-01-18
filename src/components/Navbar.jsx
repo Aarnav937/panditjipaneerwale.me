@@ -270,6 +270,41 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, setIsWishlist
                   >
                     <Package size={18} /> {t('orderHistory')}
                   </button>
+                  <button
+                    className="text-left px-4 py-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium flex items-center gap-3"
+                    onClick={() => { setIsWishlistOpen(true); setIsMobileMenuOpen(false); }}
+                  >
+                    <Heart size={18} /> Wishlist
+                  </button>
+                  {isAdmin && (
+                    <button
+                      className="text-left px-4 py-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium flex items-center gap-3 text-orange-500"
+                      onClick={() => { setIsAdminDashboardOpen(true); setIsMobileMenuOpen(false); }}
+                    >
+                      <Settings2 size={18} /> Admin Dashboard
+                    </button>
+                  )}
+                  {isLoggedIn ? (
+                    <div className="border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                      <div className="px-4 py-2">
+                        <p className="text-xs text-gray-500">Logged in as</p>
+                        <p className="font-bold truncate">{customerName}</p>
+                      </div>
+                      <button
+                        onClick={() => { onLogout?.(); setIsMobileMenuOpen(false); }}
+                        className="w-full text-left px-4 py-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 transition-colors font-medium flex items-center gap-3"
+                      >
+                        <LogOut size={18} /> Logout
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      className="text-left px-4 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-lg transition-transform font-bold flex items-center gap-3 mt-4 justify-center"
+                      onClick={() => { setIsAuthModalOpen(true); setIsMobileMenuOpen(false); }}
+                    >
+                      <User size={18} /> Login / Sign Up
+                    </button>
+                  )}
                 </div>
               </div>
             </motion.div>

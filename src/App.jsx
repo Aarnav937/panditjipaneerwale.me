@@ -613,6 +613,8 @@ function App() {
         cartCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
         onCartClick={() => setIsCartOpen(true)}
         onOrderHistoryClick={() => setIsOrderHistoryOpen(true)}
+        onProfileClick={() => setIsAuthModalOpen(true)}
+        isLoggedIn={isLoggedIn}
       />
 
       {/* Spacer for bottom nav on mobile */}

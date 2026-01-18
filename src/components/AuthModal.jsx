@@ -23,9 +23,46 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
         }
     }, [isOpen]);
 
-    // ... (keep useEffect for countdown)
+    // Countdown timer for resend
+    useEffect(() => {
+        if (countdown > 0) {
+            const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [countdown]);
 
-    // ... (keep handleSendOTP)
+    // Send OTP to email
+    const handleSendOTP = async (e) => {
+        e.preventDefault();
+        if (!email.trim() || !email.includes('@')) {
+            setError('Please enter a valid email');
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
+
+        try {
+            if (supabase) {
+                const { error } = await supabase.auth.signInWithOtp({
+                    email: email.trim(),
+                    options: {
+                        shouldCreateUser: true,
+                    }
+                });
+
+                if (error) throw error;
+            }
+
+            setStep('otp');
+            setCountdown(60);
+        } catch (err) {
+            console.error('OTP send error:', err);
+            setError(err.message || 'Failed to send OTP. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // Verify OTP
     const handleVerifyOTP = async () => {
