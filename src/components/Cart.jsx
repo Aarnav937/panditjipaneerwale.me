@@ -1,7 +1,8 @@
 import React from 'react';
-import { X, Trash2, MessageCircle, ShoppingBag, ArrowRight, Plus, Minus, Clock } from 'lucide-react';
+import { X, Trash2, MessageCircle, ShoppingBag, ArrowRight, Plus, Minus, Clock, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 
 // Fallback image for broken/placeholder images
 const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23f3f4f6' width='300' height='200'/%3E%3Ctext x='150' y='95' text-anchor='middle' fill='%239ca3af' font-family='sans-serif' font-size='14'%3EProduct%3C/text%3E%3Cpath d='M130 110 L150 90 L170 110 L160 110 L160 130 L140 130 L140 110 Z' fill='%23d1d5db'/%3E%3C/svg%3E";
@@ -18,14 +19,21 @@ const TIME_SLOTS = [
 const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOrderPlaced }) => {
   // Initialize state from localStorage
   const [customerName, setCustomerName] = React.useState(() => localStorage.getItem('customerName') || '');
+  const [customerPhone, setCustomerPhone] = React.useState(() => localStorage.getItem('customerPhone') || '');
   const [address, setAddress] = React.useState(() => localStorage.getItem('customerAddress') || '');
   const [timeSlot, setTimeSlot] = React.useState(() => localStorage.getItem('deliveryTimeSlot') || 'morning');
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const { t } = useLanguage();
+  const { placeOrder, loginAsGuest } = useAuth();
 
   // Save to localStorage whenever they change
   React.useEffect(() => {
     localStorage.setItem('customerName', customerName);
   }, [customerName]);
+
+  React.useEffect(() => {
+    localStorage.setItem('customerPhone', customerPhone);
+  }, [customerPhone]);
 
   React.useEffect(() => {
     localStorage.setItem('customerAddress', address);
@@ -37,18 +45,62 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
 
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (!address.trim()) {
       alert('Please enter your delivery address before checking out.');
       return;
     }
 
+    if (!customerPhone.trim()) {
+      alert('Please enter your phone number for order updates.');
+      return;
+    }
+
+    setIsSubmitting(true);
     const selectedTimeSlot = TIME_SLOTS.find(t => t.id === timeSlot)?.value || 'Not specified';
 
+    try {
+      // First, register/update customer in Supabase
+      await loginAsGuest(customerPhone, customerName, address);
+
+      // Save order to Supabase
+      const orderNotes = `Time: ${selectedTimeSlot}`;
+      const result = await placeOrder(cartItems, total, orderNotes);
+
+      if (!result.success) {
+        console.warn('Failed to save to Supabase, continuing with WhatsApp:', result.error);
+      }
+    } catch (error) {
+      console.warn('Supabase save failed, continuing with WhatsApp:', error);
+    }
+
+    // Also save order to localStorage (backup)
+    const order = {
+      id: Date.now(),
+      date: new Date().toISOString(),
+      items: cartItems.map(item => ({ ...item })),
+      total,
+      address,
+      customerName,
+      customerPhone,
+      timeSlot: selectedTimeSlot,
+    };
+
+    const existingOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+    existingOrders.unshift(order);
+    localStorage.setItem('orderHistory', JSON.stringify(existingOrders.slice(0, 20)));
+
+    // Notify parent component if callback exists
+    if (onOrderPlaced) {
+      onOrderPlaced(order);
+    }
+
+    // Send to WhatsApp
     const message = `Hello, I would like to place an order:
 
 *Customer Details:*
 Name: ${customerName || 'Not provided'}
+Phone: ${customerPhone}
 Address: ${address}
 Delivery Time: ${selectedTimeSlot}
 
@@ -57,29 +109,12 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
 
 *Total Amount: AED ${total}*`;
 
-    // Save order to history
-    const order = {
-      id: Date.now(),
-      date: new Date().toISOString(),
-      items: cartItems.map(item => ({ ...item })),
-      total,
-      address,
-      customerName,
-      timeSlot: selectedTimeSlot,
-    };
-
-    const existingOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-    existingOrders.unshift(order);
-    localStorage.setItem('orderHistory', JSON.stringify(existingOrders.slice(0, 20))); // Keep last 20 orders
-
-    // Notify parent component if callback exists
-    if (onOrderPlaced) {
-      onOrderPlaced(order);
-    }
-
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/971524676306?text=${encodedMessage}`, '_blank');
+
+    setIsSubmitting(false);
   };
+
 
   return (
     <AnimatePresence>
@@ -212,6 +247,21 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
                       placeholder={t('namePlaceholder')}
+                      className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <span className="flex items-center gap-2">
+                        <Phone size={14} />
+                        Phone Number <span className="text-red-500">*</span>
+                      </span>
+                    </label>
+                    <input
+                      type="tel"
+                      value={customerPhone}
+                      onChange={(e) => setCustomerPhone(e.target.value)}
+                      placeholder="+971 XX XXX XXXX"
                       className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all"
                     />
                   </div>
