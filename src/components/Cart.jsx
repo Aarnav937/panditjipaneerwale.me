@@ -26,6 +26,18 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
   const { t } = useLanguage();
   const { placeOrder, loginAsGuest } = useAuth();
 
+  // Lock body scroll when cart is open
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   // Save to localStorage whenever they change
   React.useEffect(() => {
     localStorage.setItem('customerName', customerName);
@@ -153,8 +165,8 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
               </button>
             </div>
 
-            {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto p-6">
+            {/* Cart Items - with scroll containment */}
+            <div className="flex-1 overflow-y-auto p-6 overscroll-contain" style={{ overscrollBehavior: 'contain' }}>
               {cartItems.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-6">
                   <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
@@ -232,94 +244,94 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
                   ))}
                 </div>
               )}
+
+              {/* Checkout Form - inside scrollable area */}
+              {cartItems.length > 0 && (
+                <div className="p-6 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
+
+                  {/* Delivery Details Inputs */}
+                  <div className="space-y-3 mb-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('nameLabel')}</label>
+                      <input
+                        type="text"
+                        value={customerName}
+                        onChange={(e) => setCustomerName(e.target.value)}
+                        placeholder={t('namePlaceholder')}
+                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <span className="flex items-center gap-2">
+                          <Phone size={14} />
+                          Phone Number <span className="text-red-500">*</span>
+                        </span>
+                      </label>
+                      <input
+                        type="tel"
+                        value={customerPhone}
+                        onChange={(e) => setCustomerPhone(e.target.value)}
+                        placeholder="+971 XX XXX XXXX"
+                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('addressLabel')} <span className="text-red-500">*</span></label>
+                      <textarea
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        placeholder={t('addressPlaceholder')}
+                        rows="2"
+                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all resize-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <span className="flex items-center gap-2">
+                          <Clock size={14} />
+                          {t('timeLabel')}
+                        </span>
+                      </label>
+                      <select
+                        value={timeSlot}
+                        onChange={(e) => setTimeSlot(e.target.value)}
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all cursor-pointer"
+                      >
+                        {TIME_SLOTS.map(slot => (
+                          <option key={slot.id} value={slot.id}>{t(slot.id)}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 mb-6">
+                    <div className="flex justify-between text-gray-500 dark:text-gray-400">
+                      <span>{t('subtotal')}</span>
+                      <span>AED {total}</span>
+                    </div>
+                    <div className="flex justify-between text-gray-500 dark:text-gray-400">
+                      <span>{t('delivery')}</span>
+                      <span className="text-green-500 font-medium">{t('free')}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-2xl font-bold text-gray-900 dark:text-white pt-3 border-t border-gray-100 dark:border-gray-800">
+                      <span>{t('total')}</span>
+                      <span>AED {total}</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleCheckout}
+                    className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all transform hover:scale-[1.02] shadow-lg shadow-green-500/30"
+                  >
+                    <MessageCircle size={24} />
+                    <span>{t('checkoutWhatsApp')}</span>
+                  </button>
+                  <p className="text-center text-xs text-gray-400 mt-4">
+                    {t('secureCheckout')}
+                  </p>
+                </div>
+              )}
             </div>
-
-            {/* Footer */}
-            {cartItems.length > 0 && (
-              <div className="p-6 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-
-                {/* Delivery Details Inputs */}
-                <div className="space-y-3 mb-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('nameLabel')}</label>
-                    <input
-                      type="text"
-                      value={customerName}
-                      onChange={(e) => setCustomerName(e.target.value)}
-                      placeholder={t('namePlaceholder')}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      <span className="flex items-center gap-2">
-                        <Phone size={14} />
-                        Phone Number <span className="text-red-500">*</span>
-                      </span>
-                    </label>
-                    <input
-                      type="tel"
-                      value={customerPhone}
-                      onChange={(e) => setCustomerPhone(e.target.value)}
-                      placeholder="+971 XX XXX XXXX"
-                      className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('addressLabel')} <span className="text-red-500">*</span></label>
-                    <textarea
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      placeholder={t('addressPlaceholder')}
-                      rows="2"
-                      className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all resize-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      <span className="flex items-center gap-2">
-                        <Clock size={14} />
-                        {t('timeLabel')}
-                      </span>
-                    </label>
-                    <select
-                      value={timeSlot}
-                      onChange={(e) => setTimeSlot(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all cursor-pointer"
-                    >
-                      {TIME_SLOTS.map(slot => (
-                        <option key={slot.id} value={slot.id}>{t(slot.id)}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="space-y-3 mb-6">
-                  <div className="flex justify-between text-gray-500 dark:text-gray-400">
-                    <span>{t('subtotal')}</span>
-                    <span>AED {total}</span>
-                  </div>
-                  <div className="flex justify-between text-gray-500 dark:text-gray-400">
-                    <span>{t('delivery')}</span>
-                    <span className="text-green-500 font-medium">{t('free')}</span>
-                  </div>
-                  <div className="flex justify-between items-center text-2xl font-bold text-gray-900 dark:text-white pt-3 border-t border-gray-100 dark:border-gray-800">
-                    <span>{t('total')}</span>
-                    <span>AED {total}</span>
-                  </div>
-                </div>
-                <button
-                  onClick={handleCheckout}
-                  className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all transform hover:scale-[1.02] shadow-lg shadow-green-500/30"
-                >
-                  <MessageCircle size={24} />
-                  <span>{t('checkoutWhatsApp')}</span>
-                </button>
-                <p className="text-center text-xs text-gray-400 mt-4">
-                  {t('secureCheckout')}
-                </p>
-              </div>
-            )}
           </motion.div>
         </>
       )}
