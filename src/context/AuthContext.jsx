@@ -14,16 +14,21 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [customer, setCustomer] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
-    // Check for existing session on mount
+    // Check for existing session on mount - ONLY if supabase exists
     useEffect(() => {
+        // Skip if no supabase client
+        if (!supabase) {
+            setLoading(false);
+            return;
+        }
+
         const checkSession = async () => {
             try {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (session?.user) {
                     setUser(session.user);
-                    // Try to get customer data
                     const phone = session.user.phone;
                     if (phone) {
                         const { data } = await db.customers.getByPhone(phone);
@@ -39,10 +44,9 @@ export const AuthProvider = ({ children }) => {
 
         checkSession();
 
-        // Listen for auth changes
+        // Listen for auth changes - only if supabase exists
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
             async (event, session) => {
-                console.log('Auth state changed:', event);
                 if (session?.user) {
                     setUser(session.user);
                 } else {
@@ -52,104 +56,115 @@ export const AuthProvider = ({ children }) => {
             }
         );
 
-        return () => subscription.unsubscribe();
+        return () => subscription?.unsubscribe();
     }, []);
 
-    // Guest login with phone (no OTP, just stores locally)
+    // Guest login with phone (stores in localStorage, tries Supabase if available)
     const loginAsGuest = async (phone, name, address) => {
+        // Always save to localStorage first
+        localStorage.setItem('customerPhone', phone);
+        localStorage.setItem('customerName', name);
+        localStorage.setItem('customerAddress', address);
+
+        // If no supabase, just return success
+        if (!supabase) {
+            setCustomer({ phone, name, address });
+            return { success: true };
+        }
+
         try {
-            // Check if customer exists
             let { data: existingCustomer } = await db.customers.getByPhone(phone);
 
             if (existingCustomer) {
-                // Update existing customer
                 const { data, error } = await db.customers.update(existingCustomer.id, {
                     name: name || existingCustomer.name,
                     address: address || existingCustomer.address,
                     updated_at: new Date().toISOString()
                 });
-                if (error) throw error;
-                setCustomer(data);
+                if (!error && data) setCustomer(data);
             } else {
-                // Create new customer
-                const { data, error } = await db.customers.create({
-                    phone,
-                    name,
-                    address
-                });
-                if (error) throw error;
-                setCustomer(data);
+                const { data, error } = await db.customers.create({ phone, name, address });
+                if (!error && data) setCustomer(data);
             }
-
-            // Store in localStorage for persistence
-            localStorage.setItem('customerPhone', phone);
             return { success: true };
         } catch (error) {
-            console.error('Guest login error:', error);
-            return { success: false, error: error.message };
+            console.warn('Supabase save failed:', error);
+            // Still return success since localStorage works
+            return { success: true };
         }
     };
 
     // Restore customer from localStorage
     useEffect(() => {
-        const restoreCustomer = async () => {
-            const savedPhone = localStorage.getItem('customerPhone');
-            if (savedPhone && !customer) {
-                try {
-                    const { data } = await db.customers.getByPhone(savedPhone);
+        const savedPhone = localStorage.getItem('customerPhone');
+        const savedName = localStorage.getItem('customerName');
+        const savedAddress = localStorage.getItem('customerAddress');
+
+        if (savedPhone && !customer) {
+            // Set from localStorage immediately
+            setCustomer({ phone: savedPhone, name: savedName || '', address: savedAddress || '' });
+
+            // Try to get from Supabase if available
+            if (supabase) {
+                db.customers.getByPhone(savedPhone).then(({ data }) => {
                     if (data) setCustomer(data);
-                } catch (error) {
-                    console.error('Restore customer error:', error);
-                }
+                }).catch(() => { });
             }
-        };
-        restoreCustomer();
-    }, [customer]);
+        }
+    }, []);
 
     // Logout
     const logout = async () => {
-        await supabase.auth.signOut();
+        if (supabase) {
+            try {
+                await supabase.auth.signOut();
+            } catch (e) { }
+        }
         setUser(null);
         setCustomer(null);
         localStorage.removeItem('customerPhone');
+        localStorage.removeItem('customerName');
+        localStorage.removeItem('customerAddress');
     };
 
     // Place order
     const placeOrder = async (cartItems, total, notes = '') => {
-        try {
-            const orderData = {
-                customer_id: customer?.id || null,
-                customer_phone: customer?.phone || localStorage.getItem('customerPhone') || 'guest',
-                customer_name: customer?.name || 'Guest',
-                customer_address: customer?.address || '',
-                items: cartItems,
-                total: total,
-                status: 'pending',
-                notes: notes
-            };
+        const orderData = {
+            customer_id: customer?.id || null,
+            customer_phone: customer?.phone || localStorage.getItem('customerPhone') || 'guest',
+            customer_name: customer?.name || localStorage.getItem('customerName') || 'Guest',
+            customer_address: customer?.address || localStorage.getItem('customerAddress') || '',
+            items: cartItems,
+            total: total,
+            status: 'pending',
+            notes: notes
+        };
 
+        // If no supabase, just return success (order goes via WhatsApp anyway)
+        if (!supabase) {
+            return { success: true, order: orderData };
+        }
+
+        try {
             const { data, error } = await db.orders.create(orderData);
             if (error) throw error;
-
             return { success: true, order: data };
         } catch (error) {
-            console.error('Place order error:', error);
-            return { success: false, error: error.message };
+            console.warn('Supabase order save failed:', error);
+            return { success: true, order: orderData }; // Still success for WhatsApp
         }
     };
 
     // Get order history
     const getOrderHistory = async () => {
-        try {
-            const phone = customer?.phone || localStorage.getItem('customerPhone');
-            if (!phone) return { orders: [] };
+        const phone = customer?.phone || localStorage.getItem('customerPhone');
+        if (!phone || !supabase) return { orders: [] };
 
+        try {
             const { data, error } = await db.orders.getByPhone(phone);
             if (error) throw error;
-
             return { orders: data || [] };
         } catch (error) {
-            console.error('Get orders error:', error);
             return { orders: [] };
         }
     };
