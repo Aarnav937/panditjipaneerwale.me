@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useAdmin } from '../context/AdminContext';
+import NotificationBell from './NotificationBell';
 
 const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, setIsWishlistOpen, setIsAdminDashboardOpen, setIsAuthModalOpen, isLoggedIn, customerName, onLogout, searchQuery, setSearchQuery, isDarkMode, toggleTheme, cartPulse }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
@@ -60,6 +61,9 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, setIsWishlist
             >
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
+
+            {/* Notification Bell */}
+            {isLoggedIn && <NotificationBell />}
 
             {/* Order History Button */}
             <button

@@ -5,6 +5,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
 import { AdminProvider } from './context/AdminContext';
 import { WishlistProvider } from './context/WishlistContext';
+import { NotificationProvider } from './context/NotificationContext';
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -12,9 +13,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <AuthProvider>
       <AdminProvider>
         <WishlistProvider>
-          <LanguageProvider>
-            <App />
-          </LanguageProvider>
+          <NotificationProvider>
+            <LanguageProvider>
+              <App />
+            </LanguageProvider>
+          </NotificationProvider>
         </WishlistProvider>
       </AdminProvider>
     </AuthProvider>

@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Package, Users, Bell, Settings, BarChart3, LogOut, Clock, Box, AlertTriangle } from 'lucide-react';
+import { X, Package, Users, Bell, Settings, BarChart3, LogOut, Clock, Box, AlertTriangle, Star } from 'lucide-react';
 import { useAdmin } from '../../context/AdminContext';
 import ProductManager from './ProductManager';
 import InventoryManager from './InventoryManager';
 import CustomerDatabase from './CustomerDatabase';
 import NotificationManager from './NotificationManager';
+import AnalyticsDashboard from './AnalyticsDashboard';
+import ReviewModerator from './ReviewModerator';
 
 const tabs = [
+    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
     { id: 'products', label: 'Products', icon: Package },
     { id: 'inventory', label: 'Inventory', icon: Box },
+    { id: 'reviews', label: 'Reviews', icon: Star },
     { id: 'customers', label: 'Customers', icon: Users },
     { id: 'notifications', label: 'Notifications', icon: Bell },
 ];
 
 const AdminDashboard = ({ isOpen, onClose }) => {
     const { isAdmin, logoutAdmin, getSessionTimeRemaining } = useAdmin();
-    const [activeTab, setActiveTab] = useState('products');
+    const [activeTab, setActiveTab] = useState('analytics');
     const [sessionTime, setSessionTime] = useState(null);
 
     // Update session time every minute
@@ -45,16 +49,20 @@ const AdminDashboard = ({ isOpen, onClose }) => {
 
     const renderContent = () => {
         switch (activeTab) {
+            case 'analytics':
+                return <AnalyticsDashboard />;
             case 'products':
                 return <ProductManager />;
             case 'inventory':
                 return <InventoryManager />;
+            case 'reviews':
+                return <ReviewModerator />;
             case 'customers':
                 return <CustomerDatabase />;
             case 'notifications':
                 return <NotificationManager />;
             default:
-                return <ProductManager />;
+                return <AnalyticsDashboard />;
         }
     };
 
@@ -119,8 +127,8 @@ const AdminDashboard = ({ isOpen, onClose }) => {
                                         key={tab.id}
                                         onClick={() => setActiveTab(tab.id)}
                                         className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${activeTab === tab.id
-                                                ? 'bg-orange-600 text-white'
-                                                : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                                            ? 'bg-orange-600 text-white'
+                                            : 'text-gray-400 hover:text-white hover:bg-gray-700'
                                             }`}
                                     >
                                         <Icon className="w-4 h-4" />
