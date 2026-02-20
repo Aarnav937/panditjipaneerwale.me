@@ -1,3 +1,9 @@
+/**
+ * Test Comment - Added on 18 Jan 2026
+ * This comment is invisible to website users.
+ * It's just to test the GitHub deployment workflow! 🚀
+ */
+
 import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -8,9 +14,16 @@ import FloatingWhatsApp from './components/FloatingWhatsApp';
 import OrderHistory from './components/OrderHistory';
 import Toast from './components/Toast';
 import BottomNav from './components/BottomNav';
+import AdminDashboard from './components/admin/AdminDashboard';
+import Wishlist from './components/Wishlist';
+import AuthModal from './components/AuthModal';
+import OurStore from './components/OurStore';
 import { products as initialProducts, categories } from './data/products';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from './context/LanguageContext';
+import { useAdmin } from './context/AdminContext';
+import { useWishlist } from './context/WishlistContext';
+import { useAuth } from './context/AuthContext';
 
 function App() {
   const [products, setProducts] = useState(() => {
@@ -33,6 +46,9 @@ function App() {
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
+  const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState(false);
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -44,6 +60,15 @@ function App() {
   const [cartPulse, setCartPulse] = useState(false);
 
   const { t } = useLanguage();
+  const { isAdmin } = useAdmin();
+  const { isLoggedIn, customer, logout } = useAuth();
+
+  // Auto-open admin dashboard when admin access is granted
+  useEffect(() => {
+    if (isAdmin && !isAdminDashboardOpen) {
+      setIsAdminDashboardOpen(true);
+    }
+  }, [isAdmin]);
 
   // Load dark mode preference on mount
   useEffect(() => {
@@ -336,6 +361,12 @@ function App() {
         cartCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
         setIsCartOpen={setIsCartOpen}
         setIsOrderHistoryOpen={setIsOrderHistoryOpen}
+        setIsWishlistOpen={setIsWishlistOpen}
+        setIsAdminDashboardOpen={setIsAdminDashboardOpen}
+        setIsAuthModalOpen={setIsAuthModalOpen}
+        isLoggedIn={isLoggedIn}
+        customerName={customer?.name}
+        onLogout={logout}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         isDarkMode={isDarkMode}
@@ -471,6 +502,7 @@ function App() {
 
       {!searchQuery && (
         <>
+          <OurStore />
           <section id="about" className="bg-white dark:bg-brand-card py-20 transition-colors duration-300">
             <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto text-center">
@@ -550,6 +582,26 @@ function App() {
         }}
       />
 
+      {/* Admin Dashboard */}
+      <AdminDashboard
+        isOpen={isAdminDashboardOpen}
+        onClose={() => setIsAdminDashboardOpen(false)}
+      />
+
+      {/* Wishlist */}
+      <Wishlist
+        isOpen={isWishlistOpen}
+        onClose={() => setIsWishlistOpen(false)}
+        onAddToCart={addToCart}
+      />
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onSuccess={() => setIsAuthModalOpen(false)}
+      />
+
       {/* Toast Notification */}
       <Toast
         show={showToast}
@@ -563,6 +615,8 @@ function App() {
         cartCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
         onCartClick={() => setIsCartOpen(true)}
         onOrderHistoryClick={() => setIsOrderHistoryOpen(true)}
+        onProfileClick={() => setIsAuthModalOpen(true)}
+        isLoggedIn={isLoggedIn}
       />
 
       {/* Spacer for bottom nav on mobile */}
