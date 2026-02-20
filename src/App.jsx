@@ -17,6 +17,7 @@ import BottomNav from './components/BottomNav';
 import AdminDashboard from './components/admin/AdminDashboard';
 import Wishlist from './components/Wishlist';
 import AuthModal from './components/AuthModal';
+import OurStore from './components/OurStore';
 import { products as initialProducts, categories } from './data/products';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from './context/LanguageContext';
@@ -501,6 +502,7 @@ function App() {
 
       {!searchQuery && (
         <>
+          <OurStore />
           <section id="about" className="bg-white dark:bg-brand-card py-20 transition-colors duration-300">
             <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto text-center">

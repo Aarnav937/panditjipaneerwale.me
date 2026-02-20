@@ -31,7 +31,7 @@ const Hero = () => {
                         className="inline-flex items-center gap-2 bg-brand-orange/10 dark:bg-brand-orange/20 text-brand-orange px-4 py-2 rounded-full text-sm font-medium mb-6"
                     >
                         <span className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
-                        Fresh Delivery in Abu Dhabi
+                        Free Delivery in Abu Dhabi
                     </motion.div>
 
                     {/* Main heading */}
