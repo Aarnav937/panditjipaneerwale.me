@@ -358,16 +358,16 @@ export const products = [
     id: 66,
     name: "Satvik Wheat Flour Chakki Fresh Atta (5kg)",
     category: "Satvik",
-    price: 15,
+    price: 18.75,
     image: "images/products/product-66.webp",
     description: "Whole wheat flour for soft rotis."
   },
   {
     id: 67,
-    name: "Satvik Frozen Green Peas (400g)",
+    name: "Saatvik Frozen Green Peas (400g)",
     category: "Satvik",
-    price: 6,
-    image: "images/products/product-67.webp",
+    price: 5,
+    image: "images/products/saatvik-green-peas-400g.jpg",
     description: "Fresh frozen green peas."
   },
   {
@@ -680,7 +680,7 @@ export const products = [
     id: 108,
     name: "Amul Salted Butter (500g)",
     category: "Amul",
-    price: 20,
+    price: 21.50,
     image: "images/products/product-108.webp",
     description: "Classic salted butter."
   },
@@ -696,7 +696,7 @@ export const products = [
     id: 110,
     name: "Amul Unsalted Butter (500g)",
     category: "Amul",
-    price: 20,
+    price: 21.50,
     image: "images/products/product-110.webp",
     description: "Cooking butter."
   },
