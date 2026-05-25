@@ -21,7 +21,7 @@ const Footer = ({ onToggleAdmin }) => {
             <div className="space-y-3 text-gray-400">
               <div className="flex items-start gap-3">
                 <MapPin className="mt-1 flex-shrink-0 text-brand-orange" size={20} />
-                <span>F9QJ+M5J, Al Zahiyah - E16 02, Abu Dhabi, United Arab Emirates</span>
+                <span>F9QJ+F6F Abu Dhabi, United Arab Emirates</span>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="flex-shrink-0 text-brand-orange" size={20} />

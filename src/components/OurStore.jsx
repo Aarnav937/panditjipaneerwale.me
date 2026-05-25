@@ -85,8 +85,8 @@ const OurStore = () => {
                                 <div>
                                     <h5 className="font-bold text-xl text-gray-900 dark:text-white mb-1">Our Location</h5>
                                     <p className="text-gray-600 dark:text-gray-400 text-lg">
-                                        F9QJ+M5J, Al Zahiyah - E16 02<br />
-                                        Abu Dhabi, United Arab Emirates
+                                        F9QJ+F6F Abu Dhabi<br />
+                                        United Arab Emirates
                                     </p>
                                 </div>
                             </div>

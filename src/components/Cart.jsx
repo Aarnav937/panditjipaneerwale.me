@@ -1,6 +1,7 @@
-import React from 'react';
-import { X, Trash2, MessageCircle, ShoppingBag, ArrowRight, Plus, Minus, Clock, Phone } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { X, Trash2, MessageCircle, ShoppingBag, ArrowRight, Plus, Minus, Clock, Phone, Truck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { useAdmin } from '../context/AdminContext';
@@ -71,6 +72,26 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
   }, [timeSlot]);
 
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  // Free delivery logic
+  const FREE_DELIVERY_THRESHOLD = 100;
+  const progressToFreeDelivery = Math.min((total / FREE_DELIVERY_THRESHOLD) * 100, 100);
+  const amountNeededForFreeDelivery = Math.max(FREE_DELIVERY_THRESHOLD - total, 0);
+
+  // Track previous total to trigger confetti when crossed
+  const [prevTotal, setPrevTotal] = useState(0);
+
+  useEffect(() => {
+    if (total >= FREE_DELIVERY_THRESHOLD && prevTotal < FREE_DELIVERY_THRESHOLD && isOpen) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.3 },
+        colors: ['#f97316', '#fb923c', '#fed7aa', '#ffffff']
+      });
+    }
+    setPrevTotal(total);
+  }, [total, isOpen, prevTotal]);
 
   const handleCheckout = async () => {
     if (!address.trim()) {
@@ -181,11 +202,41 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
             </div>
 
             {/* Cart Items - with scroll containment */}
-            <div className="flex-1 overflow-y-auto p-6 overscroll-contain" style={{ overscrollBehavior: 'contain' }}>
+            <div className="flex-1 overflow-y-auto p-6 overscroll-contain bg-gray-50 dark:bg-gray-900/50" style={{ overscrollBehavior: 'contain' }}>
+
+              {/* Free Delivery Tracker */}
+              {cartItems.length > 0 && (
+                <div className="mb-6 bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm border border-brand-orange/20 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none" />
+
+                  <div className="flex items-center gap-3 mb-3 relative z-10">
+                    <div className={`p-2 rounded-full transition-colors duration-500 ${amountNeededForFreeDelivery === 0 ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' : 'bg-brand-orange/10 text-brand-orange'}`}>
+                      <Truck size={20} className={amountNeededForFreeDelivery === 0 ? "animate-bounce" : ""} />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-gray-900 dark:text-white text-sm">
+                        {amountNeededForFreeDelivery === 0
+                          ? "🎉 You unlocked Free Delivery!"
+                          : `Add AED ${amountNeededForFreeDelivery.toFixed(2)} more for Free Delivery`}
+                      </h4>
+                    </div>
+                  </div>
+
+                  <div className="h-2 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden relative z-10">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${progressToFreeDelivery}%` }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      className={`h-full rounded-full ${amountNeededForFreeDelivery === 0 ? 'bg-green-500' : 'bg-gradient-to-r from-brand-orange to-yellow-400'}`}
+                    />
+                  </div>
+                </div>
+              )}
+
               {cartItems.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-6">
-                  <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
-                    <ShoppingBag className="w-12 h-12 text-gray-400" />
+                  <div className="w-24 h-24 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-sm">
+                    <ShoppingBag className="w-12 h-12 text-gray-300 dark:text-gray-600" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('cartEmpty')}</h3>
@@ -195,9 +246,9 @@ ${cartItems.map(item => `- ${item.name} x${item.quantity} (AED ${item.price * it
                   </div>
                   <button
                     onClick={onClose}
-                    className="px-8 py-3 bg-brand-orange text-white rounded-full font-bold hover:bg-brand-dark transition-colors shadow-lg shadow-brand-orange/30 flex items-center gap-2"
+                    className="px-8 py-3 bg-brand-orange text-white rounded-full font-bold hover:bg-brand-dark transition-colors shadow-lg shadow-brand-orange/30 flex items-center gap-2 group"
                   >
-                    {t('startShopping')} <ArrowRight size={18} />
+                    {t('startShopping')} <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
                   </button>
                 </div>
               ) : (

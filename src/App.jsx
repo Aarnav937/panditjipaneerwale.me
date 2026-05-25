@@ -546,7 +546,7 @@ function App() {
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                   </div>
                   <h3 className="font-bold text-2xl mb-2">Visit Us</h3>
-                  <p className="text-lg">F9QJ+M5J, Al Zahiyah - E16 02<br />Abu Dhabi, UAE</p>
+                  <p className="text-lg">F9QJ+F6F Abu Dhabi<br />UAE</p>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
                   <div className="bg-white text-brand-orange p-6 rounded-full mb-6 shadow-lg">
