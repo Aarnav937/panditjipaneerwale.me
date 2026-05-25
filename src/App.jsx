@@ -28,7 +28,26 @@ import { useAuth } from './context/AuthContext';
 function App() {
   const [products, setProducts] = useState(() => {
     const saved = localStorage.getItem('products_custom');
-    return saved ? JSON.parse(saved) : initialProducts;
+    if (saved) {
+      try {
+        const parsedSaved = JSON.parse(saved);
+        // Merge to keep any custom images while loading new prices and products from code
+        const mergedProducts = initialProducts.map(p => {
+          const savedProduct = parsedSaved.find(sp => sp.id === p.id);
+          if (savedProduct && savedProduct.image !== p.image) {
+            return { ...p, image: savedProduct.image };
+          }
+          return p;
+        });
+        
+        // Include any entirely custom products just in case
+        const customAdded = parsedSaved.filter(sp => !initialProducts.some(p => p.id === sp.id));
+        return [...mergedProducts, ...customAdded];
+      } catch (e) {
+        return initialProducts;
+      }
+    }
+    return initialProducts;
   });
   const [isAdminMode, setIsAdminMode] = useState(false);
 
