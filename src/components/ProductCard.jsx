@@ -6,7 +6,7 @@ import { useWishlist } from '../context/WishlistContext';
 // Fallback image as data URI (simple product placeholder)
 const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23f3f4f6' width='300' height='200'/%3E%3Ctext x='150' y='95' text-anchor='middle' fill='%239ca3af' font-family='sans-serif' font-size='14'%3EProduct Image%3C/text%3E%3Cpath d='M130 110 L150 90 L170 110 L160 110 L160 130 L140 130 L140 110 Z' fill='%23d1d5db'/%3E%3C/svg%3E";
 
-const ProductCard = ({ product, addToCart }) => {
+const ProductCard = ({ product, addToCart, onViewDetails }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const { t } = useLanguage();
@@ -26,10 +26,16 @@ const ProductCard = ({ product, addToCart }) => {
   const isAvailable = product.is_available !== false && (product.stock_quantity === undefined || product.stock_quantity > 0);
 
   return (
-    <div className={`group relative bg-white dark:bg-brand-card border border-gray-100 dark:border-gray-700 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 ${!isAvailable ? 'opacity-75' : ''}`}>
+    <div 
+      onClick={() => onViewDetails && onViewDetails(product)}
+      className={`group relative bg-[#FFFDF0] dark:bg-brand-card border border-brand-gold/25 dark:border-brand-gold/15 rounded-2xl shadow-gold-glow shadow-md hover:shadow-gold-glow-hover overflow-hidden transition-all duration-300 hover:-translate-y-1.5 cursor-pointer ${!isAvailable ? 'opacity-75' : ''}`}
+    >
+      {/* Decorative Gold Header Bar */}
+      <div className="h-1 bg-gradient-to-r from-brand-gold/50 via-brand-saffron to-brand-gold/50" />
+
       {/* Image Container with Gradient Overlay */}
-      <div className="relative h-52 w-full bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-brand-card p-4 overflow-hidden">
-        <div className="absolute inset-0 bg-brand-orange/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="relative h-52 w-full bg-gradient-to-b from-[#FFFDF9] to-[#FFF5E6] dark:from-brand-card dark:to-gray-800 p-4 overflow-hidden">
+        <div className="absolute inset-0 bg-brand-saffron/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
         {/* Skeleton Loader - shows while image is loading */}
         {!imageLoaded && (
@@ -61,8 +67,15 @@ const ProductCard = ({ product, addToCart }) => {
 
         {/* Category Badge */}
         <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <span className="bg-white dark:bg-gray-800 text-xs font-bold px-2 py-1 rounded-full shadow text-brand-orange">
+          <span className="bg-brand-saffron/10 text-brand-saffron dark:bg-brand-saffron/20 border border-brand-saffron/20 text-xs font-bold px-2 py-1 rounded-full shadow">
             {product.category || 'Fresh'}
+          </span>
+        </div>
+
+        {/* Quick View Tag on Hover */}
+        <div className="absolute bottom-2 left-0 right-0 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <span className="bg-black/70 text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full backdrop-blur-sm border border-white/20">
+            Quick View
           </span>
         </div>
 
@@ -76,8 +89,8 @@ const ProductCard = ({ product, addToCart }) => {
         )}
       </div>
 
-      <div className="p-5 flex flex-col flex-grow relative">
-        <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-1 leading-tight line-clamp-2 group-hover:text-brand-orange transition-colors">
+      <div className="p-5 flex flex-col flex-grow relative bg-[#FFFDF9] dark:bg-brand-card">
+        <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-1 leading-tight line-clamp-2 group-hover:text-brand-saffron transition-colors">
           {product.name}
         </h3>
 
@@ -88,16 +101,19 @@ const ProductCard = ({ product, addToCart }) => {
         <div className="mt-auto flex items-center justify-between gap-3">
           <div className="flex flex-col">
             <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">Price</span>
-            <span className="text-2xl font-extrabold text-gray-900 dark:text-white">
+            <span className="text-xl font-black text-brand-saffron">
               AED {product.price}
             </span>
           </div>
 
           <button
-            onClick={() => addToCart(product)}
+            onClick={(e) => {
+              e.stopPropagation();
+              addToCart(product);
+            }}
             disabled={!isAvailable}
             className={`flex-1 font-bold py-2.5 px-4 rounded-xl shadow-lg transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 ${isAvailable
-                ? 'bg-gradient-to-r from-brand-orange to-red-500 hover:from-brand-dark hover:to-red-600 text-white shadow-orange-500/30 hover:shadow-orange-500/50'
+                ? 'bg-gradient-to-r from-brand-saffron to-brand-orange hover:from-brand-saffron hover:to-red-500 text-white shadow-saffron/30 hover:shadow-saffron/50'
                 : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
               }`}
           >

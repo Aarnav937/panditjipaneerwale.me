@@ -13,10 +13,18 @@ export default {
       colors: {
         brand: {
           orange: '#FF8C00', // Dark Orange
-          light: '#FFF5E6', // Light Orange background
+          light: '#FFFDF9', // Warm Ivory background
           dark: '#E67E00',
-          darker: '#1a1a1a', // Dark mode background
-          card: '#2d2d2d',   // Dark mode card
+          darker: '#121212', // Dark mode background
+          card: '#1E1E1E',   // Dark mode card
+          saffron: '#E25822',
+          saffronLight: '#FFF6F0',
+          gold: '#D4AF37',
+          goldDark: '#AA7C11',
+          cream: '#FFFDF9',
+          creamCard: '#FFFDF0',
+          charcoal: '#121212',
+          charcoalCard: '#1E1E1E'
         }
       }
     },

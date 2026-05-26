@@ -7,20 +7,42 @@ html {
 }
 
 body {
-  background-color: #FFF5E6; /* brand-light */
-  color: #333;
+  background-color: #FFFDF9; /* brand-cream */
+  color: #2D251E;
 }
 
 .bg-fixed-gradient {
-  background-color: #FFF5E6;
+  background-color: #FFFDF9;
   background-image: 
-    radial-gradient(at 40% 20%, hsla(28,100%,74%,1) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, hsla(189,100%,56%,1) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, hsla(340,100%,76%,1) 0px, transparent 50%),
-    radial-gradient(at 80% 50%, hsla(356,100%,66%,1) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, hsla(22,100%,77%,1) 0px, transparent 50%),
-    radial-gradient(at 80% 100%, hsla(242,100%,70%,1) 0px, transparent 50%),
-    radial-gradient(at 0% 0%, hsla(343,100%,76%,1) 0px, transparent 50%);
+    radial-gradient(at 10% 10%, hsla(30,100%,97%,1) 0px, transparent 50%),
+    radial-gradient(at 90% 0%, hsla(37,90%,93%,1) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(18,100%,96%,1) 0px, transparent 50%),
+    radial-gradient(at 85% 60%, hsla(39,94%,94%,1) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, hsla(24,100%,97%,1) 0px, transparent 50%);
+}
+
+.dark .bg-fixed-gradient {
+  background-color: #121212;
+  background-image: 
+    radial-gradient(at 10% 10%, hsla(18,70%,12%,1) 0px, transparent 50%),
+    radial-gradient(at 90% 0%, hsla(43,60%,10%,1) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, hsla(24,65%,12%,1) 0px, transparent 50%);
+}
+
+.heritage-border {
+  border-image: linear-gradient(to right, #D4AF37, #E25822, #D4AF37) 1;
+}
+
+.shadow-gold-glow {
+  box-shadow: 0 4px 20px -2px rgba(212, 175, 55, 0.12);
+}
+
+.shadow-gold-glow-hover:hover {
+  box-shadow: 0 12px 30px -4px rgba(212, 175, 55, 0.25), 0 4px 15px -2px rgba(226, 88, 34, 0.12);
+}
+
+.heritage-motif {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M40 0 L43.5 12 L55.5 4 L51 17 L64 12 L56.5 24 L69.5 21.5 L59.5 31.5 L72 32.5 L60 40 L72 47.5 L59.5 48.5 L69.5 58.5 L56.5 56 L64 68 L51 63 L55.5 76 L43.5 68 L40 80 L36.5 68 L24.5 76 L29 63 L16 68 L23.5 56 L10.5 58.5 L20.5 48.5 L8 47.5 L20 40 L8 32.5 L20.5 31.5 L10.5 21.5 L23.5 24 L16 12 L29 17 L24.5 4 L36.5 12 Z' fill='%23d4af37' fill-opacity='0.025'/%3E%3C/svg%3E");
 }
 
 /* Hardware acceleration for smoother animations */

@@ -8,6 +8,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProductCard from './components/ProductCard';
+import QuickViewModal from './components/QuickViewModal';
 import Cart from './components/Cart';
 import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
@@ -68,6 +69,8 @@ function App() {
   const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -134,6 +137,11 @@ function App() {
   };
 
   const toggleTheme = React.useCallback(() => setIsDarkMode(prev => !prev), []);
+
+  const handleViewDetails = useCallback((product) => {
+    setSelectedProduct(product);
+    setIsQuickViewOpen(true);
+  }, []);
 
   // Helper to parse weight/volume from product name
   const parseProductUnit = (name) => {
@@ -494,15 +502,26 @@ function App() {
                 layout
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
               >
-                {filteredProducts.map(product => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    addToCart={addToCart}
-                    isAdminMode={isAdminMode}
-                    onUpdateImage={updateProductImage}
-                  />
-                ))}
+                <AnimatePresence mode="popLayout">
+                  {filteredProducts.map(product => (
+                    <motion.div
+                      key={product.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.25 }}
+                    >
+                      <ProductCard
+                        product={product}
+                        addToCart={addToCart}
+                        isAdminMode={isAdminMode}
+                        onUpdateImage={updateProductImage}
+                        onViewDetails={handleViewDetails}
+                      />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </motion.div>
             ) : (
               <div className="text-center py-20 bg-white dark:bg-brand-card rounded-2xl shadow-sm">
@@ -599,6 +618,13 @@ function App() {
           setCartItems(items.map(item => ({ ...item })));
           setIsCartOpen(true);
         }}
+      />
+
+      <QuickViewModal
+        product={selectedProduct}
+        isOpen={isQuickViewOpen}
+        onClose={() => setIsQuickViewOpen(false)}
+        addToCart={addToCart}
       />
 
       {/* Admin Dashboard */}
