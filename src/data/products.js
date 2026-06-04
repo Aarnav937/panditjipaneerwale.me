@@ -680,7 +680,7 @@ export const products = [
     id: 108,
     name: "Amul Salted Butter (500g)",
     category: "Amul",
-    price: 21.50,
+    price: 22,
     image: "images/products/product-108.webp",
     description: "Classic salted butter."
   },
@@ -1276,4 +1276,20 @@ export const products = [
     image: "",
     description: "Crispy vegetable cutlets."
   },
+  {
+    id: 191,
+    name: "Sagar Pure Ghee (1L)",
+    category: "Amul",
+    price: 43,
+    image: "images/products/sagar-ghee-1l.webp",
+    description: "Pure traditional ghee."
+  },
+  {
+    id: 192,
+    name: "Everest Kasuri Methi",
+    category: "Spices",
+    price: 7,
+    image: "images/products/everest-kasuri-methi.webp",
+    description: "Dry fenugreek leaves."
+  }
 ];
