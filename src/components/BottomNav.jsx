@@ -2,7 +2,7 @@ import React from 'react';
 import { Home, ShoppingBag, ShoppingCart, Package, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const BottomNav = ({ cartCount, onCartClick, onOrderHistoryClick, onProfileClick, isLoggedIn }) => {
+const BottomNav = ({ cartCount, onCartClick, onProfileClick, isLoggedIn }) => {
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -20,8 +20,7 @@ const BottomNav = ({ cartCount, onCartClick, onOrderHistoryClick, onProfileClick
     const navItems = [
         { icon: Home, label: 'Home', action: scrollToTop },
         { icon: ShoppingBag, label: 'Products', action: scrollToProducts },
-        { icon: ShoppingCart, label: 'Cart', action: onCartClick, badge: cartCount },
-        { icon: Package, label: 'Orders', action: onOrderHistoryClick },
+        { icon: ShoppingCart, label: 'Bag', action: onCartClick, badge: cartCount },
         { icon: User, label: isLoggedIn ? 'Profile' : 'Login', action: onProfileClick },
     ];
 

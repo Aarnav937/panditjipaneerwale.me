@@ -12,11 +12,9 @@ import QuickViewModal from './components/QuickViewModal';
 import Cart from './components/Cart';
 import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
-import OrderHistory from './components/OrderHistory';
 import Toast from './components/Toast';
 import BottomNav from './components/BottomNav';
 import AdminDashboard from './components/admin/AdminDashboard';
-import Wishlist from './components/Wishlist';
 import AuthModal from './components/AuthModal';
 import OurStore from './components/OurStore';
 import { products as initialProducts, categories } from './data/products';
@@ -65,9 +63,7 @@ function App() {
   });
 
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
   const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState(false);
-  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
@@ -387,8 +383,6 @@ function App() {
       <Navbar
         cartCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
         setIsCartOpen={setIsCartOpen}
-        setIsOrderHistoryOpen={setIsOrderHistoryOpen}
-        setIsWishlistOpen={setIsWishlistOpen}
         setIsAdminDashboardOpen={setIsAdminDashboardOpen}
         setIsAuthModalOpen={setIsAuthModalOpen}
         isLoggedIn={isLoggedIn}
@@ -609,11 +603,7 @@ function App() {
         removeFromCart={removeFromCart}
         updateQuantity={updateQuantity}
         onOrderPlaced={() => setCartItems([])}
-      />
-
-      <OrderHistory
-        isOpen={isOrderHistoryOpen}
-        onClose={() => setIsOrderHistoryOpen(false)}
+        onAddToCart={addToCart}
         onReorder={(items) => {
           setCartItems(items.map(item => ({ ...item })));
           setIsCartOpen(true);
@@ -631,13 +621,6 @@ function App() {
       <AdminDashboard
         isOpen={isAdminDashboardOpen}
         onClose={() => setIsAdminDashboardOpen(false)}
-      />
-
-      {/* Wishlist */}
-      <Wishlist
-        isOpen={isWishlistOpen}
-        onClose={() => setIsWishlistOpen(false)}
-        onAddToCart={addToCart}
       />
 
       {/* Auth Modal */}
@@ -659,7 +642,6 @@ function App() {
       <BottomNav
         cartCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
         onCartClick={() => setIsCartOpen(true)}
-        onOrderHistoryClick={() => setIsOrderHistoryOpen(true)}
         onProfileClick={() => setIsAuthModalOpen(true)}
         isLoggedIn={isLoggedIn}
       />

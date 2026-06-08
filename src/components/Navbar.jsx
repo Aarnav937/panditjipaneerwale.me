@@ -2,15 +2,13 @@ import React from 'react';
 import { ShoppingCart, Search, Menu, X, Moon, Sun, Package, Languages, Heart, Settings2, User, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
-import { useWishlist } from '../context/WishlistContext';
 import { useAdmin } from '../context/AdminContext';
 import NotificationBell from './NotificationBell';
 
-const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, setIsWishlistOpen, setIsAdminDashboardOpen, setIsAuthModalOpen, isLoggedIn, customerName, onLogout, searchQuery, setSearchQuery, isDarkMode, toggleTheme, cartPulse }) => {
+const Navbar = ({ cartCount, setIsCartOpen, setIsAdminDashboardOpen, setIsAuthModalOpen, isLoggedIn, customerName, onLogout, searchQuery, setSearchQuery, isDarkMode, toggleTheme, cartPulse }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [showUserMenu, setShowUserMenu] = React.useState(false);
   const { language, toggleLanguage, t } = useLanguage();
-  const { wishlistCount } = useWishlist();
   const { isAdmin } = useAdmin();
 
   return (
@@ -65,33 +63,6 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, setIsWishlist
             {/* Notification Bell */}
             {isLoggedIn && <NotificationBell />}
 
-            {/* Order History Button */}
-            <button
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition hover:scale-110"
-              onClick={() => setIsOrderHistoryOpen(true)}
-              title={t('orderHistory')}
-            >
-              <Package className="w-6 h-6" />
-            </button>
-
-            {/* Wishlist Button */}
-            <button
-              className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition hover:scale-110"
-              onClick={() => setIsWishlistOpen(true)}
-              title="Wishlist"
-            >
-              <Heart className="w-6 h-6" />
-              {wishlistCount > 0 && (
-                <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"
-                >
-                  {wishlistCount}
-                </motion.span>
-              )}
-            </button>
-
             {/* Admin Dashboard Button - Only visible when logged in as admin */}
             {isAdmin && (
               <button
@@ -103,52 +74,77 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, setIsWishlist
               </button>
             )}
 
-            {/* User Login/Profile Button */}
+            {/* User Account / Profile Button */}
             <div className="relative">
-              {isLoggedIn ? (
-                <>
-                  <button
-                    onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="p-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-110 transition-all shadow-lg flex items-center gap-1"
-                    title={customerName || 'Profile'}
+              <button
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                className={`p-2 rounded-full hover:scale-110 transition-all ${
+                  isLoggedIn
+                    ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg'
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
+                }`}
+                title="Account Menu"
+              >
+                <User className="w-6 h-6" />
+              </button>
+              
+              <AnimatePresence>
+                {showUserMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    className="absolute right-0 top-12 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden min-w-[220px] z-50 py-1"
                   >
-                    <User className="w-5 h-5" />
-                  </button>
-                  <AnimatePresence>
-                    {showUserMenu && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                        className="absolute right-0 top-12 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden min-w-[180px] z-50"
-                      >
-                        <div className="p-4 border-b border-gray-100 dark:border-gray-700">
-                          <p className="text-sm text-gray-500">Logged in as</p>
-                          <p className="font-bold text-gray-900 dark:text-white truncate">{customerName || 'User'}</p>
-                        </div>
+                    {/* Header Section */}
+                    {isLoggedIn ? (
+                      <div className="p-4 border-b border-gray-100 dark:border-gray-700">
+                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Logged in as</p>
+                        <p className="font-bold text-gray-900 dark:text-white truncate">{customerName || 'User'}</p>
+                      </div>
+                    ) : (
+                      <div className="p-4 border-b border-gray-100 dark:border-gray-700">
                         <button
                           onClick={() => {
-                            onLogout?.();
+                            setIsAuthModalOpen(true);
                             setShowUserMenu(false);
                           }}
-                          className="w-full px-4 py-3 text-left text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2 transition-colors"
+                          className="w-full py-2 px-4 rounded-xl bg-gradient-to-r from-brand-saffron to-brand-orange text-white font-bold text-sm shadow hover:shadow-lg transition text-center"
                         >
-                          <LogOut className="w-4 h-4" />
-                          Logout
+                          Login / Sign Up
                         </button>
-                      </motion.div>
+                      </div>
                     )}
-                  </AnimatePresence>
-                </>
-              ) : (
-                <button
-                  onClick={() => setIsAuthModalOpen(true)}
-                  className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition hover:scale-110"
-                  title="Login"
-                >
-                  <User className="w-6 h-6" />
-                </button>
-              )}
+
+                    <div className="py-1">
+                      <button
+                        onClick={() => {
+                          setIsCartOpen(true);
+                          setShowUserMenu(false);
+                        }}
+                        className="w-full px-4 py-2.5 text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50 flex items-center gap-2 transition-colors text-sm"
+                      >
+                        <ShoppingCart className="w-4 h-4 text-gray-500" />
+                        <span>View Bag & Orders</span>
+                      </button>
+                    </div>
+
+                    {/* Footer Section */}
+                    {isLoggedIn && (
+                      <button
+                        onClick={() => {
+                          onLogout?.();
+                          setShowUserMenu(false);
+                        }}
+                        className="w-full px-4 py-3 text-left text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 border-t border-gray-100 dark:border-gray-700 flex items-center gap-2 transition-colors text-sm font-semibold"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Logout
+                      </button>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <button
@@ -270,15 +266,9 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsOrderHistoryOpen, setIsWishlist
                   </a>
                   <button
                     className="text-left px-4 py-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium flex items-center gap-3"
-                    onClick={() => { setIsOrderHistoryOpen(true); setIsMobileMenuOpen(false); }}
+                    onClick={() => { setIsCartOpen(true); setIsMobileMenuOpen(false); }}
                   >
-                    <Package size={18} /> {t('orderHistory')}
-                  </button>
-                  <button
-                    className="text-left px-4 py-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium flex items-center gap-3"
-                    onClick={() => { setIsWishlistOpen(true); setIsMobileMenuOpen(false); }}
-                  >
-                    <Heart size={18} /> Wishlist
+                    <ShoppingCart size={18} /> View Bag & Orders
                   </button>
                   {isAdmin && (
                     <button
