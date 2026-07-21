@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, Plus } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useWishlist } from '../context/WishlistContext';
 
-// Fallback image as data URI (simple product placeholder)
-const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23f3f4f6' width='300' height='200'/%3E%3Ctext x='150' y='95' text-anchor='middle' fill='%239ca3af' font-family='sans-serif' font-size='14'%3EProduct Image%3C/text%3E%3Cpath d='M130 110 L150 90 L170 110 L160 110 L160 130 L140 130 L140 110 Z' fill='%23d1d5db'/%3E%3C/svg%3E";
+const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23FFF6F0' width='300' height='200'/%3E%3Ctext x='150' y='100' text-anchor='middle' fill='%23D4AF37' font-family='sans-serif' font-size='13'%3EProduct%3C/text%3E%3C/svg%3E";
 
 const ProductCard = ({ product, addToCart, onViewDetails }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -12,97 +11,73 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
   const { t } = useLanguage();
   const { isInWishlist, toggleWishlist } = useWishlist();
 
-  // Guard clause in case product data is missing
   if (!product) return null;
 
   const isWishlisted = isInWishlist(product.id);
-
-  // Determine the image source - use fallback if error or if it's a placeholder URL
   const imageSrc = imageError || product.image?.includes('placeholder')
     ? FALLBACK_IMAGE
     : product.image;
-
-  // Check if product is available
   const isAvailable = product.is_available !== false && (product.stock_quantity === undefined || product.stock_quantity > 0);
 
   return (
-    <div 
+    <div
       onClick={() => onViewDetails && onViewDetails(product)}
-      className={`group relative bg-[#FFFDF0] dark:bg-brand-card border border-brand-gold/25 dark:border-brand-gold/15 rounded-2xl shadow-gold-glow shadow-md hover:shadow-gold-glow-hover overflow-hidden transition-all duration-300 hover:-translate-y-1.5 cursor-pointer ${!isAvailable ? 'opacity-75' : ''}`}
+      className={`group relative flex flex-col bg-white dark:bg-brand-card border border-brand-border/80 dark:border-gray-800 rounded-2xl shadow-soft hover:shadow-soft-hover overflow-hidden transition-all duration-300 cursor-pointer ${!isAvailable ? 'opacity-70' : ''}`}
     >
-      {/* Decorative Gold Header Bar */}
-      <div className="h-1 bg-gradient-to-r from-brand-gold/50 via-brand-saffron to-brand-gold/50" />
+      {/* Quiet gold → saffron accent */}
+      <div className="accent-gold-line opacity-70" />
 
-      {/* Image Container with Gradient Overlay */}
-      <div className="relative h-52 w-full bg-gradient-to-b from-[#FFFDF9] to-[#FFF5E6] dark:from-brand-card dark:to-gray-800 p-4 overflow-hidden">
-        <div className="absolute inset-0 bg-brand-saffron/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-        {/* Skeleton Loader - shows while image is loading */}
+      {/* Image plate — flat cream helps uneven photos look intentional */}
+      <div className="relative h-48 sm:h-52 w-full image-plate overflow-hidden">
         {!imageLoaded && (
-          <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse" />
+          <div className="absolute inset-0 bg-brand-saffronLight/80 dark:bg-gray-800 animate-pulse" />
         )}
 
         <img
           src={imageSrc}
           alt={product.name}
-          className={`w-full h-full object-contain drop-shadow-md transform group-hover:scale-110 transition-all duration-500 ease-out ${imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
+          className={`relative z-[1] w-full h-full object-contain p-4 transition-all duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'} group-hover:scale-[1.03]`}
           onLoad={() => setImageLoaded(true)}
           onError={() => { setImageError(true); setImageLoaded(true); }}
         />
 
-        {/* Wishlist Heart Button */}
         <button
           onClick={(e) => {
             e.stopPropagation();
             toggleWishlist(product.id);
           }}
-          className={`absolute top-3 left-3 p-2 rounded-full shadow-md transition-all duration-200 ${isWishlisted
-              ? 'bg-red-500 text-white scale-110'
-              : 'bg-white dark:bg-gray-800 text-gray-400 hover:text-red-500 hover:scale-110'
+          aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+          className={`absolute top-3 left-3 z-10 p-2 rounded-full shadow-soft transition-all duration-200 ${isWishlisted
+            ? 'bg-brand-saffron text-white'
+            : 'bg-white/95 dark:bg-gray-800 text-gray-400 hover:text-brand-saffron'
             }`}
         >
-          <Heart className="w-5 h-5" fill={isWishlisted ? 'currentColor' : 'none'} />
+          <Heart className="w-4 h-4" fill={isWishlisted ? 'currentColor' : 'none'} />
         </button>
 
-        {/* Category Badge */}
-        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <span className="bg-brand-saffron/10 text-brand-saffron dark:bg-brand-saffron/20 border border-brand-saffron/20 text-xs font-bold px-2 py-1 rounded-full shadow">
-            {product.category || 'Fresh'}
-          </span>
-        </div>
-
-        {/* Quick View Tag on Hover */}
-        <div className="absolute bottom-2 left-0 right-0 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <span className="bg-black/70 text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full backdrop-blur-sm border border-white/20">
-            Quick View
-          </span>
-        </div>
-
-        {/* Out of Stock Badge */}
         {!isAvailable && (
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-            <span className="bg-red-500 text-white px-4 py-2 rounded-full font-bold text-sm">
+          <div className="absolute inset-0 z-10 bg-black/45 flex items-center justify-center">
+            <span className="bg-brand-saffron text-white px-3 py-1.5 rounded-full font-semibold text-xs tracking-wide">
               Out of Stock
             </span>
           </div>
         )}
       </div>
 
-      <div className="p-5 flex flex-col flex-grow relative bg-[#FFFDF9] dark:bg-brand-card">
-        <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-1 leading-tight line-clamp-2 group-hover:text-brand-saffron transition-colors">
+      <div className="p-4 flex flex-col flex-grow gap-2">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-brand-goldDark dark:text-brand-gold">
+          {product.category || 'Fresh'}
+        </p>
+
+        <h3 className="text-base font-semibold text-brand-charcoal dark:text-white leading-snug line-clamp-2 min-h-[2.5rem]">
           {product.name}
         </h3>
 
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">
-          {product.description || 'Premium quality product'}
-        </p>
-
-        <div className="mt-auto flex items-center justify-between gap-3">
-          <div className="flex flex-col">
-            <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">Price</span>
-            <span className="text-xl font-black text-brand-saffron">
-              AED {product.price}
+        <div className="mt-auto pt-3 flex items-center justify-between gap-3">
+          <div>
+            <span className="block text-[10px] uppercase tracking-wider text-brand-muted font-medium">AED</span>
+            <span className="text-xl font-bold text-brand-saffron tabular-nums">
+              {product.price}
             </span>
           </div>
 
@@ -112,16 +87,19 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
               addToCart(product);
             }}
             disabled={!isAvailable}
-            className={`flex-1 font-bold py-2.5 px-4 rounded-xl shadow-lg transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 ${isAvailable
-                ? 'bg-gradient-to-r from-brand-saffron to-brand-orange hover:from-brand-saffron hover:to-red-500 text-white shadow-saffron/30 hover:shadow-saffron/50'
-                : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+            aria-label={isAvailable ? `Add ${product.name} to cart` : 'Unavailable'}
+            className={`inline-flex items-center justify-center gap-1.5 min-w-[7.5rem] font-semibold py-2.5 px-4 rounded-xl transition-all duration-200 active:scale-[0.97] ${isAvailable
+              ? 'bg-brand-orange hover:bg-brand-dark text-white shadow-sm'
+              : 'bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed'
               }`}
           >
-            <span>{isAvailable ? t('add') : 'Unavailable'}</span>
-            {isAvailable && (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-              </svg>
+            {isAvailable ? (
+              <>
+                <Plus className="w-4 h-4" strokeWidth={2.5} />
+                <span>{t('add')}</span>
+              </>
+            ) : (
+              <span>Unavailable</span>
             )}
           </button>
         </div>

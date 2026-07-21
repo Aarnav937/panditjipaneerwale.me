@@ -38,111 +38,98 @@ const QuickViewModal = ({ product, isOpen, onClose, addToCart }) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 180 }}
-            className="relative w-full max-w-4xl bg-[#FFFDF9] dark:bg-[#1A1A1A] rounded-3xl overflow-hidden shadow-2xl border-2 border-brand-gold/30 dark:border-brand-gold/20 flex flex-col md:flex-row z-10 max-h-[90vh] md:max-h-[80vh]"
+            className="relative w-full max-w-3xl bg-white dark:bg-brand-card rounded-2xl overflow-hidden shadow-soft-hover border border-brand-border dark:border-gray-700 flex flex-col md:flex-row z-10 max-h-[90vh] md:max-h-[80vh]"
           >
-            {/* Traditional Indian Top Gold-Saffron Border */}
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-brand-gold via-brand-saffron to-brand-gold" />
+            <div className="absolute top-0 left-0 right-0 accent-gold-line" />
 
-            {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-20 p-2 rounded-full bg-white/80 dark:bg-black/60 text-gray-700 dark:text-gray-300 hover:text-brand-saffron hover:scale-110 active:scale-95 transition-all shadow-md"
+              className="absolute top-3 right-3 z-20 p-2 rounded-full bg-white/90 dark:bg-black/50 text-brand-muted hover:text-brand-saffron transition-all shadow-soft"
+              aria-label="Close"
             >
               <X className="w-5 h-5" />
             </button>
 
-            {/* Left: Product Image Section */}
-            <div className="relative w-full md:w-1/2 bg-gradient-to-b from-[#FFFDF0] to-[#FFF9EE] dark:from-[#242424] dark:to-[#1E1E1E] p-8 flex items-center justify-center min-h-[300px] md:min-h-full">
-              <div className="absolute inset-0 opacity-5 dark:opacity-10 bg-no-repeat bg-center bg-cover heritage-motif pointer-events-none" />
-              
+            <div className="relative w-full md:w-1/2 image-plate p-6 flex items-center justify-center min-h-[240px] md:min-h-full border-b md:border-b-0 md:border-r border-brand-border/60 dark:border-gray-800">
               <motion.img
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.1 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.05 }}
                 src={imageSrc}
                 alt={product.name}
-                className="max-h-[260px] md:max-h-[380px] w-auto object-contain drop-shadow-2xl"
+                className="max-h-[220px] md:max-h-[320px] w-auto object-contain"
               />
 
-              {/* Wishlist button */}
               <button
                 onClick={() => toggleWishlist(product.id)}
-                className={`absolute bottom-6 left-6 p-3 rounded-full shadow-lg transition-all duration-300 ${
+                className={`absolute bottom-4 left-4 p-2.5 rounded-full shadow-soft transition-all ${
                   isWishlisted
-                    ? 'bg-red-500 text-white scale-110'
-                    : 'bg-white dark:bg-gray-800 text-gray-400 hover:text-red-500 hover:scale-110'
+                    ? 'bg-brand-saffron text-white'
+                    : 'bg-white dark:bg-gray-800 text-gray-400 hover:text-brand-saffron'
                 }`}
+                aria-label="Wishlist"
               >
-                <Heart className="w-6 h-6" fill={isWishlisted ? 'currentColor' : 'none'} />
+                <Heart className="w-5 h-5" fill={isWishlisted ? 'currentColor' : 'none'} />
               </button>
 
-              {/* Category Badge */}
-              <span className="absolute bottom-6 right-6 bg-brand-saffron/10 text-brand-saffron dark:bg-brand-saffron/20 dark:text-brand-saffron font-extrabold text-xs px-3.5 py-1.5 rounded-full border border-brand-saffron/20">
+              <span className="absolute bottom-4 right-4 bg-white/95 dark:bg-gray-900/90 text-brand-goldDark dark:text-brand-gold font-semibold text-[11px] uppercase tracking-wide px-2.5 py-1 rounded-full border border-brand-gold/25">
                 {product.category || 'Fresh'}
               </span>
             </div>
 
-            {/* Right: Info Section */}
-            <div className="w-full md:w-1/2 p-6 sm:p-8 flex flex-col justify-between overflow-y-auto">
+            <div className="w-full md:w-1/2 p-5 sm:p-6 flex flex-col justify-between overflow-y-auto">
               <div className="space-y-4">
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white leading-tight">
+                  <h2 className="text-xl sm:text-2xl font-bold text-brand-charcoal dark:text-white leading-tight">
                     {product.name}
                   </h2>
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="text-sm font-semibold text-brand-goldDark dark:text-brand-gold flex items-center gap-1">
-                      <Award className="w-4 h-4" /> 100% Pure & Authentic
+                  <div className="flex flex-wrap items-center gap-2 mt-2 text-xs">
+                    <span className="font-medium text-brand-goldDark dark:text-brand-gold flex items-center gap-1">
+                      <Award className="w-3.5 h-3.5" /> Pure & authentic
                     </span>
-                    <span className="text-gray-300 dark:text-gray-600">|</span>
-                    <span className="text-sm font-semibold text-green-600 dark:text-green-400 flex items-center gap-1">
-                      <Leaf className="w-4 h-4" /> Natural Ingredients
+                    <span className="text-brand-border">·</span>
+                    <span className="font-medium text-green-700 dark:text-green-400 flex items-center gap-1">
+                      <Leaf className="w-3.5 h-3.5" /> Quality ingredients
                     </span>
                   </div>
                 </div>
 
-                <div className="border-t border-b border-gray-100 dark:border-gray-800 py-3 flex items-center justify-between">
+                <div className="border-t border-b border-brand-border/70 dark:border-gray-800 py-3 flex items-center justify-between">
                   <div>
-                    <span className="text-xs text-gray-400 font-medium uppercase tracking-wider block">Price</span>
-                    <span className="text-3xl font-black text-brand-saffron">
+                    <span className="text-[10px] text-brand-muted font-medium uppercase tracking-wider block">Price</span>
+                    <span className="text-2xl font-bold text-brand-saffron tabular-nums">
                       AED {product.price}
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="text-xs text-gray-400 font-medium uppercase tracking-wider block">Availability</span>
-                    <span className={`text-sm font-bold ${isAvailable ? 'text-green-600 dark:text-green-400' : 'text-red-500'}`}>
-                      {isAvailable ? 'In Stock' : 'Out of Stock'}
+                    <span className="text-[10px] text-brand-muted font-medium uppercase tracking-wider block">Status</span>
+                    <span className={`text-sm font-semibold ${isAvailable ? 'text-green-600 dark:text-green-400' : 'text-brand-saffron'}`}>
+                      {isAvailable ? 'In stock' : 'Out of stock'}
                     </span>
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <h4 className="text-xs text-gray-400 font-semibold uppercase tracking-wider flex items-center gap-1">
-                    <Info className="w-4 h-4" /> Description
+                <div className="space-y-1.5">
+                  <h4 className="text-[10px] text-brand-muted font-semibold uppercase tracking-wider flex items-center gap-1">
+                    <Info className="w-3.5 h-3.5" /> Description
                   </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                    {product.description || 'Experience premium, high-quality ingredients sourced and packaged with absolute care to bring you the best culinary taste.'}
-                  </p>
-                </div>
-
-                <div className="bg-[#FFFDF0] dark:bg-[#252525] p-4 rounded-2xl border border-brand-gold/20 flex gap-3 text-xs text-gray-500 dark:text-gray-400">
-                  <div className="w-2 h-2 rounded-full bg-brand-gold mt-1 flex-shrink-0" />
-                  <p>
-                    Storage Instructions: Keep refrigerated to retain freshness and aroma. Serve chilled or use straight in cooking for traditional texture.
+                  <p className="text-sm text-brand-muted dark:text-gray-300 leading-relaxed">
+                    {product.description || 'Premium quality product for your kitchen.'}
                   </p>
                 </div>
               </div>
 
-              <div className="mt-8 flex gap-3">
+              <div className="mt-6">
                 <button
                   onClick={() => {
                     addToCart(product);
                     onClose();
                   }}
                   disabled={!isAvailable}
-                  className={`flex-1 font-bold py-3.5 px-6 rounded-2xl shadow-lg transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 ${
+                  className={`w-full font-semibold py-3 px-5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 active:scale-[0.98] ${
                     isAvailable
-                      ? 'bg-gradient-to-r from-brand-saffron to-brand-orange hover:from-brand-saffron hover:to-red-500 text-white shadow-saffron/30 hover:shadow-saffron/50'
-                      : 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                      ? 'bg-brand-orange hover:bg-brand-dark text-white shadow-sm'
+                      : 'bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed'
                   }`}
                 >
                   <ShoppingBag className="w-5 h-5" />

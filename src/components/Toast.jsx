@@ -20,9 +20,9 @@ const Toast = ({ show, message, onClose, onUndo, duration = 3000 }) => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 20, scale: 0.9 }}
                     transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                    className="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm"
+                    className="fixed bottom-36 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm"
                 >
-                    <div className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-gray-700 dark:border-gray-200">
+                    <div className="bg-brand-charcoal dark:bg-white text-white dark:text-brand-charcoal px-4 py-3 rounded-2xl shadow-soft-hover flex items-center gap-3 border border-brand-gold/20 dark:border-brand-border">
                         {/* Success Icon with pulse animation */}
                         <motion.div
                             initial={{ scale: 0 }}

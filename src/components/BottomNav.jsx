@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, ShoppingBag, ShoppingCart, Package, User } from 'lucide-react';
+import { Home, ShoppingBag, ShoppingCart, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const BottomNav = ({ cartCount, onCartClick, onProfileClick, isLoggedIn }) => {
@@ -19,8 +19,8 @@ const BottomNav = ({ cartCount, onCartClick, onProfileClick, isLoggedIn }) => {
 
     const navItems = [
         { icon: Home, label: 'Home', action: scrollToTop },
-        { icon: ShoppingBag, label: 'Products', action: scrollToProducts },
-        { icon: ShoppingCart, label: 'Bag', action: onCartClick, badge: cartCount },
+        { icon: ShoppingBag, label: 'Shop', action: scrollToProducts },
+        { icon: ShoppingCart, label: 'Cart', action: onCartClick, badge: cartCount },
         { icon: User, label: isLoggedIn ? 'Profile' : 'Login', action: onProfileClick },
     ];
 
@@ -28,32 +28,31 @@ const BottomNav = ({ cartCount, onCartClick, onProfileClick, isLoggedIn }) => {
         <motion.nav
             initial={{ y: 100 }}
             animate={{ y: 0 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg border-t border-gray-200 dark:border-gray-700 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] safe-area-bottom"
+            transition={{ type: 'spring', damping: 28, stiffness: 240 }}
+            className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-brand-darker/95 backdrop-blur-lg border-t border-brand-border dark:border-gray-800 shadow-bar safe-area-bottom"
         >
-            <div className="flex justify-around items-center py-2 px-4">
-                {navItems.map((item, index) => (
+            <div className="flex justify-around items-center py-1.5 px-2">
+                {navItems.map((item) => (
                     <button
                         key={item.label}
                         onClick={item.action}
-                        className="flex flex-col items-center gap-0.5 p-2 min-w-[60px] group relative"
+                        className="flex flex-col items-center gap-0.5 p-2 min-w-[64px] group relative"
                     >
                         <div className="relative">
                             <item.icon
-                                className="w-6 h-6 text-gray-600 dark:text-gray-400 group-hover:text-brand-orange group-active:scale-90 transition-all"
+                                className="w-5 h-5 text-brand-muted group-hover:text-brand-orange group-active:scale-90 transition-all"
                             />
-                            {/* Badge for cart count */}
                             {item.badge > 0 && (
                                 <motion.span
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
-                                    className="absolute -top-2 -right-2 bg-brand-orange text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1"
+                                    className="absolute -top-1.5 -right-2 bg-brand-orange text-white text-[9px] font-bold rounded-full min-w-[16px] h-4 flex items-center justify-center px-1"
                                 >
                                     {item.badge > 99 ? '99+' : item.badge}
                                 </motion.span>
                             )}
                         </div>
-                        <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-brand-orange transition-colors">
+                        <span className="text-[10px] font-medium text-brand-muted group-hover:text-brand-orange transition-colors">
                             {item.label}
                         </span>
                     </button>

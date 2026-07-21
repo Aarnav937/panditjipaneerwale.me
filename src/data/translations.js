@@ -33,7 +33,7 @@ export const translations = {
         delivery: "Delivery",
         total: "Total",
         free: "Free",
-        checkoutWhatsApp: "Checkout via WhatsApp",
+        checkoutWhatsApp: "Place order on WhatsApp",
         secureCheckout: "Secure checkout powered by WhatsApp",
 
         // Checkout Form
@@ -97,7 +97,7 @@ export const translations = {
         delivery: "التوصيل",
         total: "المجموع",
         free: "مجاني",
-        checkoutWhatsApp: "إتمام الشراء عبر واتساب",
+        checkoutWhatsApp: "اطلب عبر واتساب",
         secureCheckout: "دفع آمن عبر واتساب",
 
         // Checkout Form

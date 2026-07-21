@@ -14,6 +14,7 @@ import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 import Toast from './components/Toast';
 import BottomNav from './components/BottomNav';
+import MobileCartBar from './components/MobileCartBar';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AuthModal from './components/AuthModal';
 import OurStore from './components/OurStore';
@@ -375,13 +376,21 @@ function App() {
     }
   };
 
+  const cartCount = React.useMemo(
+    () => cartItems.reduce((sum, item) => sum + item.quantity, 0),
+    [cartItems]
+  );
+  const cartTotal = React.useMemo(
+    () => cartItems.reduce((sum, item) => sum + (Number(item.price) || 0) * item.quantity, 0),
+    [cartItems]
+  );
+
   return (
-    <div className="min-h-screen flex flex-col transition-colors duration-300 font-sans relative">
-      {/* Fixed Background for Performance */}
+    <div className="min-h-screen flex flex-col transition-colors duration-300 font-sans relative text-brand-charcoal">
       <div className="fixed inset-0 z-[-1] bg-fixed-gradient pointer-events-none" />
 
       <Navbar
-        cartCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+        cartCount={cartCount}
         setIsCartOpen={setIsCartOpen}
         setIsAdminDashboardOpen={setIsAdminDashboardOpen}
         setIsAuthModalOpen={setIsAuthModalOpen}
@@ -400,193 +409,144 @@ function App() {
           <motion.div
             initial={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
           >
             <Hero />
           </motion.div>
         )}
       </AnimatePresence>
 
-      <main className="flex-1 container mx-auto px-4 py-12" id="products">
-
-        {/* Mobile Category Scrolling with Scroll Indicators */}
-        <div className="md:hidden mb-8 sticky top-20 z-40 bg-white/80 dark:bg-brand-darker/80 backdrop-blur-md py-4 -mx-4 px-4 border-b border-gray-200 dark:border-gray-700">
+      <main className="flex-1 container mx-auto px-4 py-8 md:py-10" id="products">
+        {/* Category chips — mobile sticky + desktop row (no heavy sidebar) */}
+        <div className="sticky top-[6.75rem] md:top-[3.5rem] z-40 -mx-4 px-4 py-3 mb-6 bg-[#FFFDF9]/95 dark:bg-brand-darker/95 backdrop-blur-md border-b border-brand-border/70 dark:border-gray-800">
           <div className="relative">
-            {/* Left Fade + Arrow */}
-            <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white dark:from-brand-darker to-transparent z-10 pointer-events-none flex items-center">
-              <div className="w-6 h-6 bg-white dark:bg-brand-card rounded-full shadow-md flex items-center justify-center ml-1 pointer-events-auto opacity-70">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </div>
-            </div>
-
-            {/* Scrollable Categories */}
-            <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1 px-8">
+            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-[#FFFDF9] dark:from-brand-darker to-transparent z-10 md:hidden" />
+            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-[#FFFDF9] dark:from-brand-darker to-transparent z-10 md:hidden" />
+            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-0.5 md:flex-wrap md:overflow-visible">
               {sortedCategories.map(category => (
                 <button
                   key={category}
                   onClick={(e) => handleCategoryChange(category, e)}
-                  className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-bold transition-all duration-200 border ${selectedCategory === category
-                    ? 'bg-brand-orange text-white border-brand-orange shadow-md transform scale-105'
-                    : 'bg-white dark:bg-brand-card text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-brand-orange'
-                    }`}
+                  className={`chip ${selectedCategory === category ? 'chip-active' : 'chip-idle'}`}
                 >
                   {t(category)}
                 </button>
               ))}
             </div>
-
-            {/* Right Fade + Arrow */}
-            <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white dark:from-brand-darker to-transparent z-10 pointer-events-none flex items-center justify-end">
-              <div className="w-6 h-6 bg-white dark:bg-brand-card rounded-full shadow-md flex items-center justify-center mr-1 pointer-events-auto opacity-70">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </div>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-8">
-          {/* Sidebar Filters - Desktop Only */}
-          <aside className="hidden md:block w-64 flex-shrink-0">
-            <div className="bg-white dark:bg-brand-card p-6 rounded-2xl shadow-lg sticky top-24 transition-colors duration-300">
-              <h3 className="font-bold text-xl mb-4 text-brand-dark dark:text-brand-orange">{t('categories')}</h3>
-              <div className="space-y-2">
-                {sortedCategories.map(category => (
-                  <button
-                    key={category}
-                    onClick={(e) => handleCategoryChange(category, e)}
-                    className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 ${selectedCategory === category
-                      ? 'bg-brand-orange text-white font-bold shadow-md transform scale-105'
-                      : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
-                      }`}
-                  >
-                    {t(category)}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </aside>
-
-          {/* Product Grid */}
-          <div className="flex-1">
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
-                {searchQuery ? (
-                  <>
-                    Results for "{searchQuery}"
-                    <button
-                      onClick={() => setSearchQuery('')}
-                      className="text-sm bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-gray-600 dark:text-gray-300"
-                    >
-                      Clear
-                    </button>
-                  </>
-                ) : (
-                  `${selectedCategory} Products`
-                )}
-                <span className="text-lg font-normal text-gray-500 dark:text-gray-400">({filteredProducts.length} items)</span>
-              </h2>
-            </div>
-
-            {filteredProducts.length > 0 ? (
-              <motion.div
-                layout
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-              >
-                <AnimatePresence mode="popLayout">
-                  {filteredProducts.map(product => (
-                    <motion.div
-                      key={product.id}
-                      layout
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.25 }}
-                    >
-                      <ProductCard
-                        product={product}
-                        addToCart={addToCart}
-                        isAdminMode={isAdminMode}
-                        onUpdateImage={updateProductImage}
-                        onViewDetails={handleViewDetails}
-                      />
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </motion.div>
-            ) : (
-              <div className="text-center py-20 bg-white dark:bg-brand-card rounded-2xl shadow-sm">
-                <p className="text-xl text-gray-500 dark:text-gray-400">No products found matching your criteria.</p>
+        <div className="flex justify-between items-end gap-3 mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-brand-charcoal dark:text-white flex flex-wrap items-baseline gap-2">
+            {searchQuery ? (
+              <>
+                <span>Results for “{searchQuery}”</span>
                 <button
-                  onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
-                  className="mt-4 text-brand-orange font-semibold hover:underline"
+                  onClick={() => setSearchQuery('')}
+                  className="text-xs font-semibold bg-white dark:bg-brand-card border border-brand-border dark:border-gray-700 px-2.5 py-1 rounded-full hover:border-brand-orange text-brand-muted"
                 >
-                  Clear Filters
+                  Clear
                 </button>
-              </div>
+              </>
+            ) : (
+              <span>{selectedCategory === 'All' ? 'All products' : selectedCategory}</span>
             )}
-          </div>
+            <span className="text-sm font-normal text-brand-muted">({filteredProducts.length})</span>
+          </h2>
         </div>
+
+        {filteredProducts.length > 0 ? (
+          <motion.div
+            layout
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5"
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredProducts.map(product => (
+                <motion.div
+                  key={product.id}
+                  layout
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ProductCard
+                    product={product}
+                    addToCart={addToCart}
+                    isAdminMode={isAdminMode}
+                    onUpdateImage={updateProductImage}
+                    onViewDetails={handleViewDetails}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        ) : (
+          <div className="text-center py-16 bg-white dark:bg-brand-card rounded-2xl border border-brand-border dark:border-gray-800 shadow-soft">
+            <p className="text-base text-brand-muted">No products found matching your criteria.</p>
+            <button
+              onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
+              className="mt-3 text-brand-orange font-semibold hover:underline text-sm"
+            >
+              Clear filters
+            </button>
+          </div>
+        )}
       </main>
 
       {!searchQuery && (
         <>
           <OurStore />
-          <section id="about" className="bg-white dark:bg-brand-card py-20 transition-colors duration-300">
+          <section id="about" className="py-12 md:py-14 border-t border-brand-border/60 dark:border-gray-800">
             <div className="container mx-auto px-4">
-              <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-4xl font-bold text-brand-dark dark:text-brand-orange mb-8">{t('aboutTitle')}</h2>
-                <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-12">
-                  We are dedicated to providing the freshest paneer and highest quality dairy products to our community.
-                  With a passion for authentic flavors and a commitment to excellence, we ensure that every product
-                  that reaches your kitchen is pure, fresh, and delicious.
+              <div className="max-w-3xl mx-auto text-center">
+                <h2 className="text-2xl md:text-3xl font-bold text-brand-charcoal dark:text-white mb-3">{t('aboutTitle')}</h2>
+                <div className="w-12 h-0.5 bg-brand-gold mx-auto mb-5 rounded-full" />
+                <p className="text-base text-brand-muted dark:text-gray-400 leading-relaxed mb-8">
+                  Fresh paneer, dairy and spices for your kitchen — pure ingredients, honest prices, free delivery across Abu Dhabi.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  <motion.div whileHover={{ y: -10 }} className="p-8 bg-brand-light dark:bg-gray-800 rounded-2xl shadow-sm">
-                    <h3 className="font-bold text-2xl mb-3 text-brand-orange">Freshness Guaranteed</h3>
-                    <p className="text-gray-600 dark:text-gray-400">Farm-fresh products delivered daily to ensure maximum quality.</p>
-                  </motion.div>
-                  <motion.div whileHover={{ y: -10 }} className="p-8 bg-brand-light dark:bg-gray-800 rounded-2xl shadow-sm">
-                    <h3 className="font-bold text-2xl mb-3 text-brand-orange">Authentic Taste</h3>
-                    <p className="text-gray-600 dark:text-gray-400">Traditional recipes and pure ingredients for that homemade feel.</p>
-                  </motion.div>
-                  <motion.div whileHover={{ y: -10 }} className="p-8 bg-brand-light dark:bg-gray-800 rounded-2xl shadow-sm">
-                    <h3 className="font-bold text-2xl mb-3 text-brand-orange">Fast Delivery</h3>
-                    <p className="text-gray-600 dark:text-gray-400">Quick and reliable delivery service to your doorstep.</p>
-                  </motion.div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {[
+                    { title: 'Freshness', body: 'Daily-ready dairy you can trust.' },
+                    { title: 'Authentic', body: 'Real flavours for home cooking.' },
+                    { title: 'Delivery', body: 'Free delivery in Abu Dhabi.' },
+                  ].map((card) => (
+                    <div key={card.title} className="p-5 bg-white dark:bg-brand-card rounded-2xl border border-brand-border/80 dark:border-gray-800 shadow-soft text-left sm:text-center">
+                      <h3 className="font-semibold text-base mb-1 text-brand-orange">{card.title}</h3>
+                      <p className="text-sm text-brand-muted dark:text-gray-400">{card.body}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </section>
 
-          <section id="contact" className="bg-brand-orange text-white py-20">
+          <section id="contact" className="bg-brand-charcoal text-white py-12 md:py-14 border-t border-brand-gold/25">
             <div className="container mx-auto px-4 text-center">
-              <h2 className="text-4xl font-bold mb-12">{t('getInTouch')}</h2>
-              <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
-                <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
-                  <div className="bg-white text-brand-orange p-6 rounded-full mb-6 shadow-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                  </div>
-                  <h3 className="font-bold text-2xl mb-2">Call Us</h3>
-                  <p className="text-lg">+971 52 467 6306</p>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
-                  <div className="bg-white text-brand-orange p-6 rounded-full mb-6 shadow-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                  </div>
-                  <h3 className="font-bold text-2xl mb-2">Visit Us</h3>
-                  <p className="text-lg">F9QJ+F6F Abu Dhabi<br />UAE</p>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
-                  <div className="bg-white text-brand-orange p-6 rounded-full mb-6 shadow-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                  </div>
-                  <h3 className="font-bold text-2xl mb-2">Email Us</h3>
-                  <p className="text-lg">rrc.inttrading@gmail.com</p>
-                </motion.div>
+              <h2 className="text-2xl md:text-3xl font-bold mb-2">{t('getInTouch')}</h2>
+              <p className="text-white/60 text-sm mb-8">Call, visit, or message us anytime</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+                <a href="tel:+971524676306" className="flex flex-col items-center p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-brand-gold/40 transition">
+                  <span className="w-11 h-11 rounded-full bg-brand-orange/20 text-brand-orange flex items-center justify-center mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  </span>
+                  <h3 className="font-semibold text-sm mb-1">Call</h3>
+                  <p className="text-sm text-white/80">+971 52 467 6306</p>
+                </a>
+                <div className="flex flex-col items-center p-5 rounded-2xl bg-white/5 border border-white/10">
+                  <span className="w-11 h-11 rounded-full bg-brand-gold/20 text-brand-gold flex items-center justify-center mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  </span>
+                  <h3 className="font-semibold text-sm mb-1">Visit</h3>
+                  <p className="text-sm text-white/80">F9QJ+F6F Abu Dhabi</p>
+                </div>
+                <a href="mailto:rrc.inttrading@gmail.com" className="flex flex-col items-center p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-brand-saffron/40 transition">
+                  <span className="w-11 h-11 rounded-full bg-brand-saffron/20 text-brand-saffron flex items-center justify-center mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                  </span>
+                  <h3 className="font-semibold text-sm mb-1">Email</h3>
+                  <p className="text-sm text-white/80 break-all">rrc.inttrading@gmail.com</p>
+                </a>
               </div>
             </div>
           </section>
@@ -594,7 +554,7 @@ function App() {
       )}
 
       <Footer />
-      <FloatingWhatsApp />
+      {!isCartOpen && <FloatingWhatsApp hasCartItems={cartCount > 0} />}
 
       <Cart
         isOpen={isCartOpen}
@@ -617,20 +577,17 @@ function App() {
         addToCart={addToCart}
       />
 
-      {/* Admin Dashboard */}
       <AdminDashboard
         isOpen={isAdminDashboardOpen}
         onClose={() => setIsAdminDashboardOpen(false)}
       />
 
-      {/* Auth Modal */}
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         onSuccess={() => setIsAuthModalOpen(false)}
       />
 
-      {/* Toast Notification */}
       <Toast
         show={showToast}
         message={toastMessage}
@@ -638,16 +595,27 @@ function App() {
         onUndo={undoAddToCart}
       />
 
-      {/* Mobile Bottom Navigation */}
-      <BottomNav
-        cartCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
-        onCartClick={() => setIsCartOpen(true)}
-        onProfileClick={() => setIsAuthModalOpen(true)}
-        isLoggedIn={isLoggedIn}
-      />
+      {/* Hide bottom chrome while bag is open so Place Order is never covered */}
+      {!isCartOpen && (
+        <>
+          <MobileCartBar
+            itemCount={cartCount}
+            total={cartTotal}
+            onOpenCart={() => setIsCartOpen(true)}
+          />
+          <BottomNav
+            cartCount={cartCount}
+            onCartClick={() => setIsCartOpen(true)}
+            onProfileClick={() => setIsAuthModalOpen(true)}
+            isLoggedIn={isLoggedIn}
+          />
+        </>
+      )}
 
-      {/* Spacer for bottom nav on mobile */}
-      <div className="md:hidden h-20" />
+      {/* Space for bottom nav + optional cart bar on mobile */}
+      {!isCartOpen && (
+        <div className={`md:hidden ${cartCount > 0 ? 'h-36' : 'h-20'}`} />
+      )}
     </div>
   );
 }

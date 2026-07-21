@@ -193,7 +193,7 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.5 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[80]"
             onClick={onClose}
           />
           <motion.div
@@ -201,18 +201,19 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 h-full w-full md:w-[450px] bg-white dark:bg-gray-900 z-50 shadow-2xl flex flex-col border-l border-gray-200 dark:border-gray-800"
+            className="fixed right-0 top-0 h-full w-full md:w-[420px] bg-white dark:bg-brand-card z-[90] shadow-soft-hover flex flex-col border-l border-brand-border dark:border-gray-800"
           >
             {/* Header */}
-            <div className="p-6 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 flex flex-col gap-4 sticky top-0 z-10">
+            <div className="p-4 sm:p-5 bg-white dark:bg-brand-card border-b border-brand-border/80 dark:border-gray-800 flex flex-col gap-3 sticky top-0 z-10">
+              <div className="accent-gold-line -mx-4 sm:-mx-5 mb-1 opacity-80" />
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                  <div className="bg-brand-orange/10 p-2 rounded-full">
-                    <ShoppingBag className="text-brand-orange w-6 h-6" />
+                  <div className="bg-brand-saffronLight dark:bg-brand-orange/15 p-2 rounded-xl">
+                    <ShoppingBag className="text-brand-orange w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">Your Bag</h2>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Manage items and orders</p>
+                    <h2 className="text-lg font-bold text-brand-charcoal dark:text-white">Your bag</h2>
+                    <p className="text-xs text-brand-muted">Cart, wishlist & orders</p>
                   </div>
                 </div>
                 <button
@@ -224,32 +225,32 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
               </div>
 
               {/* Tabs */}
-              <div className="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-xl">
+              <div className="flex bg-brand-cream dark:bg-gray-900 p-1 rounded-xl border border-brand-border/60 dark:border-gray-800">
                 <button 
                   onClick={() => setActiveTab('cart')} 
-                  className={`flex-1 py-2 flex justify-center items-center gap-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'cart' ? 'bg-white dark:bg-gray-700 text-brand-orange shadow-sm' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                  className={`flex-1 py-2 flex justify-center items-center gap-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all ${activeTab === 'cart' ? 'bg-white dark:bg-gray-800 text-brand-orange shadow-soft' : 'text-brand-muted hover:text-brand-charcoal dark:hover:text-gray-300'}`}
                 >
-                  <ShoppingBag size={16} /> Cart
-                  {cartItems.length > 0 && <span className="bg-brand-orange text-white text-[10px] px-1.5 py-0.5 rounded-full ml-1">{cartItems.length}</span>}
+                  <ShoppingBag size={15} /> Cart
+                  {cartItems.length > 0 && <span className="bg-brand-orange text-white text-[10px] px-1.5 py-0.5 rounded-full">{cartItems.length}</span>}
                 </button>
                 <button 
                   onClick={() => setActiveTab('wishlist')} 
-                  className={`flex-1 py-2 flex justify-center items-center gap-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'wishlist' ? 'bg-white dark:bg-gray-700 text-brand-orange shadow-sm' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                  className={`flex-1 py-2 flex justify-center items-center gap-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all ${activeTab === 'wishlist' ? 'bg-white dark:bg-gray-800 text-brand-orange shadow-soft' : 'text-brand-muted hover:text-brand-charcoal dark:hover:text-gray-300'}`}
                 >
-                  <Heart size={16} /> Wishlist
-                  {wishlistProducts.length > 0 && <span className="bg-brand-orange text-white text-[10px] px-1.5 py-0.5 rounded-full ml-1">{wishlistProducts.length}</span>}
+                  <Heart size={15} /> Saved
+                  {wishlistProducts.length > 0 && <span className="bg-brand-saffron text-white text-[10px] px-1.5 py-0.5 rounded-full">{wishlistProducts.length}</span>}
                 </button>
                 <button 
                   onClick={() => setActiveTab('orders')} 
-                  className={`flex-1 py-2 flex justify-center items-center gap-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'orders' ? 'bg-white dark:bg-gray-700 text-brand-orange shadow-sm' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                  className={`flex-1 py-2 flex justify-center items-center gap-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all ${activeTab === 'orders' ? 'bg-white dark:bg-gray-800 text-brand-orange shadow-soft' : 'text-brand-muted hover:text-brand-charcoal dark:hover:text-gray-300'}`}
                 >
-                  <Package size={16} /> Orders
+                  <Package size={15} /> Orders
                 </button>
               </div>
             </div>
 
             {/* Content Area */}
-            <div className="flex-1 overflow-y-auto p-6 overscroll-contain bg-gray-50 dark:bg-gray-900/50" style={{ overscrollBehavior: 'contain' }}>
+            <div className="flex-1 overflow-y-auto p-4 sm:p-5 overscroll-contain bg-brand-cream/50 dark:bg-black/20" style={{ overscrollBehavior: 'contain' }}>
               
               {/* CART CONTENT */}
               {activeTab === 'cart' && (
@@ -332,12 +333,15 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
                       ))}
                     </div>
 
-                    {/* Delivery Details */}
+                    {/* Delivery Details — no login required */}
                     <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800">
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
                         <Truck size={20} className="text-brand-orange" />
                         Delivery Details
                       </h3>
+                      <p className="text-xs text-brand-muted dark:text-gray-400 mb-4">
+                        No account needed. Fill these details and tap the green button below to place your order on WhatsApp.
+                      </p>
                       <div className="space-y-4 bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700">
                         <div>
                           <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('nameLabel')}</label>
@@ -389,7 +393,7 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
                     </div>
 
                     {/* Order Summary */}
-                    <div className="mt-6 mb-4">
+                    <div className="mt-6 mb-6">
                       <div className="space-y-3 bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700">
                         <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400">
                           <span>{t('subtotal')}</span>
@@ -398,6 +402,10 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
                         <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400">
                           <span>{t('delivery')}</span>
                           <span className="text-green-500 font-medium">{t('free')}</span>
+                        </div>
+                        <div className="flex justify-between text-base font-bold text-gray-900 dark:text-white pt-2 border-t border-gray-100 dark:border-gray-700">
+                          <span>Total</span>
+                          <span className="text-brand-saffron">AED {grandTotal}</span>
                         </div>
                       </div>
                     </div>
@@ -547,20 +555,25 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
               )}
             </div>
 
-            {/* Footers for each tab */}
+            {/* Sticky place-order footer — always above phone nav chrome */}
             {activeTab === 'cart' && cartItems.length > 0 && (
-              <div className="p-4 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 flex items-center gap-4">
-                 <div className="flex-shrink-0">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Total</p>
-                    <p className="text-xl font-bold text-gray-900 dark:text-white">AED {grandTotal}</p>
-                 </div>
-                 <button
-                   onClick={handleCheckout}
-                   className="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02] shadow-lg shadow-green-500/20"
-                 >
-                   <MessageCircle size={20} />
-                   <span>{t('checkoutWhatsApp')}</span>
-                 </button>
+              <div className="shrink-0 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] bg-white dark:bg-brand-card border-t border-brand-border dark:border-gray-800 shadow-[0_-8px_24px_rgba(0,0,0,0.12)]">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-brand-muted">Order total</span>
+                  <span className="text-lg font-bold text-brand-charcoal dark:text-white tabular-nums">AED {grandTotal}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleCheckout}
+                  disabled={isSubmitting}
+                  className="w-full bg-[#25D366] hover:bg-[#1ebe57] disabled:opacity-70 text-white py-3.5 px-4 rounded-xl font-bold text-base flex items-center justify-center gap-2 transition-colors shadow-md"
+                >
+                  <MessageCircle size={20} />
+                  <span>{isSubmitting ? 'Opening WhatsApp…' : 'Place order on WhatsApp'}</span>
+                </button>
+                <p className="text-[11px] text-center text-brand-muted mt-2">
+                  Login is optional · Opens WhatsApp with your order
+                </p>
               </div>
             )}
 

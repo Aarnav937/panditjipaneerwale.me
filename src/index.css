@@ -7,63 +7,95 @@ html {
 }
 
 body {
-  background-color: #FFFDF9; /* brand-cream */
-  color: #2D251E;
+  background-color: #FFFDF9;
+  color: #1C1917;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* Calm cream base — subtle single wash, not multi-blob noise */
 .bg-fixed-gradient {
   background-color: #FFFDF9;
-  background-image: 
-    radial-gradient(at 10% 10%, hsla(30,100%,97%,1) 0px, transparent 50%),
-    radial-gradient(at 90% 0%, hsla(37,90%,93%,1) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, hsla(18,100%,96%,1) 0px, transparent 50%),
-    radial-gradient(at 85% 60%, hsla(39,94%,94%,1) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, hsla(24,100%,97%,1) 0px, transparent 50%);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 140, 0, 0.06), transparent 55%);
 }
 
 .dark .bg-fixed-gradient {
   background-color: #121212;
-  background-image: 
-    radial-gradient(at 10% 10%, hsla(18,70%,12%,1) 0px, transparent 50%),
-    radial-gradient(at 90% 0%, hsla(43,60%,10%,1) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, hsla(24,65%,12%,1) 0px, transparent 50%);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(226, 88, 34, 0.08), transparent 55%);
 }
 
-.heritage-border {
-  border-image: linear-gradient(to right, #D4AF37, #E25822, #D4AF37) 1;
+/* Quiet gold accent line (cards, headers) */
+.accent-gold-line {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #D4AF37 20%, #E25822 50%, #D4AF37 80%, transparent);
 }
 
 .shadow-gold-glow {
-  box-shadow: 0 4px 20px -2px rgba(212, 175, 55, 0.12);
+  box-shadow: 0 1px 3px rgba(28, 25, 23, 0.06), 0 4px 16px rgba(28, 25, 23, 0.04);
 }
 
 .shadow-gold-glow-hover:hover {
-  box-shadow: 0 12px 30px -4px rgba(212, 175, 55, 0.25), 0 4px 15px -2px rgba(226, 88, 34, 0.12);
+  box-shadow: 0 4px 12px rgba(28, 25, 23, 0.08), 0 8px 24px rgba(226, 88, 34, 0.1);
 }
 
-.heritage-motif {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M40 0 L43.5 12 L55.5 4 L51 17 L64 12 L56.5 24 L69.5 21.5 L59.5 31.5 L72 32.5 L60 40 L72 47.5 L59.5 48.5 L69.5 58.5 L56.5 56 L64 68 L51 63 L55.5 76 L43.5 68 L40 80 L36.5 68 L24.5 76 L29 63 L16 68 L23.5 56 L10.5 58.5 L20.5 48.5 L8 47.5 L20 40 L8 32.5 L20.5 31.5 L10.5 21.5 L23.5 24 L16 12 L29 17 L24.5 4 L36.5 12 Z' fill='%23d4af37' fill-opacity='0.025'/%3E%3C/svg%3E");
+/* Soft product image plate */
+.image-plate {
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.95) 0%, transparent 65%),
+    linear-gradient(180deg, #FFFDF9 0%, #FFF6F0 100%);
 }
 
-/* Hardware acceleration for smoother animations */
+.dark .image-plate {
+  background:
+    radial-gradient(circle at 50% 40%, rgba(40, 40, 40, 0.9) 0%, transparent 65%),
+    linear-gradient(180deg, #1A1A1A 0%, #222 100%);
+}
+
 .will-change-transform {
   will-change: transform;
   transform: translateZ(0);
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Safe area for iOS devices (notch and home indicator) */
 .safe-area-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
+/* Consistent focus rings */
+:focus-visible {
+  outline: 2px solid #FF8C00;
+  outline-offset: 2px;
+}
+
+/* Chip active state helper */
+@layer components {
+  .chip {
+    @apply whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border;
+  }
+
+  .chip-active {
+    @apply bg-brand-orange text-white border-brand-orange shadow-sm;
+  }
+
+  .chip-idle {
+    @apply bg-white dark:bg-brand-card text-brand-charcoal dark:text-gray-300 border-brand-border dark:border-gray-700 hover:border-brand-gold/50 hover:text-brand-saffron;
+  }
+
+  .btn-primary {
+    @apply bg-brand-orange hover:bg-brand-dark text-white font-semibold rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply bg-white dark:bg-brand-card text-brand-charcoal dark:text-white font-semibold rounded-xl border border-brand-border dark:border-gray-700 hover:border-brand-orange hover:text-brand-orange transition-all duration-200;
+  }
+}

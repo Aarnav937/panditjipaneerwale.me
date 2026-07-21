@@ -2,10 +2,18 @@ import React from 'react';
 import { MessageCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const FloatingWhatsApp = () => {
-  const phoneNumber = "971524676306";
-  const message = "Hello, I have a query regarding your products.";
+/**
+ * Floating WhatsApp — offset above bottom nav (+ cart bar when present).
+ */
+const FloatingWhatsApp = ({ hasCartItems = false }) => {
+  const phoneNumber = '971524676306';
+  const message = 'Hello, I have a query regarding your products.';
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+  // Above bottom nav; higher when mobile cart bar is showing
+  const bottomClass = hasCartItems
+    ? 'bottom-[9.5rem] md:bottom-6'
+    : 'bottom-[5.5rem] md:bottom-6';
 
   return (
     <motion.a
@@ -14,12 +22,13 @@ const FloatingWhatsApp = () => {
       rel="noopener noreferrer"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
-      className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl z-50 flex items-center justify-center hover:bg-green-600 transition-colors"
+      whileHover={{ scale: 1.06 }}
+      whileTap={{ scale: 0.94 }}
+      className={`fixed right-4 ${bottomClass} z-40 flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-lg hover:bg-[#1ebe57] transition-all border-2 border-white/30`}
       title="Chat on WhatsApp"
+      aria-label="Chat on WhatsApp"
     >
-      <MessageCircle size={32} />
+      <MessageCircle size={26} />
     </motion.a>
   );
 };

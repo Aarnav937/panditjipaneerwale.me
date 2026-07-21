@@ -1,11 +1,24 @@
 import React from 'react';
-import { ShoppingCart, Search, Menu, X, Moon, Sun, Package, Languages, Heart, Settings2, User, LogOut } from 'lucide-react';
+import { ShoppingCart, Search, Menu, X, Moon, Sun, Languages, Settings2, User, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { useAdmin } from '../context/AdminContext';
 import NotificationBell from './NotificationBell';
 
-const Navbar = ({ cartCount, setIsCartOpen, setIsAdminDashboardOpen, setIsAuthModalOpen, isLoggedIn, customerName, onLogout, searchQuery, setSearchQuery, isDarkMode, toggleTheme, cartPulse }) => {
+const Navbar = ({
+  cartCount,
+  setIsCartOpen,
+  setIsAdminDashboardOpen,
+  setIsAuthModalOpen,
+  isLoggedIn,
+  customerName,
+  onLogout,
+  searchQuery,
+  setSearchQuery,
+  isDarkMode,
+  toggleTheme,
+  cartPulse
+}) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [showUserMenu, setShowUserMenu] = React.useState(false);
   const { language, toggleLanguage, t } = useLanguage();
@@ -13,130 +26,131 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsAdminDashboardOpen, setIsAuthMo
 
   return (
     <>
-      <nav className="bg-white/95 dark:bg-brand-darker/95 backdrop-blur-md text-gray-800 dark:text-white sticky top-0 z-50 shadow-lg border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
-        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center gap-2">
+      <nav className="bg-white/90 dark:bg-brand-darker/90 backdrop-blur-md text-brand-charcoal dark:text-white sticky top-0 z-50 border-b border-brand-border/80 dark:border-gray-800 transition-colors duration-300">
+        <div className="container mx-auto px-4 py-2.5 flex justify-between items-center gap-3">
+          <a href="#" className="flex items-center gap-2 min-w-0 shrink-0" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="text-xl md:text-2xl font-bold font-sans text-brand-orange"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="leading-tight"
             >
-              Pandit Ji Paneer Wale
+              <span className="block text-lg md:text-xl font-bold text-brand-orange tracking-tight truncate max-w-[11rem] sm:max-w-none">
+                Pandit Ji
+              </span>
+              <span className="hidden sm:block text-[10px] font-semibold uppercase tracking-[0.12em] text-brand-goldDark dark:text-brand-gold -mt-0.5">
+                Paneer Wale
+              </span>
             </motion.div>
-          </div>
+          </a>
 
           {/* Desktop Search */}
-          <div className="hidden md:flex flex-1 max-w-md mx-8 relative">
+          <div className="hidden md:flex flex-1 max-w-md mx-4 relative">
             <input
               type="text"
               placeholder={t('searchPlaceholder')}
-              className="w-full px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors"
+              className="w-full px-4 py-2 rounded-full bg-brand-cream dark:bg-gray-900 text-brand-charcoal dark:text-white border border-brand-border dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-orange/40 focus:border-brand-orange transition-colors text-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <div className={`absolute top-2.5 text-gray-500 ${language === 'ar' ? 'left-3' : 'right-3'}`}>
-              <Search className="w-5 h-5" />
+            <div className={`absolute top-2.5 text-brand-muted ${language === 'ar' ? 'left-3' : 'right-3'}`}>
+              <Search className="w-4 h-4" />
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-6 font-medium">
-            <a href="#" className="hover:text-brand-orange transition">{t('home')}</a>
-            <a href="#about" className="hover:text-brand-orange transition">{t('about')}</a>
-            <a href="#contact" className="hover:text-brand-orange transition">{t('contact')}</a>
+          <div className="hidden md:flex items-center gap-1.5 font-medium">
+            <a href="#products" className="px-2.5 py-1.5 text-sm text-brand-muted hover:text-brand-orange transition rounded-lg">
+              Products
+            </a>
+            <a href="#our-store" className="px-2.5 py-1.5 text-sm text-brand-muted hover:text-brand-orange transition rounded-lg">
+              Store
+            </a>
 
             <button
               onClick={toggleLanguage}
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition flex items-center gap-1 font-bold text-sm"
+              className="p-2 rounded-full hover:bg-brand-saffronLight dark:hover:bg-gray-800 transition flex items-center gap-1 font-semibold text-xs text-brand-muted"
               title="Switch Language"
             >
-              <Languages size={20} />
+              <Languages size={18} />
               <span>{language === 'en' ? 'AR' : 'EN'}</span>
             </button>
 
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+              className="p-2 rounded-full hover:bg-brand-saffronLight dark:hover:bg-gray-800 transition text-brand-muted"
+              aria-label="Toggle theme"
             >
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
 
-            {/* Notification Bell */}
             {isLoggedIn && <NotificationBell />}
 
-            {/* Admin Dashboard Button - Only visible when logged in as admin */}
             {isAdmin && (
               <button
-                className="relative p-2 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white hover:scale-110 transition-all shadow-lg"
+                className="p-2 rounded-full bg-brand-saffron text-white hover:bg-brand-orange transition-all"
                 onClick={() => setIsAdminDashboardOpen(true)}
                 title="Admin Dashboard"
               >
-                <Settings2 className="w-5 h-5" />
+                <Settings2 className="w-4 h-4" />
               </button>
             )}
 
-            {/* User Account / Profile Button */}
             <div className="relative">
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className={`p-2 rounded-full hover:scale-110 transition-all ${
-                  isLoggedIn
-                    ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg'
-                    : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
-                }`}
-                title="Account Menu"
+                className={`p-2 rounded-full transition-all ${isLoggedIn
+                  ? 'bg-brand-orange/10 text-brand-orange'
+                  : 'hover:bg-brand-saffronLight dark:hover:bg-gray-800 text-brand-muted'
+                  }`}
+                title="Account"
               >
-                <User className="w-6 h-6" />
+                <User className="w-5 h-5" />
               </button>
-              
+
               <AnimatePresence>
                 {showUserMenu && (
                   <motion.div
-                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    initial={{ opacity: 0, y: -8, scale: 0.98 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                    className="absolute right-0 top-12 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden min-w-[220px] z-50 py-1"
+                    exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                    className="absolute right-0 top-11 bg-white dark:bg-brand-card rounded-2xl shadow-soft-hover border border-brand-border dark:border-gray-700 overflow-hidden min-w-[200px] z-50 py-1"
                   >
-                    {/* Header Section */}
                     {isLoggedIn ? (
-                      <div className="p-4 border-b border-gray-100 dark:border-gray-700">
-                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Logged in as</p>
-                        <p className="font-bold text-gray-900 dark:text-white truncate">{customerName || 'User'}</p>
+                      <div className="p-3 border-b border-brand-border dark:border-gray-700">
+                        <p className="text-[10px] text-brand-muted font-semibold uppercase tracking-wider">Signed in</p>
+                        <p className="font-semibold text-brand-charcoal dark:text-white truncate text-sm">{customerName || 'User'}</p>
                       </div>
                     ) : (
-                      <div className="p-4 border-b border-gray-100 dark:border-gray-700">
+                      <div className="p-3 border-b border-brand-border dark:border-gray-700">
                         <button
                           onClick={() => {
                             setIsAuthModalOpen(true);
                             setShowUserMenu(false);
                           }}
-                          className="w-full py-2 px-4 rounded-xl bg-gradient-to-r from-brand-saffron to-brand-orange text-white font-bold text-sm shadow hover:shadow-lg transition text-center"
+                          className="w-full py-2 px-3 rounded-xl bg-brand-orange text-white font-semibold text-sm hover:bg-brand-dark transition text-center"
                         >
                           Login / Sign Up
                         </button>
                       </div>
                     )}
 
-                    <div className="py-1">
-                      <button
-                        onClick={() => {
-                          setIsCartOpen(true);
-                          setShowUserMenu(false);
-                        }}
-                        className="w-full px-4 py-2.5 text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50 flex items-center gap-2 transition-colors text-sm"
-                      >
-                        <ShoppingCart className="w-4 h-4 text-gray-500" />
-                        <span>View Bag & Orders</span>
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => {
+                        setIsCartOpen(true);
+                        setShowUserMenu(false);
+                      }}
+                      className="w-full px-4 py-2.5 text-left text-brand-charcoal dark:text-gray-200 hover:bg-brand-saffronLight dark:hover:bg-gray-800 flex items-center gap-2 text-sm"
+                    >
+                      <ShoppingCart className="w-4 h-4 text-brand-muted" />
+                      <span>Bag & Orders</span>
+                    </button>
 
-                    {/* Footer Section */}
                     {isLoggedIn && (
                       <button
                         onClick={() => {
                           onLogout?.();
                           setShowUserMenu(false);
                         }}
-                        className="w-full px-4 py-3 text-left text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 border-t border-gray-100 dark:border-gray-700 flex items-center gap-2 transition-colors text-sm font-semibold"
+                        className="w-full px-4 py-2.5 text-left text-brand-saffron hover:bg-brand-saffronLight dark:hover:bg-red-900/20 border-t border-brand-border dark:border-gray-700 flex items-center gap-2 text-sm font-semibold"
                       >
                         <LogOut className="w-4 h-4" />
                         Logout
@@ -148,155 +162,124 @@ const Navbar = ({ cartCount, setIsCartOpen, setIsAdminDashboardOpen, setIsAuthMo
             </div>
 
             <button
-              className="relative hover:scale-110 transition-transform"
+              className="relative ml-1 p-2 rounded-full hover:bg-brand-saffronLight dark:hover:bg-gray-800 transition"
               onClick={() => setIsCartOpen(true)}
+              aria-label="Open cart"
             >
-              <motion.div
-                animate={cartPulse ? { scale: [1, 1.3, 1] } : {}}
-                transition={{ duration: 0.3 }}
-              >
-                <ShoppingCart className="w-7 h-7" />
+              <motion.div animate={cartPulse ? { scale: [1, 1.2, 1] } : {}} transition={{ duration: 0.3 }}>
+                <ShoppingCart className="w-6 h-6 text-brand-charcoal dark:text-white" />
               </motion.div>
               {cartCount > 0 && (
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute -top-2 -right-2 bg-brand-orange text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"
+                  className="absolute -top-0.5 -right-0.5 bg-brand-orange text-white text-[10px] font-bold rounded-full min-w-[1.15rem] h-[1.15rem] flex items-center justify-center px-1"
                 >
-                  {cartCount}
+                  {cartCount > 99 ? '99+' : cartCount}
                 </motion.span>
               )}
             </button>
           </div>
 
-          {/* Mobile Header Actions - Simplified, main nav is in BottomNav */}
-          <div className="md:hidden flex items-center gap-2">
-            <button
-              onClick={toggleLanguage}
-              className="p-2 font-bold text-xs"
-            >
+          {/* Mobile: compact actions */}
+          <div className="md:hidden flex items-center gap-0.5">
+            <button onClick={toggleLanguage} className="p-2 font-bold text-xs text-brand-muted" aria-label="Language">
               {language === 'en' ? 'AR' : 'EN'}
             </button>
-            <button
-              onClick={toggleTheme}
-              className="p-2"
-            >
+            <button onClick={toggleTheme} className="p-2 text-brand-muted" aria-label="Theme">
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2"
+              className="relative p-2 text-brand-charcoal dark:text-white"
+              onClick={() => setIsCartOpen(true)}
+              aria-label="Cart"
             >
+              <ShoppingCart className="w-5 h-5" />
+              {cartCount > 0 && (
+                <span className="absolute top-0.5 right-0.5 bg-brand-orange text-white text-[9px] font-bold rounded-full min-w-[14px] h-[14px] flex items-center justify-center">
+                  {cartCount > 99 ? '99+' : cartCount}
+                </span>
+              )}
+            </button>
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-2" aria-label="Menu">
               {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Search - Always Visible */}
-        <div className="md:hidden px-4 pb-3">
+        {/* Mobile Search */}
+        <div className="md:hidden px-4 pb-2.5">
           <div className="relative">
             <input
               type="text"
               placeholder={t('searchPlaceholder')}
-              className="w-full px-4 py-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors text-sm"
+              className="w-full px-4 py-2.5 rounded-full bg-brand-cream dark:bg-gray-900 text-brand-charcoal dark:text-white border border-brand-border dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-orange/40 text-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <div className={`absolute top-2.5 text-gray-500 ${language === 'ar' ? 'left-3' : 'right-3'}`}>
-              <Search className="w-5 h-5" />
+            <div className={`absolute top-2.5 text-brand-muted ${language === 'ar' ? 'left-3' : 'right-3'}`}>
+              <Search className="w-4 h-4" />
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Slide-in Drawer */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
+              animate={{ opacity: 0.4 }}
               exit={{ opacity: 0 }}
               className="md:hidden fixed inset-0 bg-black z-[60]"
               onClick={() => setIsMobileMenuOpen(false)}
             />
-
-            {/* Drawer */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="md:hidden fixed right-0 top-0 h-full w-72 bg-white dark:bg-brand-darker z-[70] shadow-2xl"
+              transition={{ type: 'spring', damping: 28, stiffness: 280 }}
+              className="md:hidden fixed right-0 top-0 h-full w-72 bg-white dark:bg-brand-darker z-[70] shadow-soft-hover border-l border-brand-border dark:border-gray-800"
             >
               <div className="p-4">
-                {/* Drawer Header */}
-                <div className="flex justify-between items-center mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
-                  <span className="text-lg font-bold text-brand-orange">Menu</span>
-                  <button
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
-                  >
-                    <X size={20} />
+                <div className="flex justify-between items-center mb-5 pb-3 border-b border-brand-border dark:border-gray-800">
+                  <span className="text-base font-bold text-brand-orange">Menu</span>
+                  <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 rounded-full hover:bg-brand-saffronLight dark:hover:bg-gray-800">
+                    <X size={18} />
                   </button>
                 </div>
 
-                {/* Drawer Links */}
-                <div className="flex flex-col gap-2">
-                  <button
-                    className="text-left px-4 py-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                    onClick={() => { window.scrollTo(0, 0); setIsMobileMenuOpen(false); }}
-                  >
+                <div className="flex flex-col gap-1">
+                  <button className="text-left px-3 py-2.5 rounded-xl hover:bg-brand-saffronLight dark:hover:bg-gray-800 font-medium text-sm" onClick={() => { window.scrollTo(0, 0); setIsMobileMenuOpen(false); }}>
                     {t('home')}
                   </button>
-                  <a
-                    href="#about"
-                    className="px-4 py-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {t('about')}
-                  </a>
-                  <a
-                    href="#contact"
-                    className="px-4 py-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {t('contact')}
-                  </a>
-                  <button
-                    className="text-left px-4 py-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium flex items-center gap-3"
-                    onClick={() => { setIsCartOpen(true); setIsMobileMenuOpen(false); }}
-                  >
-                    <ShoppingCart size={18} /> View Bag & Orders
-                  </button>
+                  <a href="#products" className="px-3 py-2.5 rounded-xl hover:bg-brand-saffronLight dark:hover:bg-gray-800 font-medium text-sm" onClick={() => setIsMobileMenuOpen(false)}>Products</a>
+                  <a href="#our-store" className="px-3 py-2.5 rounded-xl hover:bg-brand-saffronLight dark:hover:bg-gray-800 font-medium text-sm" onClick={() => setIsMobileMenuOpen(false)}>Store</a>
+                  <a href="#about" className="px-3 py-2.5 rounded-xl hover:bg-brand-saffronLight dark:hover:bg-gray-800 font-medium text-sm" onClick={() => setIsMobileMenuOpen(false)}>{t('about')}</a>
+                  <a href="#contact" className="px-3 py-2.5 rounded-xl hover:bg-brand-saffronLight dark:hover:bg-gray-800 font-medium text-sm" onClick={() => setIsMobileMenuOpen(false)}>{t('contact')}</a>
+
                   {isAdmin && (
-                    <button
-                      className="text-left px-4 py-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium flex items-center gap-3 text-orange-500"
-                      onClick={() => { setIsAdminDashboardOpen(true); setIsMobileMenuOpen(false); }}
-                    >
-                      <Settings2 size={18} /> Admin Dashboard
+                    <button className="text-left px-3 py-2.5 rounded-xl hover:bg-brand-saffronLight font-medium text-sm text-brand-saffron flex items-center gap-2" onClick={() => { setIsAdminDashboardOpen(true); setIsMobileMenuOpen(false); }}>
+                      <Settings2 size={16} /> Admin
                     </button>
                   )}
+
                   {isLoggedIn ? (
-                    <div className="border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
-                      <div className="px-4 py-2">
-                        <p className="text-xs text-gray-500">Logged in as</p>
-                        <p className="font-bold truncate">{customerName}</p>
+                    <div className="border-t border-brand-border dark:border-gray-800 pt-2 mt-2">
+                      <div className="px-3 py-2">
+                        <p className="text-xs text-brand-muted">Signed in as</p>
+                        <p className="font-semibold truncate text-sm">{customerName}</p>
                       </div>
-                      <button
-                        onClick={() => { onLogout?.(); setIsMobileMenuOpen(false); }}
-                        className="w-full text-left px-4 py-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 transition-colors font-medium flex items-center gap-3"
-                      >
-                        <LogOut size={18} /> Logout
+                      <button onClick={() => { onLogout?.(); setIsMobileMenuOpen(false); }} className="w-full text-left px-3 py-2.5 rounded-xl text-brand-saffron font-medium text-sm flex items-center gap-2">
+                        <LogOut size={16} /> Logout
                       </button>
                     </div>
                   ) : (
                     <button
-                      className="text-left px-4 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-lg transition-transform font-bold flex items-center gap-3 mt-4 justify-center"
+                      className="mt-3 w-full py-2.5 rounded-xl bg-brand-orange text-white font-semibold text-sm flex items-center justify-center gap-2"
                       onClick={() => { setIsAuthModalOpen(true); setIsMobileMenuOpen(false); }}
                     >
-                      <User size={18} /> Login / Sign Up
+                      <User size={16} /> Login
                     </button>
                   )}
                 </div>

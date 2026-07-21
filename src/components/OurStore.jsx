@@ -1,120 +1,90 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Clock, Phone } from 'lucide-react';
-import { useLanguage } from '../context/LanguageContext';
+import { MapPin, Clock, Phone, MessageCircle } from 'lucide-react';
 
 const OurStore = () => {
-    const { t } = useLanguage();
+    const whatsappUrl = 'https://wa.me/971524676306?text=' + encodeURIComponent('Hello, I would like to visit or order from your store.');
 
     return (
-        <section id="our-store" className="bg-brand-light dark:bg-gray-900 py-24 transition-colors duration-300 relative overflow-hidden">
-            {/* Background elements */}
-            <div className="absolute top-0 right-0 w-1/3 h-full bg-brand-orange/5 dark:bg-brand-orange/10 transform skew-x-12 translate-x-32" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-yellow-300/10 rounded-full blur-3xl" />
-
-            <div className="container mx-auto px-4 relative z-10">
-                <div className="text-center mb-16">
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
+        <section id="our-store" className="py-12 md:py-16 border-t border-brand-border/60 dark:border-gray-800 bg-white/60 dark:bg-brand-card/40">
+            <div className="container mx-auto px-4">
+                <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-center max-w-5xl mx-auto">
+                    {/* Compact store photo */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 12 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="text-4xl md:text-5xl font-bold text-brand-dark dark:text-brand-orange mb-4"
+                        transition={{ duration: 0.4 }}
+                        className="w-full md:w-2/5 relative shrink-0"
                     >
-                        Visit Our Store
-                    </motion.h2>
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="w-24 h-1 bg-brand-orange mx-auto rounded-full"
-                    />
-                </div>
-
-                <div className="flex flex-col lg:flex-row gap-12 items-center">
-                    {/* Store Image */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                        className="w-full lg:w-1/2 relative group"
-                    >
-                        {/* Enhanced Background Frame */}
-                        <div className="absolute -inset-4 bg-gradient-to-r from-brand-orange via-yellow-400 to-brand-orange opacity-30 blur-2xl rounded-[2rem] transform -rotate-2 group-hover:rotate-0 group-hover:opacity-40 transition-all duration-700 -z-10" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent rounded-2xl z-10 pointer-events-none" />
-
-                        <img
-                            src="/images/shop-front.png"
-                            alt="RRC International General Trading - Pandit G Paneer Wale Storefront"
-                            className="w-full rounded-2xl shadow-2xl object-cover h-[400px] md:h-[500px] ring-4 ring-white/50 dark:ring-gray-800/50 transform group-hover:scale-[1.02] transition-transform duration-500 relative z-0"
-                            onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = "https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80";
-                            }}
-                        />
-
-                        {/* Status Badge */}
-                        <div className="absolute top-6 left-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg flex items-center gap-2">
-                            <span className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-                            <span className="font-bold text-gray-800 dark:text-white text-sm tracking-wide uppercase">Open Now</span>
+                        <div className="rounded-2xl overflow-hidden border border-brand-border dark:border-gray-700 shadow-soft ring-1 ring-brand-gold/20">
+                            <img
+                                src="/images/shop-front.png"
+                                alt="Pandit Ji Paneer Wale storefront"
+                                className="w-full h-48 md:h-56 object-cover"
+                                onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = "https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
+                                }}
+                            />
+                        </div>
+                        <div className="absolute top-3 left-3 bg-white/95 dark:bg-gray-900/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-soft flex items-center gap-1.5 border border-brand-gold/25">
+                            <span className="w-2 h-2 bg-green-500 rounded-full" />
+                            <span className="font-semibold text-brand-charcoal dark:text-white text-[11px] uppercase tracking-wide">Open</span>
                         </div>
                     </motion.div>
 
-                    {/* Store Info */}
+                    {/* Info strip */}
                     <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, y: 12 }}
+                        whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="w-full lg:w-1/2"
+                        transition={{ duration: 0.4, delay: 0.05 }}
+                        className="w-full md:w-3/5"
                     >
-                        <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">RRC International General Trading</h3>
-                        <h4 className="text-xl text-brand-orange font-semibold mb-8">Pandit G Paneer Wale</h4>
-
-                        <p className="text-lg text-gray-600 dark:text-gray-300 mb-10 leading-relaxed">
-                            Experience the authentic taste of fresh, homemade-style paneer and premium dairy products directly from our physical store in Abu Dhabi. We welcome you to drop by!
+                        <p className="text-xs font-semibold uppercase tracking-wider text-brand-goldDark dark:text-brand-gold mb-1">Visit us</p>
+                        <h2 className="text-2xl md:text-3xl font-bold text-brand-charcoal dark:text-white mb-1">
+                            Our Store
+                        </h2>
+                        <p className="text-brand-orange font-semibold text-sm mb-3">Pandit Ji Paneer Wale · Abu Dhabi</p>
+                        <p className="text-brand-muted dark:text-gray-400 text-sm leading-relaxed mb-5 max-w-md">
+                            Fresh paneer, dairy & spices from our shop. Drop by or order online — free delivery in Abu Dhabi.
                         </p>
 
-                        <div className="space-y-8">
-                            <div className="flex items-start gap-4">
-                                <div className="bg-brand-orange/10 dark:bg-brand-orange/20 p-4 rounded-xl text-brand-orange mt-1">
-                                    <MapPin className="w-6 h-6" />
-                                </div>
-                                <div>
-                                    <h5 className="font-bold text-xl text-gray-900 dark:text-white mb-1">Our Location</h5>
-                                    <p className="text-gray-600 dark:text-gray-400 text-lg">
-                                        F9QJ+F6F Abu Dhabi<br />
-                                        United Arab Emirates
-                                    </p>
-                                </div>
-                            </div>
+                        <ul className="space-y-2.5 text-sm text-brand-charcoal dark:text-gray-300 mb-5">
+                            <li className="flex items-start gap-2.5">
+                                <MapPin className="w-4 h-4 text-brand-saffron shrink-0 mt-0.5" />
+                                <span>F9QJ+F6F Abu Dhabi, United Arab Emirates</span>
+                            </li>
+                            <li className="flex items-center gap-2.5">
+                                <Clock className="w-4 h-4 text-brand-saffron shrink-0" />
+                                <span>Open for store visits & delivery</span>
+                            </li>
+                            <li className="flex items-center gap-2.5">
+                                <Phone className="w-4 h-4 text-brand-saffron shrink-0" />
+                                <a href="tel:+971524676306" className="hover:text-brand-orange transition">+971 52 467 6306</a>
+                            </li>
+                        </ul>
 
-                            <div className="flex items-start gap-4">
-                                <div className="bg-brand-orange/10 dark:bg-brand-orange/20 p-4 rounded-xl text-brand-orange mt-1">
-                                    <Clock className="w-6 h-6" />
-                                </div>
-                                <div>
-                                    <h5 className="font-bold text-xl text-gray-900 dark:text-white mb-1">Store Hours</h5>
-                                    <p className="text-gray-600 dark:text-gray-400 text-lg">
-                                        Open 24/7 for Fresh Deliveries & Store Visits
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-start gap-4">
-                                <div className="bg-brand-orange/10 dark:bg-brand-orange/20 p-4 rounded-xl text-brand-orange mt-1">
-                                    <Phone className="w-6 h-6" />
-                                </div>
-                                <div>
-                                    <h5 className="font-bold text-xl text-gray-900 dark:text-white mb-1">Contact Us</h5>
-                                    <p className="text-gray-600 dark:text-gray-400 text-lg">
-                                        Phone: +971 52 467 6306<br />
-                                        WhatsApp Available
-                                    </p>
-                                </div>
-                            </div>
+                        <div className="flex flex-wrap gap-2.5">
+                            <a
+                                href={whatsappUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe57] text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
+                            >
+                                <MessageCircle className="w-4 h-4" />
+                                WhatsApp
+                            </a>
+                            <a
+                                href="https://maps.google.com/?q=F9QJ+F6F+Abu+Dhabi"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 btn-secondary text-sm px-4 py-2.5"
+                            >
+                                <MapPin className="w-4 h-4" />
+                                Directions
+                            </a>
                         </div>
                     </motion.div>
                 </div>
