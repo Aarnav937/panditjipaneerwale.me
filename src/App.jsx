@@ -4,19 +4,15 @@
  * It's just to test the GitHub deployment workflow! 🚀
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProductCard from './components/ProductCard';
-import QuickViewModal from './components/QuickViewModal';
-import Cart from './components/Cart';
 import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 import Toast from './components/Toast';
 import BottomNav from './components/BottomNav';
 import MobileCartBar from './components/MobileCartBar';
-import AdminDashboard from './components/admin/AdminDashboard';
-import AuthModal from './components/AuthModal';
 import OurStore from './components/OurStore';
 import { products as initialProducts, categories } from './data/products';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -24,6 +20,19 @@ import { useLanguage } from './context/LanguageContext';
 import { useAdmin } from './context/AdminContext';
 import { useWishlist } from './context/WishlistContext';
 import { useAuth } from './context/AuthContext';
+
+// Heavy UI loaded only when opened — smaller first paint for shoppers
+const Cart = lazy(() => import('./components/Cart'));
+const QuickViewModal = lazy(() => import('./components/QuickViewModal'));
+const AdminDashboard = lazy(() => import('./components/admin/AdminDashboard'));
+const AuthModal = lazy(() => import('./components/AuthModal'));
+
+/** Minimal full-screen wait while a lazy panel downloads */
+const LazyPanelFallback = () => (
+  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/20 backdrop-blur-[1px] pointer-events-none">
+    <div className="w-10 h-10 rounded-full border-2 border-brand-orange border-t-transparent animate-spin" />
+  </div>
+);
 
 function App() {
   const [products, setProducts] = useState(() => {
@@ -417,43 +426,62 @@ function App() {
       </AnimatePresence>
 
       <main className="flex-1 container mx-auto px-4 py-8 md:py-10" id="products">
-        {/* Category chips — mobile sticky + desktop row (no heavy sidebar) */}
-        <div className="sticky top-[6.75rem] md:top-[3.5rem] z-40 -mx-4 px-4 py-3 mb-6 bg-[#FFFDF9]/95 dark:bg-brand-darker/95 backdrop-blur-md border-b border-brand-border/70 dark:border-gray-800">
+        {/* Category chips — sticky + lively selection */}
+        <div className="sticky top-[6.75rem] md:top-[3.5rem] z-40 -mx-4 px-4 py-3.5 mb-6 bg-[#FFFDF9]/90 dark:bg-brand-darker/90 backdrop-blur-xl border-b border-brand-gold/20 dark:border-gray-800 shadow-sm">
           <div className="relative">
-            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-[#FFFDF9] dark:from-brand-darker to-transparent z-10 md:hidden" />
-            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-[#FFFDF9] dark:from-brand-darker to-transparent z-10 md:hidden" />
-            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-0.5 md:flex-wrap md:overflow-visible">
-              {sortedCategories.map(category => (
-                <button
+            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#FFFDF9] dark:from-brand-darker to-transparent z-10 md:hidden" />
+            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#FFFDF9] dark:from-brand-darker to-transparent z-10 md:hidden" />
+            <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-0.5 md:flex-wrap md:overflow-visible">
+              {sortedCategories.map((category, i) => (
+                <motion.button
                   key={category}
+                  type="button"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: Math.min(i * 0.03, 0.3) }}
+                  whileTap={{ scale: 0.92 }}
                   onClick={(e) => handleCategoryChange(category, e)}
                   className={`chip ${selectedCategory === category ? 'chip-active' : 'chip-idle'}`}
                 >
                   {t(category)}
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="flex justify-between items-end gap-3 mb-6">
-          <h2 className="text-xl sm:text-2xl font-bold text-brand-charcoal dark:text-white flex flex-wrap items-baseline gap-2">
+        <motion.div
+          key={selectedCategory + (searchQuery || '')}
+          initial={{ opacity: 0, x: -8 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex justify-between items-end gap-3 mb-6"
+        >
+          <h2 className="text-xl sm:text-2xl font-extrabold text-brand-charcoal dark:text-white flex flex-wrap items-baseline gap-2">
             {searchQuery ? (
               <>
                 <span>Results for “{searchQuery}”</span>
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="text-xs font-semibold bg-white dark:bg-brand-card border border-brand-border dark:border-gray-700 px-2.5 py-1 rounded-full hover:border-brand-orange text-brand-muted"
+                  className="text-xs font-bold bg-white dark:bg-brand-card border border-brand-gold/30 dark:border-gray-700 px-3 py-1 rounded-full hover:border-brand-orange text-brand-saffron shadow-sm"
                 >
                   Clear
                 </button>
               </>
             ) : (
-              <span>{selectedCategory === 'All' ? 'All products' : selectedCategory}</span>
+              <span className="bg-gradient-to-r from-brand-charcoal to-brand-saffron dark:from-white dark:to-brand-gold bg-clip-text text-transparent">
+                {selectedCategory === 'All' ? 'All products' : selectedCategory}
+              </span>
             )}
-            <span className="text-sm font-normal text-brand-muted">({filteredProducts.length})</span>
+            <motion.span
+              key={filteredProducts.length}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="text-sm font-semibold text-brand-orange bg-brand-orange/10 px-2.5 py-0.5 rounded-full"
+            >
+              {filteredProducts.length}
+            </motion.span>
           </h2>
-        </div>
+        </motion.div>
 
         {filteredProducts.length > 0 ? (
           <motion.div
@@ -461,14 +489,19 @@ function App() {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5"
           >
             <AnimatePresence mode="popLayout">
-              {filteredProducts.map(product => (
+              {filteredProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
                   layout
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 0.2 }}
+                  initial={{ opacity: 0, y: 22, scale: 0.94 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.92, y: -8 }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 280,
+                    damping: 24,
+                    delay: Math.min(index * 0.03, 0.45),
+                  }}
                 >
                   <ProductCard
                     product={product}
@@ -482,15 +515,19 @@ function App() {
             </AnimatePresence>
           </motion.div>
         ) : (
-          <div className="text-center py-16 bg-white dark:bg-brand-card rounded-2xl border border-brand-border dark:border-gray-800 shadow-soft">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-16 bg-white/90 dark:bg-brand-card rounded-2xl border border-brand-gold/25 dark:border-gray-800 shadow-gold-glow"
+          >
             <p className="text-base text-brand-muted">No products found matching your criteria.</p>
             <button
               onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
-              className="mt-3 text-brand-orange font-semibold hover:underline text-sm"
+              className="mt-4 px-5 py-2 rounded-full bg-brand-orange text-white font-bold text-sm shadow-md hover:bg-brand-dark transition"
             >
               Clear filters
             </button>
-          </div>
+          </motion.div>
         )}
       </main>
 
@@ -556,37 +593,54 @@ function App() {
       <Footer />
       {!isCartOpen && <FloatingWhatsApp hasCartItems={cartCount > 0} />}
 
-      <Cart
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        cartItems={cartItems}
-        removeFromCart={removeFromCart}
-        updateQuantity={updateQuantity}
-        onOrderPlaced={() => setCartItems([])}
-        onAddToCart={addToCart}
-        onReorder={(items) => {
-          setCartItems(items.map(item => ({ ...item })));
-          setIsCartOpen(true);
-        }}
-      />
+      {/* Lazy panels: chunk only downloaded the first time each is opened */}
+      {isCartOpen && (
+        <Suspense fallback={<LazyPanelFallback />}>
+          <Cart
+            isOpen={isCartOpen}
+            onClose={() => setIsCartOpen(false)}
+            cartItems={cartItems}
+            removeFromCart={removeFromCart}
+            updateQuantity={updateQuantity}
+            onOrderPlaced={() => setCartItems([])}
+            onAddToCart={addToCart}
+            onReorder={(items) => {
+              setCartItems(items.map(item => ({ ...item })));
+              setIsCartOpen(true);
+            }}
+          />
+        </Suspense>
+      )}
 
-      <QuickViewModal
-        product={selectedProduct}
-        isOpen={isQuickViewOpen}
-        onClose={() => setIsQuickViewOpen(false)}
-        addToCart={addToCart}
-      />
+      {isQuickViewOpen && selectedProduct && (
+        <Suspense fallback={<LazyPanelFallback />}>
+          <QuickViewModal
+            product={selectedProduct}
+            isOpen={isQuickViewOpen}
+            onClose={() => setIsQuickViewOpen(false)}
+            addToCart={addToCart}
+          />
+        </Suspense>
+      )}
 
-      <AdminDashboard
-        isOpen={isAdminDashboardOpen}
-        onClose={() => setIsAdminDashboardOpen(false)}
-      />
+      {isAdminDashboardOpen && (
+        <Suspense fallback={<LazyPanelFallback />}>
+          <AdminDashboard
+            isOpen={isAdminDashboardOpen}
+            onClose={() => setIsAdminDashboardOpen(false)}
+          />
+        </Suspense>
+      )}
 
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        onSuccess={() => setIsAuthModalOpen(false)}
-      />
+      {isAuthModalOpen && (
+        <Suspense fallback={<LazyPanelFallback />}>
+          <AuthModal
+            isOpen={isAuthModalOpen}
+            onClose={() => setIsAuthModalOpen(false)}
+            onSuccess={() => setIsAuthModalOpen(false)}
+          />
+        </Suspense>
+      )}
 
       <Toast
         show={showToast}

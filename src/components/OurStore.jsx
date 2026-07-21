@@ -6,31 +6,32 @@ const OurStore = () => {
     const whatsappUrl = 'https://wa.me/971524676306?text=' + encodeURIComponent('Hello, I would like to visit or order from your store.');
 
     return (
-        <section id="our-store" className="py-12 md:py-16 border-t border-brand-border/60 dark:border-gray-800 bg-white/60 dark:bg-brand-card/40">
-            <div className="container mx-auto px-4">
+        <section id="our-store" className="relative py-12 md:py-16 border-t border-brand-gold/20 dark:border-gray-800 bg-gradient-to-br from-white/80 via-brand-saffronLight/40 to-amber-50/60 dark:from-brand-card/40 dark:via-brand-darker dark:to-brand-card/20 overflow-hidden">
+            <div className="orb orb-float-b w-64 h-64 bg-brand-orange/15 -right-10 top-0 opacity-70" />
+            <div className="container mx-auto px-4 relative z-10">
                 <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-center max-w-5xl mx-auto">
-                    {/* Compact store photo */}
                     <motion.div
-                        initial={{ opacity: 0, y: 12 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.4 }}
+                        initial={{ opacity: 0, y: 20, rotate: -1 }}
+                        whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+                        viewport={{ once: true, margin: '-40px' }}
+                        transition={{ type: 'spring', stiffness: 120, damping: 16 }}
+                        whileHover={{ scale: 1.02, rotate: 0.5 }}
                         className="w-full md:w-2/5 relative shrink-0"
                     >
-                        <div className="rounded-2xl overflow-hidden border border-brand-border dark:border-gray-700 shadow-soft ring-1 ring-brand-gold/20">
+                        <div className="rounded-2xl overflow-hidden border-2 border-brand-gold/30 dark:border-brand-gold/20 shadow-gold-glow ring-4 ring-brand-orange/10">
                             <img
                                 src="/images/shop-front.png"
                                 alt="Pandit Ji Paneer Wale storefront"
-                                className="w-full h-48 md:h-56 object-cover"
+                                className="w-full h-48 md:h-56 object-cover transition-transform duration-700 hover:scale-105"
                                 onError={(e) => {
                                     e.target.onerror = null;
                                     e.target.src = "https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
                                 }}
                             />
                         </div>
-                        <div className="absolute top-3 left-3 bg-white/95 dark:bg-gray-900/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-soft flex items-center gap-1.5 border border-brand-gold/25">
-                            <span className="w-2 h-2 bg-green-500 rounded-full" />
-                            <span className="font-semibold text-brand-charcoal dark:text-white text-[11px] uppercase tracking-wide">Open</span>
+                        <div className="absolute top-3 left-3 bg-white/95 dark:bg-gray-900/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 border border-green-400/40">
+                            <span className="w-2 h-2 bg-green-500 rounded-full live-dot" />
+                            <span className="font-bold text-brand-charcoal dark:text-white text-[11px] uppercase tracking-wide">Open now</span>
                         </div>
                     </motion.div>
 
