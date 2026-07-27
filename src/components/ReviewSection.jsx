@@ -4,7 +4,7 @@ import { Star, Send, Loader2, User, MessageSquare } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import StarRating from './StarRating';
 
-const ReviewSection = ({ productId, productName }) => {
+const ReviewSection = ({ productId, productName: _productName }) => {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);

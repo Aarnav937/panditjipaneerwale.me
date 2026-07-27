@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, ArrowRight, Loader2, CheckCircle, Sparkles, ShieldCheck, User } from 'lucide-react';
+import { X, Mail, ArrowRight, Loader2, CheckCircle, Sparkles, ShieldCheck } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 const AuthModal = ({ isOpen, onClose, onSuccess }) => {
@@ -77,7 +77,7 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
 
         try {
             if (supabase) {
-                const { data, error } = await supabase.auth.verifyOtp({
+                const { error } = await supabase.auth.verifyOtp({
                     email: email.trim(),
                     token: otpValue,
                     type: 'email'

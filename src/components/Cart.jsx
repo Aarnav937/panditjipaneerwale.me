@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { X, Trash2, MessageCircle, ShoppingBag, ArrowRight, Plus, Minus, Clock, Phone, Truck, Heart, Package, RotateCcw } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Trash2, MessageCircle, ShoppingBag, ShoppingCart, ArrowRight, Plus, Minus, Clock, Truck, Heart, Package, RotateCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import confetti from 'canvas-confetti';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { useAdmin } from '../context/AdminContext';

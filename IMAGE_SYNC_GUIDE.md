@@ -1,56 +1,52 @@
-# AI Image Sync Guide
+# Image Sync Guide
 
-Automatically identify, crop, and organize product images using Gemini AI.
+Keep product photos in sync with `src/data/products.js` without hand-editing paths one by one.
 
-## Quick Start
+## Prefer existing assets
 
-1. **Drop images** into `./pending_images/` folder
-2. **Run**: `npm run images:sync`
-3. **Done!** Images are processed and linked to products
+- Source of truth for files: `public/images/products/`
+- Only regenerate when an image is missing, broken, wrong aspect, or clearly low quality.
+- New shots should look photorealistic and match the real product (paneer, spices, ghee, etc.).
 
-## How It Works
+## Scripts
 
-```
-You drop image → AI identifies product → Smart crop → Save to website → Update code
-```
+| npm script | File | Purpose |
+|------------|------|---------|
+| `npm run images:sync` | `sync_by_name.js` | Import from `pending_images/` → optimize WebP → update product image paths |
+| `npm run images:fix` | `fix_images.js` | If `image: ""` but `product-{id}.webp` exists, fill the path |
+| `npm run images:report` | `generate_report.js` | Print which products have/missing images |
 
-### The AI Does:
-- **Identifies** the exact product (including weight/size variants)
-- **Crops** the image to focus on the product (removes background)
-- **Converts** to optimized WebP format (800x800)
-- **Updates** `src/data/products.js` automatically
+Removed: `preview_images.js`, `copy.js` (not portable).
 
-### Safety Mode
-If AI is **not sure** (< 80% confidence), it moves the image to:
-```
-pending_images/needs_review/
-```
-You can manually handle these images.
+## Sync workflow (`images:sync`)
 
-## Requirements
+1. Name files after products, e.g. `Fresh Paneer (500g).jpg` or `Bikaji Bhujia.png`.
+2. Create folder `pending_images/` at repo root (gitignored).
+3. Drop images there.
+4. Add `GEMINI_API_KEY` to `.env` (optional AI verify; filename match runs first).
+5. Run:
 
-- `GEMINI_API_KEY` in your `.env` file
-
-## Supported Formats
-
-JPG, PNG, WebP, GIF, BMP, TIFF
-
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `npm run images:sync` | Process all pending images |
-
-## Folder Structure
-
-```
-pending_images/           ← Drop images here
-pending_images/needs_review/  ← AI puts uncertain images here
-public/images/products/   ← Final processed images go here
+```bash
+npm run images:sync
 ```
 
-## Tips
+6. Check `public/images/products/` and `products.js`.
+7. `npm run images:report` for a summary.
 
-1. **Clear photos work best** - Good lighting, minimal background
-2. **One product per image** - AI gets confused with multiple products
-3. **Show weight/size labels** - Helps AI distinguish variants (500g vs 1kg)
+## Fix empty paths
+
+```bash
+npm run images:fix
+```
+
+Only rewrites empty `image` fields when a matching `product-{id}.webp` already exists.
+
+## Report
+
+```bash
+npm run images:report
+```
+
+## Deploy note
+
+Images must live under `public/` so Vite copies them into `dist/` on `npm run build`. GitHub Actions deploys that `dist` — no manual copy.

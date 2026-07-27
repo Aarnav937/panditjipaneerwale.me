@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Search, Edit2, Trash2, Save, X, Image, Loader2, Check } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, Save, X, Image, Loader2 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { products as localProducts, categories } from '../../data/products';
 

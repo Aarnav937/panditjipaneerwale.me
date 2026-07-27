@@ -1,94 +1,111 @@
-# 🚀 Pandit Ji Paneer Wale - Development & Deployment Guide
+# Development Guide
 
-Welcome to your project documentation! This guide explains how to manage your website, make changes, and deploy them to the live server.
+## Single-branch workflow
 
-## 📂 Project Structure (Important!)
+This project uses **one source of truth**: the `main` branch of this repository.
 
-Your project uses a **Two-Branch System**. It is crucial to understand the difference to avoid losing work.
+| Do | Don't |
+|----|--------|
+| Edit `src/`, `public/`, configs on a feature branch | Maintain a second Desktop copy of the site |
+| Open a PR → merge to `main` | Manually copy `dist/` into another branch |
+| Let GitHub Actions build & deploy Pages | Run a “wipe main and paste dist” deploy |
 
-| Branch | Purpose | Status | Action |
-| :--- | :--- | :--- | :--- |
-| **`source`** | **Development** | 🟢 **EDIT THIS** | Write code, fix bugs, add images here. |
-| **`main`** | **Live Website** | 🔴 **DO NOT EDIT** | Contains only built files for the browser. |
+### Day-to-day
 
----
-
-## 🛠️ Daily Workflow
-
-### 1. Starting a New Session
-Whenever you open VS Code or start a new chat with an AI, always ensure you are on the **source** branch.
-
-**Run this command first:**
-```powershell
-git checkout source
+```bash
+git checkout -b feature/your-change
+npm install
+cp .env.example .env   # once
+npm run dev
+# ... code ...
+npm test
+npm run lint
+npm run build
+git add -A && git commit -m "feat: your change"
+# open PR → merge to main → Actions deploys
 ```
 
-### 2. Making Changes
-1.  Edit your files (e.g., `src/App.jsx`, `src/data/products.js`).
-2.  Preview your changes locally:
-    ```powershell
-    npm run dev
-    ```
-    *(Open the link shown in the terminal, usually `http://localhost:5173`)*
+### Live site
 
-### 3. Saving Your Work
-Once you are happy with your changes, save them to the cloud (GitHub):
+- Domain: `panditjipaneerwale.me` (`public/CNAME`)
+- Host: GitHub Pages via `.github/workflows/deploy.yml`
+- Trigger: push to `main` or manual `workflow_dispatch`
 
-```powershell
-git add .
-git commit -m "Description of what you changed"
-git push origin source
+### Production env
+
+Set repository secrets (Settings → Secrets and variables → Actions):
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+- `VITE_ADMIN_SECRET`
+- `VITE_GA_MEASUREMENT_ID` (optional)
+
+The workflow passes these into `npm run build`. Missing secrets = site still deploys with limited backend features.
+
+---
+
+## Architecture (mental model)
+
+```
+Browser
+  ├── React SPA (Vite)
+  │     ├── Catalog from src/data/products.js
+  │     ├── Cart in localStorage
+  │     ├── WhatsApp checkout
+  │     └── Admin UI (client secret gate)
+  └── Supabase (optional)
+        ├── customers, orders, addresses
+        ├── wishlists, reviews
+        └── notifications, push_subscriptions
 ```
 
----
-
-## 🚀 How to Deploy (Go Live)
-
-To update `panditjipaneerwale.me`, you need to build the project and push it to the `main` branch.
-
-**The Easy Way (Ask AI):**
-> "I have made changes on the source branch. Please build and deploy the project to the main branch for me."
-
-**The Manual Way (If you want to do it yourself):**
-1.  **Build the project:**
-    ```powershell
-    npm run build
-    ```
-2.  **Switch to main and deploy:**
-    ```powershell
-    git checkout main
-    # (Danger: This deletes source files from your local view to prepare for deployment)
-    Get-ChildItem -Path . -Exclude ".git", "dist", "README.md", "DEVELOPMENT_GUIDE.md" | Remove-Item -Recurse -Force
-    Move-Item -Path .\dist\* -Destination . -Force
-    Remove-Item -Path .\dist -Force
-    Set-Content -Path .\CNAME -Value "panditjipaneerwale.me"
-    git add .
-    git commit -m "Deploy update"
-    git push origin main
-    git checkout source  # Always go back to source immediately!
-    ```
+There is **no custom Node server**. Checkout is WhatsApp; Supabase is CRM/persistence when configured.
 
 ---
 
-## 🤖 Instructions for New AI Chats
+## Quality gates
 
-If you start a new chat with Copilot or another AI, copy and paste this block so they understand your setup immediately:
+| Command | Expectation |
+|---------|-------------|
+| `npm test` | Vitest + Testing Library pass |
+| `npm run lint` | ESLint clean |
+| `npm run format:check` | Prettier clean |
+| `npm run build` | Vite production build succeeds |
 
-> **Project Context for AI:**
-> I am working on a Vite/React project deployed to GitHub Pages.
-> - **Repo:** `panditjipaneerwale.me`
-> - **Source Code:** Lives in the `source` branch.
-> - **Live Site:** Lives in the `main` branch (served from root).
-> - **Workflow:** I edit code in `source`. To deploy, I build to `dist`, switch to `main`, replace everything with `dist` contents, and push.
-> - **Current State:** Please ensure I am on the `source` branch before making edits.
+Run these before opening a PR.
 
 ---
 
-## 🆘 Troubleshooting
+## Products & images
 
-*   **"I can't find my files!"**
-    *   You are probably on the `main` branch. Run `git checkout source` to get them back.
-*   **"The live site isn't updating."**
-    *   Wait 2-3 minutes. Try opening the site in an Incognito window to bypass cache.
-*   **"Git error: refusing to merge unrelated histories"**
-    *   This happens if branches get out of sync. Ask AI to "Force push the deployment" to fix it.
+- **Catalog:** `src/data/products.js` — never drop or invent product rows without an explicit product decision.
+- **Images:** `public/images/products/` — prefer existing assets.
+- **Sync tooling:** `npm run images:sync` (optional Gemini), `images:fix`, `images:report`. See `IMAGE_SYNC_GUIDE.md`.
+
+---
+
+## Admin access (dev)
+
+1. Set `VITE_ADMIN_SECRET` in `.env`.
+2. Restart `npm run dev`.
+3. Open the cart and enter the secret in the address field (substring match unlocks a 24h session).
+
+This is a UI gate only. Enforce real authorization with Supabase RLS in production.
+
+---
+
+## Restoring a known-good state
+
+Local restore branch created before redesign work:
+
+```text
+restore-before-redesign-20260727
+```
+
+```bash
+git checkout restore-before-redesign-20260727
+# or create a new branch from it:
+git checkout -b recover-from-restore restore-before-redesign-20260727
+```
+
+Do not force-push to `main` or re-deploy Pages without explicit approval.

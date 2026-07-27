@@ -3,14 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Heart, ShoppingCart, Trash2, ShoppingBag } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import { products } from '../data/products';
-import { useLanguage } from '../context/LanguageContext';
-
 // Fallback image
 const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23f3f4f6' width='300' height='200'/%3E%3Ctext x='150' y='95' text-anchor='middle' fill='%239ca3af' font-family='sans-serif' font-size='14'%3EProduct%3C/text%3E%3C/svg%3E";
 
 const Wishlist = ({ isOpen, onClose, onAddToCart }) => {
     const { wishlist, removeFromWishlist, clearWishlist } = useWishlist();
-    const { t } = useLanguage();
 
     // Get wishlist products
     const wishlistProducts = products.filter(p => wishlist.includes(p.id));

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Box, AlertTriangle, Search, Save, Loader2, RefreshCw, MinusCircle, PlusCircle } from 'lucide-react';
+import { Box, AlertTriangle, Search, Loader2, RefreshCw, MinusCircle, PlusCircle } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { products as localProducts } from '../../data/products';
 

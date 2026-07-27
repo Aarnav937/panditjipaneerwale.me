@@ -1,16 +1,24 @@
 {
   "name": "pandit-ji-paneer-wale",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
     "preview": "vite preview",
-    "images": "node preview_images.js",
+    "lint": "eslint . --ext .js,.jsx --max-warnings 0",
+    "lint:fix": "eslint . --ext .js,.jsx --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,css}\" \"*.{js,cjs,json,md}\" \".github/**/*.{yml,yaml}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,css}\" \"*.{js,cjs,json,md}\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "images:sync": "node sync_by_name.js",
-    "images:status": "node preview_images.js --status"
+    "images:fix": "node fix_images.js",
+    "images:report": "node generate_report.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
@@ -25,16 +33,23 @@
     "sharp": "^0.34.5"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.18",
     "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.34.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "jsdom": "^25.0.1",
     "postcss": "^8.4.35",
+    "prettier": "^3.4.2",
     "tailwindcss": "^3.4.1",
-    "vite": "^5.4.21"
+    "vite": "^5.4.21",
+    "vitest": "^2.1.8"
   }
 }

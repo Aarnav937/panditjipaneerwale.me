@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, X, Check, Trash2, Package, Tag, ShoppingCart, AlertCircle } from 'lucide-react';
+import { Bell, Check, Trash2, Package, Tag, ShoppingCart, AlertCircle } from 'lucide-react';
 import { useNotifications } from '../context/NotificationContext';
 
 const NotificationBell = () => {

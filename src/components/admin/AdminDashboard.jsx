@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Package, Users, Bell, Settings, BarChart3, LogOut, Clock, Box, AlertTriangle, Star } from 'lucide-react';
+import { X, Package, Users, Bell, Settings, BarChart3, LogOut, Clock, Box, Star } from 'lucide-react';
 import { useAdmin } from '../../context/AdminContext';
 import ProductManager from './ProductManager';
 import InventoryManager from './InventoryManager';

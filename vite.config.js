@@ -1,11 +1,11 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: true
+    host: true,
   },
   build: {
     rollupOptions: {
@@ -13,15 +13,22 @@ export default defineConfig({
         // Keep large libs in separate cacheable chunks
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('react-dom') || id.includes('/react/')) return 'react-vendor'
-            if (id.includes('framer-motion')) return 'motion'
-            if (id.includes('@supabase')) return 'supabase'
-            if (id.includes('lucide-react')) return 'icons'
-            if (id.includes('canvas-confetti')) return 'confetti'
+            if (id.includes('react-dom') || id.includes('/react/')) return 'react-vendor';
+            if (id.includes('framer-motion')) return 'motion';
+            if (id.includes('@supabase')) return 'supabase';
+            if (id.includes('lucide-react')) return 'icons';
+            if (id.includes('canvas-confetti')) return 'confetti';
           }
-        }
-      }
+        },
+      },
     },
-    chunkSizeWarningLimit: 600
-  }
-})
+    chunkSizeWarningLimit: 600,
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.js',
+    css: true,
+    include: ['src/**/*.{test,spec}.{js,jsx}'],
+  },
+});

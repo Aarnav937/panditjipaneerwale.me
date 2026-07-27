@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, X, Loader2, Star, Search, User, MessageSquare, Trash2 } from 'lucide-react';
+import { Check, Loader2, Star, User, MessageSquare, Trash2 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 
 const ReviewModerator = () => {

@@ -1,9 +1,3 @@
-/**
- * Test Comment - Added on 18 Jan 2026
- * This comment is invisible to website users.
- * It's just to test the GitHub deployment workflow! 🚀
- */
-
 import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -18,8 +12,13 @@ import { products as initialProducts, categories } from './data/products';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from './context/LanguageContext';
 import { useAdmin } from './context/AdminContext';
-import { useWishlist } from './context/WishlistContext';
 import { useAuth } from './context/AuthContext';
+import {
+  addItemToCart,
+  removeItemFromCart,
+  updateItemQuantity,
+  undoLastAdd,
+} from './lib/cart';
 
 // Heavy UI loaded only when opened — smaller first paint for shoppers
 const Cart = lazy(() => import('./components/Cart'));
@@ -58,16 +57,14 @@ function App() {
     }
     return initialProducts;
   });
-  const [isAdminMode, setIsAdminMode] = useState(false);
+  const [isAdminMode] = useState(false);
 
   // Initialize cart from local storage (Lazy Initialization)
   const [cartItems, setCartItems] = useState(() => {
     try {
       const savedCart = localStorage.getItem('cart');
-      console.log('🛒 [Debug] Loading cart from storage:', savedCart);
       return savedCart ? JSON.parse(savedCart) : [];
-    } catch (error) {
-      console.error('🛒 [Debug] Error loading cart:', error);
+    } catch {
       return [];
     }
   });
@@ -108,7 +105,6 @@ function App() {
 
   // Save cart to local storage whenever it changes
   useEffect(() => {
-    console.log('🛒 [Debug] Saving cart to storage:', cartItems);
     localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
@@ -136,12 +132,6 @@ function App() {
     localStorage.setItem('products_custom', JSON.stringify(updatedProducts));
   };
 
-  const exportData = () => {
-    const dataStr = "export const products = " + JSON.stringify(products, null, 2) + ";";
-    navigator.clipboard.writeText(dataStr);
-    alert("Product data copied to clipboard! You can now paste it into src/data/products.js");
-  };
-
   const toggleTheme = React.useCallback(() => setIsDarkMode(prev => !prev), []);
 
   const handleViewDetails = useCallback((product) => {
@@ -149,119 +139,42 @@ function App() {
     setIsQuickViewOpen(true);
   }, []);
 
-  // Helper to parse weight/volume from product name
-  const parseProductUnit = (name) => {
-    const match = name.match(/(\d+(\.\d+)?)\s*(kg|g|gm|ltr|l|ml)/i);
-    if (!match) return { weight: 0, volume: 0 };
-
-    const value = parseFloat(match[1]);
-    const unit = match[3].toLowerCase();
-
-    if (unit === 'kg') return { weight: value, volume: 0 };
-    if (unit === 'g' || unit === 'gm') return { weight: value / 1000, volume: 0 };
-    if (unit === 'ltr' || unit === 'l') return { weight: 0, volume: value };
-    if (unit === 'ml') return { weight: 0, volume: value / 1000 };
-
-    return { weight: 0, volume: 0 };
-  };
-
-  const checkLimits = (newCartItems) => {
-    let totalWeight = 0;
-    let totalVolume = 0;
-    let totalQuantity = 0;
-
-    newCartItems.forEach(item => {
-      const { weight, volume } = parseProductUnit(item.name);
-      totalWeight += weight * item.quantity;
-      totalVolume += volume * item.quantity;
-      totalQuantity += item.quantity;
-    });
-
-    if (totalQuantity > 50) return "Limit reached: You can only order up to 50 items in total.";
-    if (totalWeight > 50) return "Limit reached: Total weight cannot exceed 50kg.";
-    if (totalVolume > 50) return "Limit reached: Total volume cannot exceed 50 liters.";
-
-    return null;
-  };
-
   const addToCart = useCallback((product) => {
-    let newCartItems = [...cartItems];
-    const existingIndex = newCartItems.findIndex(item => item.id === product.id);
-
-    if (existingIndex >= 0) {
-      newCartItems[existingIndex] = {
-        ...newCartItems[existingIndex],
-        quantity: newCartItems[existingIndex].quantity + 1
-      };
-    } else {
-      newCartItems.push({ ...product, quantity: 1 });
-    }
-
-    const error = checkLimits(newCartItems);
+    const { cart, error } = addItemToCart(cartItems, product);
     if (error) {
       alert(error);
       return;
     }
 
-    setCartItems(newCartItems);
-
-    // Show toast notification
+    setCartItems(cart);
     setLastAddedProduct(product);
     setToastMessage(`${product.name} added to cart!`);
     setShowToast(true);
-
-    // Trigger cart icon pulse
     setCartPulse(true);
     setTimeout(() => setCartPulse(false), 300);
   }, [cartItems]);
 
   const removeFromCart = useCallback((id) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
+    setCartItems((prev) => removeItemFromCart(prev, id));
   }, []);
 
-  // Undo last add to cart action
   const undoAddToCart = useCallback(() => {
     if (!lastAddedProduct) return;
-
-    setCartItems(prev => {
-      const existingIndex = prev.findIndex(item => item.id === lastAddedProduct.id);
-      if (existingIndex >= 0) {
-        const item = prev[existingIndex];
-        if (item.quantity === 1) {
-          // Remove item completely
-          return prev.filter(i => i.id !== lastAddedProduct.id);
-        } else {
-          // Decrease quantity by 1
-          return prev.map(i =>
-            i.id === lastAddedProduct.id
-              ? { ...i, quantity: i.quantity - 1 }
-              : i
-          );
-        }
-      }
-      return prev;
-    });
+    setCartItems((prev) => undoLastAdd(prev, lastAddedProduct.id));
     setLastAddedProduct(null);
   }, [lastAddedProduct]);
 
-  const updateQuantity = React.useCallback((id, newQuantity) => {
-    if (newQuantity < 1) {
-      removeFromCart(id);
-      return;
-    }
-
-    const newCartItems = cartItems.map(item =>
-      item.id === id ? { ...item, quantity: newQuantity } : item
-    );
-
-    const error = checkLimits(newCartItems);
-    if (error) {
-      alert(error);
-      return;
-    }
-
-    setCartItems(newCartItems);
-  }, [cartItems, removeFromCart]);
+  const updateQuantity = React.useCallback(
+    (id, newQuantity) => {
+      const { cart, error } = updateItemQuantity(cartItems, id, newQuantity);
+      if (error) {
+        alert(error);
+        return;
+      }
+      setCartItems(cart);
+    },
+    [cartItems]
+  );
 
   const sortedCategories = React.useMemo(() => {
     return ['All', ...categories.filter(c => c !== 'All').sort()];

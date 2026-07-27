@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MapPin, Plus, Edit2, Trash2, Check, Home, Briefcase, Building } from 'lucide-react';
+import { X, MapPin, Plus, Edit2, Trash2, Home, Briefcase, Building } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 const ADDRESS_ICONS = {
@@ -11,9 +11,9 @@ const ADDRESS_ICONS = {
 
 const AddressManager = ({ isOpen, onClose, onSelect }) => {
     const [addresses, setAddresses] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [, setLoading] = useState(true);
     const [isAddingNew, setIsAddingNew] = useState(false);
-    const [editingAddress, setEditingAddress] = useState(null);
+    const [, setEditingAddress] = useState(null);
     const [newAddress, setNewAddress] = useState({
         label: 'Home',
         address: '',

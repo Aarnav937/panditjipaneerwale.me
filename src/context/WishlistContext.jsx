@@ -17,7 +17,7 @@ export const WishlistProvider = ({ children }) => {
         const saved = localStorage.getItem('wishlist');
         return saved ? JSON.parse(saved) : [];
     });
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
 
     // Sync with localStorage
     useEffect(() => {

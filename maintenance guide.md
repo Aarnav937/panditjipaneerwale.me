@@ -1,133 +1,55 @@
-# Project Maintenance Guide: Pandit Ji Paneer Wale
+# Maintenance Guide
 
-This guide explains how to manage, edit, and deploy your website.
+Short runbook for keeping the live shop healthy.
 
-## 🌳 Branch Strategy (Crucial)
+## Deploy (only path)
 
-Your project uses a two-branch system. It is vital to understand this to avoid losing work.
+1. Merge approved changes to `main`.
+2. GitHub Actions builds and deploys Pages automatically.
+3. Confirm green check under **Actions**.
 
-| Branch Name | Purpose | Status |
-| :--- | :--- | :--- |
-| **`source`** | **EDIT HERE.** Contains your actual code (React, CSS, etc.). | **Safe.** Always save your work here. |
-| **`main`** | **LIVE SITE.** Contains only the built website (HTML/JS/CSS). | **Destructive.** This branch is wiped and overwritten every time you deploy. |
+No two-branch copy, no wiping `main` with `dist` contents.
 
----
+## After each content change
 
-## 🖼️ Adding Product Images (The Easy Way!)
+| Change | Action |
+|--------|--------|
+| Price / name / new product | Edit `src/data/products.js`, keep all existing products |
+| Photo | Put file in `public/images/products/`, path in `products.js` |
+| Contact WhatsApp | Update cart / floating WhatsApp / footer components |
+| Env / Supabase | Update GitHub Secrets + local `.env`, redeploy |
 
-You now have an AI-powered image sync tool! Just:
+## Weekly checks
 
-1.  **Drop images** into `uploads/incoming/`
-2.  **Run the preview:**
-    ```powershell
-    npm run images
-    ```
-3.  **Review** what the AI detected and confirm to apply
+- [ ] Home page loads on mobile and desktop
+- [ ] Add to cart + WhatsApp message looks correct
+- [ ] Product images load (spot-check categories)
+- [ ] Admin still opens with current secret (rotate if leaked)
+- [ ] Actions last deploy is green
 
-The tool will automatically:
-- Detect the product in each image
-- Match it to your database
-- Move and rename the file correctly
-- Update `products.js` with the new path
+## Image maintenance
 
-📖 **Full guide:** See `IMAGE_SYNC_GUIDE.md` for detailed instructions.
+```bash
+npm run images:report
+# optional:
+npm run images:fix
+npm run images:sync   # needs pending_images/ + GEMINI_API_KEY
+```
 
----
+See **IMAGE_SYNC_GUIDE.md**.
 
-## 🛠️ How to Make Changes (The Edit Cycle)
+## Incidents
 
-Whenever you want to update the site (change a price, add a photo, fix a typo):
+| Issue | First response |
+|-------|----------------|
+| Site down / old version | Check Actions + Pages settings |
+| Wrong prices live | Hotfix `products.js` on a PR, merge, wait for deploy |
+| Secrets leaked | Rotate Supabase anon key + admin secret; update Secrets; force new build |
+| Need rollback | Checkout known-good commit/branch (e.g. `restore-before-redesign-20260727`), open PR, get approval before force-deploy |
 
-1.  **Switch to the Source Code:**
-    ```powershell
-    git checkout source
-    ```
+## Do not
 
-2.  **Start the Local Server:**
-    ```powershell
-    npm run dev
-    ```
-    *   Open the link shown (usually `http://localhost:5173`) to see your changes in real-time.
-
-3.  **Make Your Edits:**
-    *   Edit files in `src/`.
-    *   Add images to `public/images/`.
-
-4.  **Save Your Work:**
-    ```powershell
-    git add .
-    git commit -m "Description of what you changed"
-    git push origin source
-    ```
-
----
-
-## 🚀 How to Deploy (The Release Cycle)
-
-When you are happy with your changes and want them on `panditjipaneerwale.me`:
-
-1.  **Ensure you are on `source` and have installed dependencies:**
-    ```powershell
-    git checkout source
-    npm install
-    ```
-
-2.  **Build the Project:**
-    ```powershell
-    npm run build
-    ```
-    *   *Check:* Ensure a `dist` folder was created.
-
-3.  **Deploy to Main (The "Magic" Command):**
-    *   *Note: This command deletes the old site and replaces it with the new build.*
-    ```powershell
-    # 1. Switch to main
-    git checkout main
-
-    # 2. Clean old files (PowerShell command)
-    Get-ChildItem -Path . -Exclude ".git", "dist", "README.md" | Remove-Item -Recurse -Force
-
-    # 3. Move new build files to root
-    Move-Item -Path .\dist\* -Destination . -Force
-    Remove-Item -Path .\dist -Force
-
-    # 4. Restore CNAME (Required for custom domain)
-    Set-Content -Path .\CNAME -Value "panditjipaneerwale.me"
-
-    # 5. Push to GitHub
-    git add .
-    git commit -m "Deploy update"
-    git push origin main
-    ```
-
-4.  **Return to Safety:**
-    ```powershell
-    git checkout source
-    ```
-
----
-
-## 🤖 Instructions for New AI Chats
-
-If you start a new chat with Copilot or ChatGPT and need help, paste this prompt so it understands your setup immediately:
-
-> **"I am working on a Vite/React project deployed to GitHub Pages. I have a custom workflow:**
-> 1. **Source code is on the `source` branch.**
-> 2. **The `main` branch is ONLY for the production build (dist folder contents at root).**
-> 3. **My custom domain is `panditjipaneerwale.me`.**
->
-> **When helping me:**
-> - **Always ensure I am on the `source` branch before editing code.**
-> - **If I ask to deploy, generate the PowerShell commands to build, switch to main, clean the root, move dist files, recreate the CNAME, and push."**
-
----
-
-## ❓ Troubleshooting
-
-*   **"vite: command not found"**:
-    *   You probably don't have the node modules installed. Run: `npm install`
-*   **"The term 'git' is not recognized"**:
-    *   Install Git for Windows.
-*   **Site shows a 404 or blank page**:
-    *   Check if the `CNAME` file exists in the root of the `main` branch.
-    *   Ensure you didn't accidentally push source code to `main` or build code to `source`.
+- Commit `.env`
+- Put `service_role` in any `VITE_*` variable
+- Maintain parallel Desktop trees as the “real” app
+- Push redesign work to `main` without explicit approval
