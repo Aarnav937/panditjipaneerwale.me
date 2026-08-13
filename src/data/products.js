@@ -79,7 +79,7 @@ export const products = [
     id: 6,
     name: "Amul Butter (100g)",
     category: "Amul",
-    price: 18,
+    price: 20,
     image: "images/packs/product-6.webp",
     description: "Utterly butterly delicious."
   },
