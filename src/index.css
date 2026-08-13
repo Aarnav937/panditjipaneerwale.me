@@ -4,6 +4,8 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -11,6 +13,21 @@ body {
   color: #1C1917;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: rgba(226, 88, 34, 0.2);
+  overscroll-behavior-y: contain;
+}
+
+/* iOS Safari zooms any focused control under 16px */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+button,
+a,
+[role='button'] {
+  touch-action: manipulation;
 }
 
 /* Living warm background — slow breathing gradients */
@@ -189,6 +206,16 @@ body {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+@keyframes add-burst {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.just-added {
+  animation: add-burst 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .will-change-transform {
   will-change: transform;
   transform: translateZ(0);
@@ -207,6 +234,55 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0);
+}
+
+/* Phone: drop page-wide filter animation (janky on Android) */
+@media (max-width: 767px) {
+  .bg-fixed-gradient {
+    animation: none;
+  }
+
+  .orb-float-a,
+  .orb-float-b,
+  .orb-float-c {
+    animation: none;
+  }
+
+  .accent-gold-line {
+    animation: none;
+    background-size: 100% 100%;
+  }
+
+  .cart-bar-live {
+    animation: none;
+  }
+
+  .chip-active {
+    animation: none;
+    background: #E25822;
+    background-image: none;
+  }
+}
+
+/* Hover shine/lift only when a real pointer can hover */
+@media (hover: none) {
+  .shadow-gold-glow-hover:hover {
+    box-shadow:
+      0 2px 8px rgba(28, 25, 23, 0.06),
+      0 8px 24px rgba(255, 140, 0, 0.08);
+  }
+
+  .group:hover .image-plate::after {
+    opacity: 0;
+  }
+
+  .chip-idle:hover {
+    transform: none;
+  }
+}
+
 :focus-visible {
   outline: 2px solid #FF8C00;
   outline-offset: 2px;
@@ -223,7 +299,8 @@ body {
   .live-bounce,
   .btn-glow,
   .cart-bar-live,
-  .stagger-in {
+  .stagger-in,
+  .just-added {
     animation: none !important;
   }
 }

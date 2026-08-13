@@ -34,7 +34,7 @@ const LazyPanelFallback = () => (
 );
 
 function App() {
-  const [products, setProducts] = useState(() => {
+  const [products] = useState(() => {
     const saved = localStorage.getItem('products_custom');
     if (saved) {
       try {
@@ -57,8 +57,6 @@ function App() {
     }
     return initialProducts;
   });
-  const [isAdminMode] = useState(false);
-
   // Initialize cart from local storage (Lazy Initialization)
   const [cartItems, setCartItems] = useState(() => {
     try {
@@ -123,14 +121,6 @@ function App() {
       setSelectedCategory('All');
     }
   }, [searchQuery]);
-
-  const updateProductImage = (id, newUrl) => {
-    const updatedProducts = products.map(p =>
-      p.id === id ? { ...p, image: newUrl } : p
-    );
-    setProducts(updatedProducts);
-    localStorage.setItem('products_custom', JSON.stringify(updatedProducts));
-  };
 
   const toggleTheme = React.useCallback(() => setIsDarkMode(prev => !prev), []);
 
@@ -272,19 +262,20 @@ function App() {
       .sort((a, b) => b._searchScore - a._searchScore); // Sort by relevance
   }, [searchQuery, selectedCategory, products, fuzzyMatch]);
 
+  const headerOffset = () => {
+    const nav = document.querySelector('nav');
+    return (nav?.getBoundingClientRect().height || 88) + 12;
+  };
+
   const handleCategoryChange = (category, e) => {
     setSelectedCategory(category);
 
-    // Scroll to products section
-    const productsSection = document.getElementById('products');
-    if (productsSection) {
-      const offset = 100; // Adjust for sticky header
-      const elementPosition = productsSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
+    const heading = document.getElementById('catalog-heading');
+    if (heading) {
+      const offsetPosition = heading.getBoundingClientRect().top + window.pageYOffset - headerOffset();
       window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
+        top: Math.max(0, offsetPosition),
+        behavior: 'smooth',
       });
     }
 
@@ -340,7 +331,7 @@ function App() {
 
       <main className="flex-1 container mx-auto px-4 py-8 md:py-10" id="products">
         {/* Category chips — sticky + lively selection */}
-        <div className="sticky top-[6.75rem] md:top-[3.5rem] z-40 -mx-4 px-4 py-3.5 mb-6 bg-[#FFFDF9]/90 dark:bg-brand-darker/90 backdrop-blur-xl border-b border-brand-gold/20 dark:border-gray-800 shadow-sm">
+        <div className="sticky top-[calc(6.5rem+env(safe-area-inset-top,0px))] md:top-[3.5rem] z-[45] -mx-4 px-4 py-3 mb-5 bg-[#FFFDF9] md:bg-[#FFFDF9]/90 dark:bg-brand-darker md:dark:bg-brand-darker/90 md:backdrop-blur-xl border-b border-brand-gold/20 dark:border-gray-800 shadow-sm">
           <div className="relative">
             <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#FFFDF9] dark:from-brand-darker to-transparent z-10 md:hidden" />
             <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#FFFDF9] dark:from-brand-darker to-transparent z-10 md:hidden" />
@@ -369,7 +360,7 @@ function App() {
           animate={{ opacity: 1, x: 0 }}
           className="flex justify-between items-end gap-3 mb-6"
         >
-          <h2 className="text-xl sm:text-2xl font-extrabold text-brand-charcoal dark:text-white flex flex-wrap items-baseline gap-2">
+          <h2 id="catalog-heading" className="text-xl sm:text-2xl font-extrabold text-brand-charcoal dark:text-white flex flex-wrap items-baseline gap-2">
             {searchQuery ? (
               <>
                 <span>Results for “{searchQuery}”</span>
@@ -397,36 +388,21 @@ function App() {
         </motion.div>
 
         {filteredProducts.length > 0 ? (
-          <motion.div
-            layout
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5"
-          >
-            <AnimatePresence mode="popLayout">
-              {filteredProducts.map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  layout
-                  initial={{ opacity: 0, y: 22, scale: 0.94 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.92, y: -8 }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 280,
-                    damping: 24,
-                    delay: Math.min(index * 0.03, 0.45),
-                  }}
-                >
-                  <ProductCard
-                    product={product}
-                    addToCart={addToCart}
-                    isAdminMode={isAdminMode}
-                    onUpdateImage={updateProductImage}
-                    onViewDetails={handleViewDetails}
-                  />
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </motion.div>
+          <div className="relative z-0 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-5">
+            {filteredProducts.map((product, index) => (
+              <div
+                key={product.id}
+                className={index < 12 ? 'stagger-in' : undefined}
+                style={index < 12 ? { animationDelay: `${index * 0.03}s` } : undefined}
+              >
+                <ProductCard
+                  product={product}
+                  addToCart={addToCart}
+                  onViewDetails={handleViewDetails}
+                />
+              </div>
+            ))}
+          </div>
         ) : (
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}

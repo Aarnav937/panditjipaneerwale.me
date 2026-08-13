@@ -42,7 +42,7 @@ const BottomNav = ({ cartCount, onCartClick, onProfileClick, isLoggedIn }) => {
             initial={{ y: 100 }}
             animate={{ y: 0 }}
             transition={{ type: 'spring', damping: 22, stiffness: 260 }}
-            className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-brand-darker/95 backdrop-blur-xl border-t border-brand-gold/20 dark:border-gray-800 shadow-bar safe-area-bottom"
+            className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-brand-darker border-t border-brand-gold/20 dark:border-gray-800 shadow-bar safe-area-bottom"
         >
             <div className="flex justify-around items-center py-1.5 px-1">
                 {navItems.map((item) => {
@@ -50,9 +50,10 @@ const BottomNav = ({ cartCount, onCartClick, onProfileClick, isLoggedIn }) => {
                     return (
                         <motion.button
                             key={item.label}
+                            type="button"
                             onClick={item.action}
                             whileTap={{ scale: 0.88 }}
-                            className="flex flex-col items-center gap-0.5 p-2 min-w-[64px] relative"
+                            className="flex flex-col items-center gap-0.5 p-2 min-w-[64px] min-h-[48px] relative"
                         >
                             {isActive && (
                                 <motion.span

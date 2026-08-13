@@ -22,24 +22,25 @@ const QuickViewModal = ({ product, isOpen, onClose, addToCart }) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10">
+        <div className="fixed inset-0 z-[85] flex items-end md:items-center justify-center p-0 md:p-10">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/60 md:backdrop-blur-sm"
           />
 
           {/* Modal Container */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 180 }}
-            className="relative w-full max-w-3xl bg-white dark:bg-brand-card rounded-2xl overflow-hidden shadow-soft-hover border border-brand-border dark:border-gray-700 flex flex-col md:flex-row z-10 max-h-[90vh] md:max-h-[80vh]"
+            initial={{ opacity: 0, y: 48 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 32 }}
+            transition={{ type: 'spring', damping: 28, stiffness: 280 }}
+            className="relative w-full max-w-3xl bg-white dark:bg-brand-card rounded-t-3xl md:rounded-2xl overflow-hidden shadow-soft-hover border border-brand-border dark:border-gray-700 flex flex-col md:flex-row z-10 max-h-[92dvh] md:max-h-[80vh]"
           >
+            <div className="md:hidden mx-auto mt-2 h-1.5 w-10 rounded-full bg-gray-300 dark:bg-gray-600" aria-hidden />
             <div className="absolute top-0 left-0 right-0 accent-gold-line" />
 
             <button
@@ -126,7 +127,7 @@ const QuickViewModal = ({ product, isOpen, onClose, addToCart }) => {
                     onClose();
                   }}
                   disabled={!isAvailable}
-                  className={`w-full font-semibold py-3 px-5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 active:scale-[0.98] ${
+                  className={`w-full min-h-[52px] font-semibold py-3 px-5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 active:scale-[0.98] ${
                     isAvailable
                       ? 'bg-brand-orange hover:bg-brand-dark text-white shadow-sm'
                       : 'bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed'

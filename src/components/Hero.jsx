@@ -7,11 +7,12 @@ const Hero = () => {
     const { t, isRTL } = useLanguage();
 
     const scrollToProducts = () => {
-        const productsSection = document.getElementById('products');
-        if (productsSection) {
-            const offset = 90;
-            const top = productsSection.getBoundingClientRect().top + window.pageYOffset - offset;
-            window.scrollTo({ top, behavior: 'smooth' });
+        const heading = document.getElementById('catalog-heading') || document.getElementById('products');
+        if (heading) {
+            const nav = document.querySelector('nav');
+            const offset = (nav?.getBoundingClientRect().height || 88) + 12;
+            const top = heading.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
         }
     };
 
@@ -24,7 +25,7 @@ const Hero = () => {
     return (
         <section className="relative flex items-center justify-center overflow-hidden border-b border-brand-gold/20 dark:border-gray-800">
             {/* Living orbs */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none overflow-hidden hidden md:block">
                 <div className="orb orb-float-a w-80 h-80 bg-brand-orange/25 -top-20 -right-16" />
                 <div className="orb orb-float-b w-72 h-72 bg-brand-gold/20 -bottom-16 -left-12" />
                 <div className="orb orb-float-c w-48 h-48 bg-brand-saffron/15 top-1/2 left-1/3" />

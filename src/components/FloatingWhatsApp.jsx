@@ -24,7 +24,7 @@ const FloatingWhatsApp = ({ hasCartItems = false }) => {
       animate={{ scale: 1, opacity: 1 }}
       whileHover={{ scale: 1.06 }}
       whileTap={{ scale: 0.94 }}
-      className={`fixed right-4 ${bottomClass} z-40 flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-lg hover:bg-[#1ebe57] transition-all border-2 border-white/30`}
+      className={`hidden md:flex fixed right-4 ${bottomClass} z-40 items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-lg hover:bg-[#1ebe57] transition-all border-2 border-white/30`}
       title="Chat on WhatsApp"
       aria-label="Chat on WhatsApp"
     >

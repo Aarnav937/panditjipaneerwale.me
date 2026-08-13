@@ -20,7 +20,7 @@ const Toast = ({ show, message, onClose, onUndo, duration = 3000 }) => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 24, scale: 0.9 }}
                     transition={{ type: 'spring', damping: 18, stiffness: 340 }}
-                    className="fixed bottom-36 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm"
+                    className="fixed bottom-[7.5rem] md:bottom-8 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm"
                 >
                     <div className="bg-gradient-to-r from-brand-charcoal via-[#2a1810] to-brand-charcoal dark:from-white dark:to-amber-50 text-white dark:text-brand-charcoal px-4 py-3.5 rounded-2xl shadow-lg shadow-brand-orange/25 flex items-center gap-3 border border-brand-gold/40">
                         <motion.div

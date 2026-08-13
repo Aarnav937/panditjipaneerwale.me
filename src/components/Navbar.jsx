@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingCart, Search, Menu, X, Moon, Sun, Languages, Settings2, User, LogOut } from 'lucide-react';
+import { ShoppingCart, Search, Menu, X, Moon, Sun, Languages, Settings2, User, LogOut, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { useAdmin } from '../context/AdminContext';
@@ -26,7 +26,7 @@ const Navbar = ({
 
   return (
     <>
-      <nav className="bg-white/90 dark:bg-brand-darker/90 backdrop-blur-md text-brand-charcoal dark:text-white sticky top-0 z-50 border-b border-brand-border/80 dark:border-gray-800 transition-colors duration-300">
+      <nav className="safe-area-top bg-white dark:bg-brand-darker md:bg-white/90 md:dark:bg-brand-darker/90 md:backdrop-blur-md text-brand-charcoal dark:text-white sticky top-0 z-50 border-b border-brand-border/80 dark:border-gray-800 transition-colors duration-300">
         <div className="container mx-auto px-4 py-2.5 flex justify-between items-center gap-3">
           <a href="#" className="flex items-center gap-2 min-w-0 shrink-0" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
             <motion.div
@@ -48,7 +48,7 @@ const Navbar = ({
             <input
               type="text"
               placeholder={t('searchPlaceholder')}
-              className="w-full px-4 py-2 rounded-full bg-brand-cream dark:bg-gray-900 text-brand-charcoal dark:text-white border border-brand-border dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-orange/40 focus:border-brand-orange transition-colors text-sm"
+              className="w-full px-4 py-2 rounded-full bg-brand-cream dark:bg-gray-900 text-brand-charcoal dark:text-white border border-brand-border dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-orange/40 focus:border-brand-orange transition-colors text-base"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -213,7 +213,7 @@ const Navbar = ({
             <input
               type="text"
               placeholder={t('searchPlaceholder')}
-              className="w-full px-4 py-2.5 rounded-full bg-brand-cream dark:bg-gray-900 text-brand-charcoal dark:text-white border border-brand-border dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-orange/40 text-sm"
+              className="w-full px-4 py-2.5 rounded-full bg-brand-cream dark:bg-gray-900 text-brand-charcoal dark:text-white border border-brand-border dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-orange/40 text-base"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -257,6 +257,15 @@ const Navbar = ({
                   <a href="#our-store" className="px-3 py-2.5 rounded-xl hover:bg-brand-saffronLight dark:hover:bg-gray-800 font-medium text-sm" onClick={() => setIsMobileMenuOpen(false)}>Store</a>
                   <a href="#about" className="px-3 py-2.5 rounded-xl hover:bg-brand-saffronLight dark:hover:bg-gray-800 font-medium text-sm" onClick={() => setIsMobileMenuOpen(false)}>{t('about')}</a>
                   <a href="#contact" className="px-3 py-2.5 rounded-xl hover:bg-brand-saffronLight dark:hover:bg-gray-800 font-medium text-sm" onClick={() => setIsMobileMenuOpen(false)}>{t('contact')}</a>
+                  <a
+                    href="https://wa.me/971524676306?text=Hello%2C%20I%20have%20a%20query%20regarding%20your%20products."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 px-3 py-3 rounded-xl bg-[#25D366] text-white font-semibold text-sm flex items-center justify-center gap-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <MessageCircle size={16} /> WhatsApp us
+                  </a>
 
                   {isAdmin && (
                     <button className="text-left px-3 py-2.5 rounded-xl hover:bg-brand-saffronLight font-medium text-sm text-brand-saffron flex items-center gap-2" onClick={() => { setIsAdminDashboardOpen(true); setIsMobileMenuOpen(false); }}>

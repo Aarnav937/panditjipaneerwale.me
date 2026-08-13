@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { useAdmin } from '../context/AdminContext';
 import { useWishlist } from '../context/WishlistContext';
 import { products } from '../data/products';
+import { useMediaQuery, useVisualViewport } from '../lib/useMediaQuery';
 
 // Fallback image for broken/placeholder images
 const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23f3f4f6' width='300' height='200'/%3E%3Ctext x='150' y='95' text-anchor='middle' fill='%239ca3af' font-family='sans-serif' font-size='14'%3EProduct%3C/text%3E%3Cpath d='M130 110 L150 90 L170 110 L160 110 L160 130 L140 130 L140 110 Z' fill='%23d1d5db'/%3E%3C/svg%3E";
@@ -30,6 +31,8 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
   const { t } = useLanguage();
   const { placeOrder, loginAsGuest } = useAuth();
   const { checkAdminCode } = useAdmin();
+  const isPhone = useMediaQuery('(max-width: 767px)');
+  const viewport = useVisualViewport();
 
   // Wishlist Logic
   const { wishlist, removeFromWishlist, clearWishlist } = useWishlist();
@@ -196,14 +199,18 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
             onClick={onClose}
           />
           <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 h-full w-full md:w-[420px] bg-white dark:bg-brand-card z-[90] shadow-soft-hover flex flex-col border-l border-brand-border dark:border-gray-800"
+            initial={isPhone ? { y: '100%' } : { x: '100%' }}
+            animate={isPhone ? { y: 0 } : { x: 0 }}
+            exit={isPhone ? { y: '100%' } : { x: '100%' }}
+            transition={{ type: 'spring', damping: 28, stiffness: 280 }}
+            className="fixed inset-x-0 bottom-0 md:inset-auto md:right-0 md:top-0 w-full md:w-[420px] bg-white dark:bg-brand-card z-[90] shadow-soft-hover flex flex-col border-t md:border-t-0 md:border-l border-brand-border dark:border-gray-800 rounded-t-3xl md:rounded-none overflow-hidden"
+            style={isPhone ? { height: viewport.height, top: viewport.offsetTop } : { height: '100%' }}
           >
             {/* Header */}
-            <div className="p-4 sm:p-5 bg-white dark:bg-brand-card border-b border-brand-border/80 dark:border-gray-800 flex flex-col gap-3 sticky top-0 z-10">
+            <div className="p-4 sm:p-5 bg-white dark:bg-brand-card border-b border-brand-border/80 dark:border-gray-800 flex flex-col gap-3 shrink-0">
+              {isPhone && (
+                <div className="mx-auto -mt-1 mb-1 h-1.5 w-10 rounded-full bg-gray-300 dark:bg-gray-600" aria-hidden />
+              )}
               <div className="accent-gold-line -mx-4 sm:-mx-5 mb-1 opacity-80" />
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
@@ -309,16 +316,20 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
                             <div className="flex items-center gap-4 mt-3">
                               <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-full p-1">
                                 <button
-                                  className="w-8 h-8 bg-white dark:bg-gray-600 rounded-full flex items-center justify-center text-gray-600 dark:text-white shadow-sm hover:scale-105 transition-transform disabled:opacity-50"
+                                  type="button"
+                                  className="w-10 h-10 sm:w-8 sm:h-8 bg-white dark:bg-gray-600 rounded-full flex items-center justify-center text-gray-600 dark:text-white shadow-sm disabled:opacity-50"
                                   onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                   disabled={item.quantity <= 1}
+                                  aria-label="Decrease quantity"
                                 >
                                   <Minus size={14} />
                                 </button>
                                 <span className="w-8 text-center font-bold text-gray-900 dark:text-white text-sm">{item.quantity}</span>
                                 <button
-                                  className="w-8 h-8 bg-white dark:bg-gray-600 rounded-full flex items-center justify-center text-gray-600 dark:text-white shadow-sm hover:scale-105 transition-transform"
+                                  type="button"
+                                  className="w-10 h-10 sm:w-8 sm:h-8 bg-white dark:bg-gray-600 rounded-full flex items-center justify-center text-gray-600 dark:text-white shadow-sm"
                                   onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                  aria-label="Increase quantity"
                                 >
                                   <Plus size={14} />
                                 </button>
@@ -349,7 +360,9 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
                             value={customerName}
                             onChange={(e) => setCustomerName(e.target.value)}
                             placeholder={t('namePlaceholder')}
-                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all text-sm"
+                            autoComplete="name"
+                            enterKeyHint="next"
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all text-base"
                           />
                         </div>
                         <div>
@@ -358,10 +371,13 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
                           </label>
                           <input
                             type="tel"
+                            inputMode="tel"
+                            autoComplete="tel"
+                            enterKeyHint="next"
                             value={customerPhone}
                             onChange={(e) => setCustomerPhone(e.target.value)}
                             placeholder="+971 XX XXX XXXX"
-                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all text-sm"
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all text-base"
                           />
                         </div>
                         <div>
@@ -371,7 +387,9 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
                             onChange={(e) => setAddress(e.target.value)}
                             placeholder={t('addressPlaceholder')}
                             rows="2"
-                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all resize-none text-sm"
+                            autoComplete="street-address"
+                            enterKeyHint="next"
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all resize-none text-base"
                           />
                         </div>
                         <div>
@@ -381,7 +399,7 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
                           <select
                             value={timeSlot}
                             onChange={(e) => setTimeSlot(e.target.value)}
-                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all cursor-pointer text-sm"
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none transition-all cursor-pointer text-base"
                           >
                             {TIME_SLOTS.map(slot => (
                               <option key={slot.id} value={slot.id}>{t(slot.id)}</option>
@@ -556,7 +574,10 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
 
             {/* Sticky place-order footer — always above phone nav chrome */}
             {activeTab === 'cart' && cartItems.length > 0 && (
-              <div className="shrink-0 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] bg-white dark:bg-brand-card border-t border-brand-border dark:border-gray-800 shadow-[0_-8px_24px_rgba(0,0,0,0.12)]">
+              <div
+                className="shrink-0 p-4 bg-white dark:bg-brand-card border-t border-brand-border dark:border-gray-800 shadow-[0_-8px_24px_rgba(0,0,0,0.12)]"
+                style={{ paddingBottom: viewport.keyboard > 0 ? 12 : undefined }}
+              >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-brand-muted">Order total</span>
                   <span className="text-lg font-bold text-brand-charcoal dark:text-white tabular-nums">AED {grandTotal}</span>
@@ -565,14 +586,16 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
                   type="button"
                   onClick={handleCheckout}
                   disabled={isSubmitting}
-                  className="w-full bg-[#25D366] hover:bg-[#1ebe57] disabled:opacity-70 text-white py-3.5 px-4 rounded-xl font-bold text-base flex items-center justify-center gap-2 transition-colors shadow-md"
+                  className="w-full min-h-[52px] bg-[#25D366] hover:bg-[#1ebe57] disabled:opacity-70 text-white py-3.5 px-4 rounded-xl font-bold text-base flex items-center justify-center gap-2 transition-transform active:scale-[0.98] shadow-md"
                 >
                   <MessageCircle size={20} />
                   <span>{isSubmitting ? 'Opening WhatsApp…' : 'Place order on WhatsApp'}</span>
                 </button>
-                <p className="text-[11px] text-center text-brand-muted mt-2">
-                  Login is optional · Opens WhatsApp with your order
-                </p>
+                {viewport.keyboard === 0 && (
+                  <p className="text-[11px] text-center text-brand-muted mt-2 pb-[max(0.25rem,env(safe-area-inset-bottom))]">
+                    Login is optional · Opens WhatsApp with your order
+                  </p>
+                )}
               </div>
             )}
 

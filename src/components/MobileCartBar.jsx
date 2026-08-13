@@ -9,9 +9,9 @@ const MobileCartBar = ({ itemCount, total, onOpenCart }) => {
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ y: 100, opacity: 0, scale: 0.92 }}
-          animate={{ y: 0, opacity: 1, scale: 1 }}
-          exit={{ y: 100, opacity: 0, scale: 0.92 }}
+          initial={{ y: 80, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 80, opacity: 0 }}
           transition={{ type: 'spring', damping: 22, stiffness: 320 }}
           className="md:hidden fixed left-3 right-3 z-[45] safe-area-bottom"
           style={{ bottom: 'calc(4.25rem + env(safe-area-inset-bottom, 0px))' }}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Heart, Plus, Sparkles } from 'lucide-react';
+import { Heart, Plus } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useWishlist } from '../context/WishlistContext';
 
@@ -33,14 +33,14 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
   return (
     <motion.div
       onClick={() => onViewDetails && onViewDetails(product)}
-      whileHover={reduceMotion ? undefined : { y: -8, scale: 1.015 }}
-      whileTap={reduceMotion ? undefined : { scale: 0.985 }}
-      transition={{ type: 'spring', stiffness: 320, damping: 22 }}
-      className={`group relative flex flex-col bg-white dark:bg-brand-card border border-brand-border/70 dark:border-gray-800 rounded-2xl shadow-gold-glow shadow-gold-glow-hover overflow-hidden cursor-pointer ${!isAvailable ? 'opacity-70' : ''}`}
+      whileHover={reduceMotion ? undefined : { y: -6, scale: 1.012 }}
+      whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+      transition={{ type: 'spring', stiffness: 360, damping: 24 }}
+      className={`group relative flex flex-col h-full bg-white dark:bg-brand-card border border-brand-border/70 dark:border-gray-800 rounded-2xl shadow-gold-glow shadow-gold-glow-hover overflow-hidden cursor-pointer ${!isAvailable ? 'opacity-70' : ''}`}
     >
       <div className="accent-gold-line" />
 
-      <div className="relative h-48 sm:h-52 w-full image-plate overflow-hidden">
+      <div className="relative h-28 sm:h-48 w-full image-plate overflow-hidden">
         {!imageLoaded && (
           <div className="absolute inset-0 bg-gradient-to-br from-brand-saffronLight via-orange-50 to-amber-100 dark:from-gray-800 dark:to-gray-900 animate-pulse" />
         )}
@@ -50,36 +50,25 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
           alt={product.name}
           loading="lazy"
           decoding="async"
-          className={`relative z-[1] w-full h-full object-contain p-4 transition-all duration-500 ease-out ${imageLoaded ? 'opacity-100' : 'opacity-0'} group-hover:scale-110 group-hover:-rotate-1`}
+          className={`relative z-[1] w-full h-full object-contain p-2.5 sm:p-4 transition-transform duration-500 ease-out ${imageLoaded ? 'opacity-100' : 'opacity-0'} md:group-hover:scale-110`}
           onLoad={() => setImageLoaded(true)}
           onError={() => { setImageError(true); setImageLoaded(true); }}
         />
 
-        {/* Shine sweep on hover */}
-        <div className="pointer-events-none absolute inset-0 z-[2] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="absolute inset-y-0 -left-1/2 w-1/2 bg-gradient-to-r from-transparent via-white/35 to-transparent skew-x-12 group-hover:translate-x-[220%] transition-transform duration-700 ease-out" />
-        </div>
-
-        <motion.button
-          whileTap={{ scale: 0.85 }}
+        <button
+          type="button"
           onClick={(e) => {
             e.stopPropagation();
             toggleWishlist(product.id);
           }}
           aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-          className={`absolute top-3 left-3 z-10 p-2.5 rounded-full shadow-md transition-colors duration-200 ${isWishlisted
+          className={`absolute top-2 left-2 z-10 min-w-[40px] min-h-[40px] sm:min-w-0 sm:min-h-0 p-2 rounded-full shadow-md transition-colors duration-200 ${isWishlisted
             ? 'bg-brand-saffron text-white'
-            : 'bg-white/95 dark:bg-gray-800 text-gray-400 hover:text-brand-saffron'
+            : 'bg-white/95 dark:bg-gray-800 text-gray-400'
             }`}
         >
-          <Heart className="w-4 h-4" fill={isWishlisted ? 'currentColor' : 'none'} />
-        </motion.button>
-
-        <span className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
-          <span className="inline-flex items-center gap-1 bg-brand-charcoal/85 text-white text-[10px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full backdrop-blur-sm">
-            <Sparkles className="w-3 h-3 text-brand-gold" /> View
-          </span>
-        </span>
+          <Heart className="w-4 h-4 mx-auto" fill={isWishlisted ? 'currentColor' : 'none'} />
+        </button>
 
         {!isAvailable && (
           <div className="absolute inset-0 z-10 bg-black/45 flex items-center justify-center">
@@ -90,32 +79,31 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
         )}
       </div>
 
-      <div className="p-4 flex flex-col flex-grow gap-1.5">
-        <p className="text-[11px] font-bold uppercase tracking-wider text-brand-goldDark dark:text-brand-gold">
+      <div className="p-2.5 sm:p-4 flex flex-col flex-grow gap-1">
+        <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-brand-goldDark dark:text-brand-gold truncate">
           {product.category || 'Fresh'}
         </p>
 
-        <h3 className="text-base font-bold text-brand-charcoal dark:text-white leading-snug line-clamp-2 min-h-[2.5rem] group-hover:text-brand-saffron transition-colors duration-300">
+        <h3 className="text-[13px] sm:text-base font-bold text-brand-charcoal dark:text-white leading-snug line-clamp-2 min-h-[2.4em]">
           {product.name}
         </h3>
 
-        <div className="mt-auto pt-3 flex items-center justify-between gap-3">
-          <div>
-            <span className="block text-[10px] uppercase tracking-wider text-brand-muted font-semibold">AED</span>
-            <span className="text-xl font-extrabold text-brand-saffron tabular-nums">
+        <div className="mt-auto pt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+          <div className="flex items-baseline gap-1">
+            <span className="text-[10px] uppercase tracking-wider text-brand-muted font-semibold">AED</span>
+            <span className="text-lg sm:text-xl font-extrabold text-brand-saffron tabular-nums">
               {product.price}
             </span>
           </div>
 
           <motion.button
-            whileHover={isAvailable ? { scale: 1.05 } : undefined}
-            whileTap={isAvailable ? { scale: 0.92 } : undefined}
-            animate={justAdded ? { scale: [1, 1.12, 1] } : {}}
+            type="button"
+            whileTap={isAvailable && !reduceMotion ? { scale: 0.92 } : undefined}
             onClick={handleAdd}
             disabled={!isAvailable}
             aria-label={isAvailable ? `Add ${product.name} to cart` : 'Unavailable'}
-            className={`inline-flex items-center justify-center gap-1.5 min-w-[7.5rem] font-bold py-2.5 px-4 rounded-xl transition-shadow duration-200 ${isAvailable
-              ? 'text-white shadow-md shadow-brand-orange/30 hover:shadow-lg hover:shadow-brand-orange/40'
+            className={`inline-flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto sm:min-w-[7.5rem] font-bold py-2 px-3 rounded-xl transition-colors ${justAdded ? 'just-added' : ''} ${isAvailable
+              ? 'text-white shadow-md shadow-brand-orange/30'
               : 'bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed'
               }`}
             style={isAvailable ? {
@@ -126,7 +114,7 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
           >
             {isAvailable ? (
               <>
-                <Plus className={`w-4 h-4 ${justAdded ? '' : ''}`} strokeWidth={2.5} />
+                <Plus className="w-4 h-4" strokeWidth={2.5} />
                 <span>{justAdded ? 'Added!' : t('add')}</span>
               </>
             ) : (
