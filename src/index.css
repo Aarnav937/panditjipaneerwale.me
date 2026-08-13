@@ -17,6 +17,11 @@ body {
   overscroll-behavior-y: contain;
 }
 
+.font-display {
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 60, "WONK" 0;
+}
+
 /* iOS Safari zooms any focused control under 16px */
 input,
 textarea,
@@ -32,22 +37,30 @@ a,
 
 /* Living warm background — slow breathing gradients */
 .bg-fixed-gradient {
-  background-color: #FFFDF9;
+  background-color: #FFE8C8;
   background-image:
-    radial-gradient(ellipse 70% 55% at 15% 10%, rgba(255, 140, 0, 0.14), transparent 55%),
-    radial-gradient(ellipse 60% 50% at 90% 20%, rgba(212, 175, 55, 0.12), transparent 50%),
-    radial-gradient(ellipse 55% 45% at 50% 100%, rgba(226, 88, 34, 0.08), transparent 55%),
-    radial-gradient(ellipse 40% 35% at 70% 60%, rgba(255, 140, 0, 0.05), transparent 50%);
-  animation: bg-breathe 14s ease-in-out infinite alternate;
+    radial-gradient(ellipse 80% 60% at 8% 0%, rgba(255, 140, 0, 0.55), transparent 55%),
+    radial-gradient(ellipse 70% 55% at 95% 15%, rgba(226, 88, 34, 0.38), transparent 52%),
+    radial-gradient(ellipse 60% 50% at 50% 110%, rgba(212, 175, 55, 0.4), transparent 50%),
+    radial-gradient(ellipse 40% 40% at 70% 50%, rgba(255, 180, 50, 0.28), transparent 50%);
+  background-size: 140% 140%;
+  animation: bg-drift 16s ease-in-out infinite alternate;
 }
 
 .dark .bg-fixed-gradient {
-  background-color: #121212;
+  background-color: #2A1208;
   background-image:
-    radial-gradient(ellipse 70% 55% at 15% 10%, rgba(255, 140, 0, 0.12), transparent 55%),
-    radial-gradient(ellipse 60% 50% at 90% 20%, rgba(212, 175, 55, 0.08), transparent 50%),
-    radial-gradient(ellipse 55% 45% at 50% 100%, rgba(226, 88, 34, 0.1), transparent 55%);
-  animation: bg-breathe 14s ease-in-out infinite alternate;
+    radial-gradient(ellipse 80% 60% at 8% 0%, rgba(255, 140, 0, 0.42), transparent 55%),
+    radial-gradient(ellipse 70% 55% at 95% 15%, rgba(226, 88, 34, 0.32), transparent 52%),
+    radial-gradient(ellipse 60% 50% at 50% 110%, rgba(212, 175, 55, 0.22), transparent 50%),
+    radial-gradient(ellipse 40% 40% at 70% 50%, rgba(255, 120, 40, 0.2), transparent 50%);
+  background-size: 140% 140%;
+  animation: bg-drift 16s ease-in-out infinite alternate;
+}
+
+@keyframes bg-drift {
+  from { background-position: 0% 20%; }
+  to { background-position: 80% 60%; }
 }
 
 @keyframes bg-breathe {
@@ -115,17 +128,51 @@ a,
     0 0 0 1px rgba(212, 175, 55, 0.25);
 }
 
-/* Product plate with soft pulse glow */
+/* Product plate — shared marble photo (one file, every card) */
 .image-plate {
-  background:
-    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.98) 0%, transparent 60%),
-    linear-gradient(165deg, #FFFDF9 0%, #FFF6F0 45%, #FFE8D0 100%);
+  background-color: #FFF6F0;
+  background-image:
+    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.55) 0%, transparent 62%),
+    url('/images/plate-marble.webp');
+  background-size: cover;
+  background-position: center;
 }
 
 .dark .image-plate {
-  background:
-    radial-gradient(circle at 50% 35%, rgba(50, 45, 40, 0.95) 0%, transparent 60%),
-    linear-gradient(165deg, #1A1A1A 0%, #242018 100%);
+  background-color: #3A2418;
+  background-image: url('/images/plate-marble.webp');
+  background-size: cover;
+}
+
+.image-plate img.product-cutout {
+  mix-blend-mode: multiply;
+}
+
+.hero-kenburns img {
+  animation: kenburns 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes kenburns {
+  from { transform: scale(1) translate3d(0, 0, 0); }
+  to { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
+}
+
+.offer-ticker {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.offer-ticker-track {
+  display: inline-block;
+  min-width: 100%;
+  padding: 0.4rem 0;
+  animation: ticker 28s linear infinite;
+}
+
+@keyframes ticker {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
 }
 
 .image-plate::after {
@@ -242,6 +289,7 @@ a,
 @media (max-width: 767px) {
   .bg-fixed-gradient {
     animation: none;
+    background-size: 100% 100%;
   }
 
   .orb-float-a,
@@ -290,6 +338,10 @@ a,
 
 /* Prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
+  .bg-fixed-gradient {
+    animation: none !important;
+  }
+
   .bg-fixed-gradient,
   .orb-float-a,
   .orb-float-b,
@@ -300,7 +352,9 @@ a,
   .btn-glow,
   .cart-bar-live,
   .stagger-in,
-  .just-added {
+  .just-added,
+  .hero-kenburns img,
+  .offer-ticker-track {
     animation: none !important;
   }
 }

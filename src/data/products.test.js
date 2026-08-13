@@ -65,6 +65,7 @@ describe('product catalog integrity', () => {
     expect(paneer).toBeDefined();
     expect(paneer.name).toBe('Fresh Paneer (500g)');
     expect(paneer.price).toBe(15);
-    expect(paneer.image).toBe('images/products/product-3.webp');
+    expect(paneer.compareAtPrice).toBe(21);
+    expect(paneer.image).toBe('images/packs/product-3.webp');
   });
 });

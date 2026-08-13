@@ -34,7 +34,7 @@ const Navbar = ({
               animate={{ opacity: 1 }}
               className="leading-tight"
             >
-              <span className="block text-lg md:text-xl font-bold text-brand-orange tracking-tight truncate max-w-[11rem] sm:max-w-none">
+              <span className="block font-display text-lg md:text-xl font-semibold text-brand-orange tracking-tight truncate max-w-[11rem] sm:max-w-none">
                 Pandit Ji
               </span>
               <span className="hidden sm:block text-[10px] font-semibold uppercase tracking-[0.12em] text-brand-goldDark dark:text-brand-gold -mt-0.5">

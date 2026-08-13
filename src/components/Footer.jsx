@@ -10,7 +10,7 @@ const Footer = ({ onToggleAdmin }) => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
-            <h3 className="text-xl font-bold text-brand-orange mb-2">Pandit Ji Paneer Wale</h3>
+            <h3 className="font-display text-xl font-semibold text-brand-orange mb-2">Pandit Ji Paneer Wale</h3>
             <div className="w-12 h-0.5 bg-brand-gold/60 rounded-full mb-3" />
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
               Fresh paneer, dairy & authentic spices — free delivery in Abu Dhabi.

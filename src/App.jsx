@@ -8,6 +8,8 @@ import Toast from './components/Toast';
 import BottomNav from './components/BottomNav';
 import MobileCartBar from './components/MobileCartBar';
 import OurStore from './components/OurStore';
+import OfferTicker from './components/OfferTicker';
+import OffersRail from './components/OffersRail';
 import { products as initialProducts, categories } from './data/products';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from './context/LanguageContext';
@@ -302,6 +304,8 @@ function App() {
     <div className="min-h-screen flex flex-col transition-colors duration-300 font-sans relative text-brand-charcoal">
       <div className="fixed inset-0 z-[-1] bg-fixed-gradient pointer-events-none" />
 
+      <OfferTicker />
+
       <Navbar
         cartCount={cartCount}
         setIsCartOpen={setIsCartOpen}
@@ -325,13 +329,14 @@ function App() {
             transition={{ duration: 0.25 }}
           >
             <Hero />
+            <OffersRail onOpenProduct={handleViewDetails} />
           </motion.div>
         )}
       </AnimatePresence>
 
       <main className="flex-1 container mx-auto px-4 py-8 md:py-10" id="products">
         {/* Category chips — sticky + lively selection */}
-        <div className="sticky top-[calc(6.5rem+env(safe-area-inset-top,0px))] md:top-[3.5rem] z-[45] -mx-4 px-4 py-3 mb-5 bg-[#FFFDF9] md:bg-[#FFFDF9]/90 dark:bg-brand-darker md:dark:bg-brand-darker/90 md:backdrop-blur-xl border-b border-brand-gold/20 dark:border-gray-800 shadow-sm">
+        <div className="sticky top-[calc(6.5rem+env(safe-area-inset-top,0px))] md:top-[3.5rem] z-[45] -mx-4 px-4 py-3 mb-5 bg-[#FFE8C8]/95 md:bg-[#FFE8C8]/85 dark:bg-[#2A1208]/95 md:backdrop-blur-xl border-b border-brand-orange/25 dark:border-brand-orange/20 shadow-sm">
           <div className="relative">
             <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#FFFDF9] dark:from-brand-darker to-transparent z-10 md:hidden" />
             <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#FFFDF9] dark:from-brand-darker to-transparent z-10 md:hidden" />
@@ -360,7 +365,7 @@ function App() {
           animate={{ opacity: 1, x: 0 }}
           className="flex justify-between items-end gap-3 mb-6"
         >
-          <h2 id="catalog-heading" className="text-xl sm:text-2xl font-extrabold text-brand-charcoal dark:text-white flex flex-wrap items-baseline gap-2">
+          <h2 id="catalog-heading" className="font-display text-xl sm:text-2xl font-semibold text-brand-charcoal dark:text-white flex flex-wrap items-baseline gap-2">
             {searchQuery ? (
               <>
                 <span>Results for “{searchQuery}”</span>
@@ -390,17 +395,19 @@ function App() {
         {filteredProducts.length > 0 ? (
           <div className="relative z-0 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-5">
             {filteredProducts.map((product, index) => (
-              <div
+              <motion.div
                 key={product.id}
-                className={index < 12 ? 'stagger-in' : undefined}
-                style={index < 12 ? { animationDelay: `${index * 0.03}s` } : undefined}
+                initial={index < 16 ? { opacity: 0, y: 26, scale: 0.96 } : false}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: '-32px' }}
+                transition={{ duration: 0.38, delay: Math.min(index, 7) * 0.035, ease: [0.16, 1, 0.3, 1] }}
               >
                 <ProductCard
                   product={product}
                   addToCart={addToCart}
                   onViewDetails={handleViewDetails}
                 />
-              </div>
+              </motion.div>
             ))}
           </div>
         ) : (
@@ -426,7 +433,7 @@ function App() {
           <section id="about" className="py-12 md:py-14 border-t border-brand-border/60 dark:border-gray-800">
             <div className="container mx-auto px-4">
               <div className="max-w-3xl mx-auto text-center">
-                <h2 className="text-2xl md:text-3xl font-bold text-brand-charcoal dark:text-white mb-3">{t('aboutTitle')}</h2>
+                <h2 className="font-display text-2xl md:text-3xl font-semibold text-brand-charcoal dark:text-white mb-3">{t('aboutTitle')}</h2>
                 <div className="w-12 h-0.5 bg-brand-gold mx-auto mb-5 rounded-full" />
                 <p className="text-base text-brand-muted dark:text-gray-400 leading-relaxed mb-8">
                   Fresh paneer, dairy and spices for your kitchen — pure ingredients, honest prices, free delivery across Abu Dhabi.
@@ -449,7 +456,7 @@ function App() {
 
           <section id="contact" className="bg-brand-charcoal text-white py-12 md:py-14 border-t border-brand-gold/25">
             <div className="container mx-auto px-4 text-center">
-              <h2 className="text-2xl md:text-3xl font-bold mb-2">{t('getInTouch')}</h2>
+              <h2 className="font-display text-2xl md:text-3xl font-semibold mb-2">{t('getInTouch')}</h2>
               <p className="text-white/60 text-sm mb-8">Call, visit, or message us anytime</p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
                 <a href="tel:+971524676306" className="flex flex-col items-center p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-brand-gold/40 transition">

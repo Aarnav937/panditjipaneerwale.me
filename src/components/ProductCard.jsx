@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Heart, Plus } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useWishlist } from '../context/WishlistContext';
+import { formatAed, getSaleInfo } from '../lib/pricing';
 
 const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23FFF6F0' width='300' height='200'/%3E%3Ctext x='150' y='100' text-anchor='middle' fill='%23D4AF37' font-family='sans-serif' font-size='13'%3EProduct%3C/text%3E%3C/svg%3E";
 
@@ -21,6 +22,7 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
     ? FALLBACK_IMAGE
     : product.image;
   const isAvailable = product.is_available !== false && (product.stock_quantity === undefined || product.stock_quantity > 0);
+  const sale = getSaleInfo(product);
 
   const handleAdd = (e) => {
     e.stopPropagation();
@@ -50,10 +52,16 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
           alt={product.name}
           loading="lazy"
           decoding="async"
-          className={`relative z-[1] w-full h-full object-contain p-2.5 sm:p-4 transition-transform duration-500 ease-out ${imageLoaded ? 'opacity-100' : 'opacity-0'} md:group-hover:scale-110`}
+          className={`product-cutout relative z-[1] w-full h-full object-contain p-2.5 sm:p-4 transition-transform duration-500 ease-out ${imageLoaded ? 'opacity-100' : 'opacity-0'} md:group-hover:scale-110`}
           onLoad={() => setImageLoaded(true)}
           onError={() => { setImageError(true); setImageLoaded(true); }}
         />
+
+        {sale.onSale && (
+          <span className="absolute top-2 right-2 z-10 bg-brand-saffron text-white text-[10px] font-extrabold uppercase tracking-wide px-2 py-1 rounded-full shadow">
+            {sale.percent}% off
+          </span>
+        )}
 
         <button
           type="button"
@@ -89,11 +97,18 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
         </h3>
 
         <div className="mt-auto pt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-          <div className="flex items-baseline gap-1">
-            <span className="text-[10px] uppercase tracking-wider text-brand-muted font-semibold">AED</span>
-            <span className="text-lg sm:text-xl font-extrabold text-brand-saffron tabular-nums">
-              {product.price}
-            </span>
+          <div>
+            {sale.onSale && (
+              <p className="text-[11px] text-brand-muted line-through tabular-nums leading-none mb-0.5">
+                AED {formatAed(sale.compareAt)}
+              </p>
+            )}
+            <p className="flex items-baseline gap-1 leading-none">
+              <span className="text-[10px] uppercase tracking-wider text-brand-muted font-semibold">AED</span>
+              <span className="text-lg sm:text-xl font-extrabold text-brand-saffron tabular-nums">
+                {formatAed(sale.price)}
+              </span>
+            </p>
           </div>
 
           <motion.button

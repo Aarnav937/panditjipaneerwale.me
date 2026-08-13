@@ -30,15 +30,16 @@ export const products = [
     name: "Fresh Paneer (500g)",
     category: "Milk Products",
     price: 15,
-    image: "images/products/product-3.webp",
-    description: "Soft and fresh paneer, perfect for curries."
+    compareAtPrice: 21,
+    image: "images/packs/product-3.webp",
+    description: "Soft and fresh paneer, perfect for curries. Online list AED 21 — sale AED 15 (same as in-store)."
   },
   {
     id: 50,
     name: "Fresh Khoa Mava (1kg)",
     category: "Milk Products",
     price: 50,
-    image: "images/products/product-50.webp",
+    image: "images/packs/product-50.webp",
     description: "Rich and fresh Khoa Mava for sweets."
   },
   {
@@ -46,7 +47,7 @@ export const products = [
     name: "Fresh Malai Paneer (1kg)",
     category: "Milk Products",
     price: 30,
-    image: "images/products/product-51.webp",
+    image: "images/packs/product-51.webp",
     description: "Soft and creamy Malai Paneer."
   },
   {
@@ -54,7 +55,7 @@ export const products = [
     name: "KDD Thick Cooking Cream (1 Ltr)",
     category: "Milk Products",
     price: 16,
-    image: "images/products/product-52.webp",
+    image: "images/packs/product-52.webp",
     description: "Thick cooking cream for rich gravies."
   },
   {
@@ -62,7 +63,7 @@ export const products = [
     name: "Fresh Khoa Mava (500gm)",
     category: "Milk Products",
     price: 30,
-    image: "images/products/product-53.webp",
+    image: "images/packs/product-53.webp",
     description: "Rich and fresh Khoa Mava for sweets."
   },
 
@@ -71,7 +72,7 @@ export const products = [
     name: "Bikaji Bhujia",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "images/products/product-5.webp",
+    image: "images/packs/product-5.webp",
     description: "Crispy and spicy snack."
   },
   {
@@ -79,7 +80,7 @@ export const products = [
     name: "Amul Butter (100g)",
     category: "Amul",
     price: 18,
-    image: "images/products/product-6.webp",
+    image: "images/packs/product-6.webp",
     description: "Utterly butterly delicious."
   },
   {
@@ -87,7 +88,7 @@ export const products = [
     name: "Chings Schezwan Chutney",
     category: "Chings",
     price: 14,
-    image: "images/products/product-7.webp",
+    image: "images/packs/product-7.webp",
     description: "Spicy chutney for chinese dishes."
   },
   {
@@ -95,7 +96,7 @@ export const products = [
     name: "Amul Kool Badam",
     category: "Amul Kool",
     price: 5,
-    image: "images/products/product-8.webp",
+    image: "images/packs/product-8.webp",
     description: "Refreshing almond milk drink."
   },
   {
@@ -103,7 +104,7 @@ export const products = [
     name: "Amul Cheese Slices",
     category: "Amul",
     price: 22,
-    image: "images/products/product-10.webp",
+    image: "images/packs/product-10.webp",
     description: "Processed cheese slices for sandwiches."
   },
   {
@@ -111,7 +112,7 @@ export const products = [
     name: "Everest Tea Masala (100gm)",
     category: "Everest Spices",
     price: 8,
-    image: "images/products/product-20.webp",
+    image: "images/packs/product-20.webp",
     description: "Aromatic spice blend for the perfect cup of tea."
   },
   {
@@ -119,7 +120,7 @@ export const products = [
     name: "Everest Tikhalal (1kg)",
     category: "Everest Spices",
     price: 38,
-    image: "images/products/product-21.webp",
+    image: "images/packs/product-21.webp",
     description: "Spicy chilli powder."
   },
   {
@@ -127,7 +128,7 @@ export const products = [
     name: "Everest Turmeric Powder (1kg)",
     category: "Everest Spices",
     price: 24,
-    image: "images/products/product-22.webp",
+    image: "images/packs/product-22.webp",
     description: "Pure turmeric powder."
   },
   {
@@ -135,7 +136,7 @@ export const products = [
     name: "Everest Sabji Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "images/products/product-23.webp",
+    image: "images/packs/product-23.webp",
     description: "Enhance the taste of your vegetables."
   },
   {
@@ -143,7 +144,7 @@ export const products = [
     name: "Everest Paw Bhaji Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "images/products/product-24.webp",
+    image: "images/packs/product-24.webp",
     description: "For authentic Mumbai style Pav Bhaji."
   },
   {
@@ -151,7 +152,7 @@ export const products = [
     name: "Everest Turmeric Powder (500gm)",
     category: "Everest Spices",
     price: 13,
-    image: "images/products/product-25.webp",
+    image: "images/packs/product-25.webp",
     description: "Pure turmeric powder."
   },
   {
@@ -159,7 +160,7 @@ export const products = [
     name: "Everest Chaat Masala (500gm)",
     category: "Everest Spices",
     price: 22,
-    image: "images/products/product-26.webp",
+    image: "images/packs/product-26.webp",
     description: "Tangy spice blend for chaats."
   },
   {
@@ -167,7 +168,7 @@ export const products = [
     name: "Everest Pani Puri Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "images/products/product-27.webp",
+    image: "images/packs/product-27.webp",
     description: "For delicious Pani Puri water."
   },
   {
@@ -175,7 +176,7 @@ export const products = [
     name: "Everest Dry Mango Powder (100gm)",
     category: "Everest Spices",
     price: 7,
-    image: "images/products/product-28.webp",
+    image: "images/packs/product-28.webp",
     description: "Adds a tangy flavor to dishes."
   },
   {
@@ -183,7 +184,7 @@ export const products = [
     name: "Everest Sambhar Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "images/products/product-29.webp",
+    image: "images/packs/product-29.webp",
     description: "Authentic South Indian Sambhar taste."
   },
   {
@@ -191,7 +192,7 @@ export const products = [
     name: "Everest Tikhalal (500gm)",
     category: "Everest Spices",
     price: 20,
-    image: "images/products/product-30.webp",
+    image: "images/packs/product-30.webp",
     description: "Spicy chilli powder."
   },
   {
@@ -199,7 +200,7 @@ export const products = [
     name: "Everest Chaat Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "images/products/product-31.webp",
+    image: "images/packs/product-31.webp",
     description: "Tangy spice blend for chaats."
   },
   {
@@ -207,7 +208,7 @@ export const products = [
     name: "Everest Kesari Milk Masala (100gm)",
     category: "Everest Spices",
     price: 31,
-    image: "images/products/product-32.webp",
+    image: "images/packs/product-32.webp",
     description: "Rich masala for milk with saffron."
   },
   {
@@ -215,7 +216,7 @@ export const products = [
     name: "Everest Pav Bhaji Masala (500gm)",
     category: "Everest Spices",
     price: 22,
-    image: "images/products/product-33.webp",
+    image: "images/packs/product-33.webp",
     description: "For authentic Mumbai style Pav Bhaji."
   },
   {
@@ -223,7 +224,7 @@ export const products = [
     name: "Everest Hingraj (100gm)",
     category: "Everest Spices",
     price: 15,
-    image: "images/products/product-34.webp",
+    image: "images/packs/product-34.webp",
     description: "Strong asafoetida for digestion."
   },
   {
@@ -231,7 +232,7 @@ export const products = [
     name: "Everest Jaljira Powder (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "images/products/product-35.webp",
+    image: "images/packs/product-35.webp",
     description: "Refreshing drink mix."
   },
   {
@@ -239,7 +240,7 @@ export const products = [
     name: "Everest Tikhalal (200gm)",
     category: "Everest Spices",
     price: 9,
-    image: "images/products/product-36.webp",
+    image: "images/packs/product-36.webp",
     description: "Spicy chilli powder."
   },
   {
@@ -247,7 +248,7 @@ export const products = [
     name: "Everest Momo Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "images/products/product-37.webp",
+    image: "images/packs/product-37.webp",
     description: "Perfect seasoning for momos."
   },
   {
@@ -255,7 +256,7 @@ export const products = [
     name: "Everest Royal Garam Masala (100gm)",
     category: "Everest Spices",
     price: 6,
-    image: "images/products/product-38.webp",
+    image: "images/packs/product-38.webp",
     description: "Premium blend of aromatic spices."
   },
   {
@@ -263,7 +264,7 @@ export const products = [
     name: "Everest Rajma Masala (100gm)",
     category: "Everest Spices",
     price: 6,
-    image: "images/products/product-39.webp",
+    image: "images/packs/product-39.webp",
     description: "For delicious Rajma curry."
   },
   {
@@ -271,7 +272,7 @@ export const products = [
     name: "Everest Shahi Paneer Masala (100gm)",
     category: "Everest Spices",
     price: 5,
-    image: "images/products/product-40.webp",
+    image: "images/packs/product-40.webp",
     description: "Rich spice blend for paneer dishes."
   },
   {
@@ -279,7 +280,7 @@ export const products = [
     name: "Everest Kashmiri Chilli Powder (100gm)",
     category: "Everest Spices",
     price: 7,
-    image: "images/products/product-41.webp",
+    image: "images/packs/product-41.webp",
     description: "Vibrant red color with mild heat."
   },
   {
@@ -287,7 +288,7 @@ export const products = [
     name: "Everest Chhole Masala (100gm)",
     category: "Everest Spices",
     price: 6,
-    image: "images/products/product-42.webp",
+    image: "images/packs/product-42.webp",
     description: "For authentic Punjabi Chhole."
   },
   {
@@ -295,7 +296,7 @@ export const products = [
     name: "Everest Coriander Powder (100gm)",
     category: "Everest Spices",
     price: 4,
-    image: "images/products/product-43.webp",
+    image: "images/packs/product-43.webp",
     description: "Fresh coriander powder."
   },
   {
@@ -303,7 +304,7 @@ export const products = [
     name: "Everest Coriander Powder (500gm)",
     category: "Everest Spices",
     price: 15,
-    image: "images/products/product-44.webp",
+    image: "images/packs/product-44.webp",
     description: "Fresh coriander powder."
   },
   {
@@ -311,7 +312,7 @@ export const products = [
     name: "Dhara Groundnut Oil (1 Ltr)",
     category: "Dhara",
     price: 16,
-    image: "images/products/product-60.webp",
+    image: "images/packs/product-60.webp",
     description: "Pure groundnut oil for healthy cooking."
   },
   {
@@ -319,7 +320,7 @@ export const products = [
     name: "Satvik Kachi Ghani Mustard Oil (500gm)",
     category: "Satvik",
     price: 10,
-    image: "images/products/product-61.webp",
+    image: "images/packs/product-61.webp",
     description: "Authentic mustard oil."
   },
   {
@@ -327,7 +328,7 @@ export const products = [
     name: "Satvik Classic 1121 Basmati Rice (5kg)",
     category: "Satvik",
     price: 25,
-    image: "images/products/product-62.webp",
+    image: "images/packs/product-62.webp",
     description: "Premium long grain basmati rice."
   },
   {
@@ -335,7 +336,7 @@ export const products = [
     name: "Satvik Kachi Ghani Mustard Oil (1 Ltr)",
     category: "Satvik",
     price: 15,
-    image: "images/products/product-63.webp",
+    image: "images/packs/product-63.webp",
     description: "Authentic mustard oil."
   },
   {
@@ -343,7 +344,7 @@ export const products = [
     name: "Satvik Classic Basmati Rice (5kg)",
     category: "Satvik",
     price: 24,
-    image: "images/products/product-64.webp",
+    image: "images/packs/product-64.webp",
     description: "Classic basmati rice for daily use."
   },
   {
@@ -351,7 +352,7 @@ export const products = [
     name: "Satvik Frozen Green Peas (2.5kg)",
     category: "Satvik",
     price: 23,
-    image: "images/products/product-65.webp",
+    image: "images/packs/product-65.webp",
     description: "Fresh frozen green peas."
   },
   {
@@ -359,7 +360,7 @@ export const products = [
     name: "Satvik Wheat Flour Chakki Fresh Atta (5kg)",
     category: "Satvik",
     price: 18.75,
-    image: "images/products/product-66.webp",
+    image: "images/packs/product-66.webp",
     description: "Whole wheat flour for soft rotis."
   },
   {
@@ -367,7 +368,7 @@ export const products = [
     name: "Saatvik Frozen Green Peas (400g)",
     category: "Satvik",
     price: 5,
-    image: "images/products/saatvik-green-peas-400g.jpg",
+    image: "images/packs/saatvik-green-peas-400g.jpg",
     description: "Fresh frozen green peas."
   },
   {
@@ -375,7 +376,7 @@ export const products = [
     name: "Satvik Mix Veg (2.5kg)",
     category: "Satvik",
     price: 23,
-    image: "images/products/product-68.webp",
+    image: "images/packs/product-68.webp",
     description: "Mixed vegetables for quick cooking."
   },
   {
@@ -383,7 +384,7 @@ export const products = [
     name: "Ching's Green Chilli Sauce (680g)",
     category: "Chings",
     price: 8,
-    image: "images/products/product-69.webp",
+    image: "images/packs/product-69.webp",
     description: "Spicy green chilli sauce."
   },
   {
@@ -391,7 +392,7 @@ export const products = [
     name: "Ching's Manchurian Noodles (240g)",
     category: "Chings",
     price: 7,
-    image: "images/products/product-70.webp",
+    image: "images/packs/product-70.webp",
     description: "Noodles for Manchurian dishes."
   },
   {
@@ -399,7 +400,7 @@ export const products = [
     name: "Ching's Desi Chinese Combo Pack",
     category: "Chings",
     price: 8,
-    image: "images/products/product-71.webp",
+    image: "images/packs/product-71.webp",
     description: "Assorted Chinese spices and sauces."
   },
   {
@@ -407,7 +408,7 @@ export const products = [
     name: "Ching's Sweet Corn Soup (55g)",
     category: "Chings",
     price: 5,
-    image: "images/products/product-72.webp",
+    image: "images/packs/product-72.webp",
     description: "Instant sweet corn soup."
   },
   {
@@ -415,7 +416,7 @@ export const products = [
     name: "Ching's Manchurian Noodles (60g)",
     category: "Chings",
     price: 2,
-    image: "images/products/product-73.webp",
+    image: "images/packs/product-73.webp",
     description: "Single serve Manchurian noodles."
   },
   {
@@ -423,7 +424,7 @@ export const products = [
     name: "Ching's Hot Garlic Noodles (60g)",
     category: "Chings",
     price: 4,
-    image: "images/products/product-74.webp",
+    image: "images/packs/product-74.webp",
     description: "Spicy garlic noodles."
   },
   {
@@ -431,7 +432,7 @@ export const products = [
     name: "Ching's Schezwan Cooking Sauce Stir Fry",
     category: "Chings",
     price: 10,
-    image: "images/products/product-75.webp",
+    image: "images/packs/product-75.webp",
     description: "Stir fry sauce for Chinese dishes."
   },
   {
@@ -439,7 +440,7 @@ export const products = [
     name: "Ching's Dark Soy Sauce (750g)",
     category: "Chings",
     price: 10,
-    image: "images/products/product-76.webp",
+    image: "images/packs/product-76.webp",
     description: "Rich dark soy sauce."
   },
   {
@@ -447,7 +448,7 @@ export const products = [
     name: "Ching's Schezwan Noodles (50g)",
     category: "Chings",
     price: 4,
-    image: "images/products/product-77.webp",
+    image: "images/packs/product-77.webp",
     description: "Spicy Schezwan noodles."
   },
   {
@@ -455,7 +456,7 @@ export const products = [
     name: "Ching's Schezwan Fried Rice Masala",
     category: "Chings",
     price: 10,
-    image: "images/products/product-78.webp",
+    image: "images/packs/product-78.webp",
     description: "Spice mix for fried rice."
   },
   {
@@ -463,7 +464,7 @@ export const products = [
     name: "Amul Kool Koko (200ml)",
     category: "Amul Kool",
     price: 6,
-    image: "images/products/product-79.webp",
+    image: "images/packs/product-79.webp",
     description: "Chocolate milk drink."
   },
   {
@@ -471,7 +472,7 @@ export const products = [
     name: "Amul Kool Cafe (200ml)",
     category: "Amul Kool",
     price: 6,
-    image: "images/products/product-80.webp",
+    image: "images/packs/product-80.webp",
     description: "Coffee flavored milk."
   },
   {
@@ -479,7 +480,7 @@ export const products = [
     name: "Amul Kool Cardamom Pet",
     category: "Amul Kool",
     price: 5,
-    image: "images/products/product-81.webp",
+    image: "images/packs/product-81.webp",
     description: "Cardamom flavored milk."
   },
   {
@@ -487,7 +488,7 @@ export const products = [
     name: "Amul Kadai Doodh (200ml)",
     category: "Amul Kool",
     price: 6,
-    image: "images/products/product-82.webp",
+    image: "images/packs/product-82.webp",
     description: "Rich thickened milk."
   },
   {
@@ -495,7 +496,7 @@ export const products = [
     name: "Amul Saffron Latte (200ml)",
     category: "Amul Kool",
     price: 6,
-    image: "images/products/product-83.webp",
+    image: "images/packs/product-83.webp",
     description: "Saffron flavored milk drink."
   },
   {
@@ -503,7 +504,7 @@ export const products = [
     name: "Amul Pina Lolada Mocktail",
     category: "Amul Kool",
     price: 6,
-    image: "images/products/product-84.webp",
+    image: "images/packs/product-84.webp",
     description: "Non-alcoholic mocktail."
   },
   {
@@ -511,7 +512,7 @@ export const products = [
     name: "Amul Kool Almond Pet (180ml)",
     category: "Amul Kool",
     price: 6,
-    image: "images/products/product-85.webp",
+    image: "images/packs/product-85.webp",
     description: "Almond milk drink."
   },
   {
@@ -519,7 +520,7 @@ export const products = [
     name: "Amul Kool Milk Shake Mango",
     category: "Amul Kool",
     price: 6,
-    image: "images/products/product-86.webp",
+    image: "images/packs/product-86.webp",
     description: "Mango flavored milkshake."
   },
   {
@@ -527,7 +528,7 @@ export const products = [
     name: "Amul Kool Cafe Pet",
     category: "Amul Kool",
     price: 6,
-    image: "images/products/product-87.webp",
+    image: "images/packs/product-87.webp",
     description: "Coffee flavored milk."
   },
   {
@@ -535,7 +536,7 @@ export const products = [
     name: "Amul Kool Saffron Pet (180ml)",
     category: "Amul Kool",
     price: 6,
-    image: "images/products/product-88.webp",
+    image: "images/packs/product-88.webp",
     description: "Saffron flavored milk."
   },
   {
@@ -543,7 +544,7 @@ export const products = [
     name: "Amul Kool Milk Shake Badam",
     category: "Amul Kool",
     price: 6,
-    image: "images/products/product-89.webp",
+    image: "images/packs/product-89.webp",
     description: "Almond flavored milkshake."
   },
   {
@@ -551,7 +552,7 @@ export const products = [
     name: "Amul Milk Shake Double Chocolate",
     category: "Amul Kool",
     price: 6,
-    image: "images/products/product-90.webp",
+    image: "images/packs/product-90.webp",
     description: "Rich chocolate milkshake."
   },
   {
@@ -559,7 +560,7 @@ export const products = [
     name: "Wagh Bakri Tea",
     category: "Wagh Bakri",
     price: 10,
-    image: "images/products/product-91.webp",
+    image: "images/packs/product-91.webp",
     description: "Premium tea leaves."
   },
   {
@@ -567,7 +568,7 @@ export const products = [
     name: "Wagh Bakri Instant Cardamom Tea",
     category: "Wagh Bakri",
     price: 13.50,
-    image: "images/products/product-92.webp",
+    image: "images/packs/product-92.webp",
     description: "Instant tea with cardamom flavor."
   },
   {
@@ -575,7 +576,7 @@ export const products = [
     name: "Wagh Bakri Black Tea (350g)",
     category: "Wagh Bakri",
     price: 15,
-    image: "images/products/product-93.webp",
+    image: "images/packs/product-93.webp",
     description: "Strong black tea."
   },
   {
@@ -583,7 +584,7 @@ export const products = [
     name: "Amul Mango Shrikhand (500g)",
     category: "Amul",
     price: 15,
-    image: "images/products/product-94.webp",
+    image: "images/packs/product-94.webp",
     description: "Sweet mango flavored yogurt dessert."
   },
   {
@@ -591,7 +592,7 @@ export const products = [
     name: "Amul Fresh Cream (250ml)",
     category: "Amul",
     price: 7,
-    image: "images/products/product-95.webp",
+    image: "images/packs/product-95.webp",
     description: "Rich fresh cream."
   },
   {
@@ -599,7 +600,7 @@ export const products = [
     name: "Amul Pure Ghee",
     category: "Amul",
     price: 35,
-    image: "images/products/product-96.webp",
+    image: "images/packs/product-96.webp",
     description: "Aromatic pure ghee."
   },
   {
@@ -607,7 +608,7 @@ export const products = [
     name: "Amul Cheese Block (1kg)",
     category: "Amul",
     price: 40,
-    image: "images/products/product-97.webp",
+    image: "images/packs/product-97.webp",
     description: "Block of processed cheese."
   },
   {
@@ -615,7 +616,7 @@ export const products = [
     name: "Amul Kesar Shrikhand (500g)",
     category: "Amul",
     price: 15,
-    image: "images/products/product-98.webp",
+    image: "images/packs/product-98.webp",
     description: "Saffron flavored yogurt dessert."
   },
 
@@ -624,7 +625,7 @@ export const products = [
     name: "Amul Cheese Slice (200g)",
     category: "Amul",
     price: 14,
-    image: "images/products/product-100.webp",
+    image: "images/packs/product-100.webp",
     description: "Cheese slices for sandwiches."
   },
   {
@@ -632,7 +633,7 @@ export const products = [
     name: "Amul Fresh Cream (1L)",
     category: "Amul",
     price: 22.50,
-    image: "images/products/product-101.webp",
+    image: "images/packs/product-101.webp",
     description: "Rich fresh cream."
   },
   {
@@ -640,7 +641,7 @@ export const products = [
     name: "Amul Gulab Jamun (1kg)",
     category: "Amul",
     price: 22.50,
-    image: "images/products/product-102.webp",
+    image: "images/packs/product-102.webp",
     description: "Traditional Indian sweet."
   },
 
@@ -649,7 +650,7 @@ export const products = [
     name: "Amul Cheese Chiplet",
     category: "Amul",
     price: 14,
-    image: "images/products/product-104.webp",
+    image: "images/packs/product-104.webp",
     description: "Cheese cubes."
   },
   {
@@ -657,7 +658,7 @@ export const products = [
     name: "Amul Shrikhand Cardamom (500g)",
     category: "Amul",
     price: 14,
-    image: "images/products/product-105.webp",
+    image: "images/packs/product-105.webp",
     description: "Cardamom flavored yogurt dessert."
   },
   {
@@ -665,7 +666,7 @@ export const products = [
     name: "Amul Pure Cow Ghee (1kg)",
     category: "Amul",
     price: 38,
-    image: "images/products/product-106.webp",
+    image: "images/packs/product-106.webp",
     description: "Pure cow ghee."
   },
   {
@@ -673,7 +674,7 @@ export const products = [
     name: "Amul Lactic Butter (500g)",
     category: "Amul",
     price: 23,
-    image: "images/products/product-107.webp",
+    image: "images/packs/product-107.webp",
     description: "Cultured butter."
   },
   {
@@ -681,7 +682,7 @@ export const products = [
     name: "Amul Salted Butter (500g)",
     category: "Amul",
     price: 22,
-    image: "images/products/product-108.webp",
+    image: "images/packs/product-108.webp",
     description: "Classic salted butter."
   },
   {
@@ -689,7 +690,7 @@ export const products = [
     name: "Amul Rasmalai (500g)",
     category: "Amul",
     price: 20,
-    image: "images/products/product-109.webp",
+    image: "images/packs/product-109.webp",
     description: "Soft cottage cheese dumplings in milk."
   },
   {
@@ -697,7 +698,7 @@ export const products = [
     name: "Amul Unsalted Butter (500g)",
     category: "Amul",
     price: 21.50,
-    image: "images/products/product-110.webp",
+    image: "images/packs/product-110.webp",
     description: "Cooking butter."
   },
   {
@@ -705,7 +706,7 @@ export const products = [
     name: "Amul Strawberry Magic (1L)",
     category: "Amul",
     price: 22,
-    image: "images/products/product-111.webp",
+    image: "images/packs/product-111.webp",
     description: "Strawberry flavored ice cream."
   },
   {
@@ -713,7 +714,7 @@ export const products = [
     name: "Amul Butter Scotch Bliss (500ml)",
     category: "Amul",
     price: 15,
-    image: "images/products/product-112.webp",
+    image: "images/packs/product-112.webp",
     description: "Butterscotch ice cream."
   },
   {
@@ -721,7 +722,7 @@ export const products = [
     name: "Amul Punjabi Kulfi",
     category: "Amul",
     price: 4,
-    image: "images/products/product-113.webp",
+    image: "images/packs/product-113.webp",
     description: "Traditional kulfi."
   },
   {
@@ -729,7 +730,7 @@ export const products = [
     name: "Amul Shahista Pista Kulfi (1L)",
     category: "Amul",
     price: 22,
-    image: "images/products/product-114.webp",
+    image: "images/packs/product-114.webp",
     description: "Pistachio kulfi."
   },
   {
@@ -737,7 +738,7 @@ export const products = [
     name: "Amul Kesar Pista Royal (1L)",
     category: "Amul",
     price: 22,
-    image: "images/products/product-115.webp",
+    image: "images/packs/product-115.webp",
     description: "Saffron and pistachio ice cream."
   },
   {
@@ -745,7 +746,7 @@ export const products = [
     name: "Amul Badshahi Kulfi",
     category: "Amul",
     price: 4,
-    image: "images/products/product-116.webp",
+    image: "images/packs/product-116.webp",
     description: "Royal kulfi treat."
   },
   {
@@ -753,7 +754,7 @@ export const products = [
     name: "Amul Shrikhand Almond Pista (500g)",
     category: "Amul",
     price: 15,
-    image: "images/products/product-117.webp",
+    image: "images/packs/product-117.webp",
     description: "Almond and pistachio shrikhand."
   },
   {
@@ -761,7 +762,7 @@ export const products = [
     name: "Amul Rajbhog Kulfi",
     category: "Amul",
     price: 4,
-    image: "images/products/product-118.webp",
+    image: "images/packs/product-118.webp",
     description: "Saffron and dry fruit kulfi."
   },
   {
@@ -769,7 +770,7 @@ export const products = [
     name: "Amul Butter Scotch Bliss (125ml)",
     category: "Amul",
     price: 4,
-    image: "images/products/product-119.webp",
+    image: "images/packs/product-119.webp",
     description: "Butterscotch ice cream cup."
   },
   {
@@ -777,7 +778,7 @@ export const products = [
     name: "Amul Badshahi Badan Royal (1L)",
     category: "Amul",
     price: 22,
-    image: "images/products/product-120.webp",
+    image: "images/packs/product-120.webp",
     description: "Almond royal ice cream."
   },
   {
@@ -785,7 +786,7 @@ export const products = [
     name: "Amul Duetz Kulfi",
     category: "Amul",
     price: 4,
-    image: "images/products/product-121.webp",
+    image: "images/packs/product-121.webp",
     description: "Double flavored kulfi."
   },
   {
@@ -793,7 +794,7 @@ export const products = [
     name: "Amul Kashmiri Kulfi",
     category: "Amul",
     price: 4,
-    image: "images/products/product-122.webp",
+    image: "images/packs/product-122.webp",
     description: "Apple and dry fruit kulfi."
   },
   {
@@ -801,7 +802,7 @@ export const products = [
     name: "Amul Rajasthani Kulfi",
     category: "Amul",
     price: 4,
-    image: "images/products/product-123.webp",
+    image: "images/packs/product-123.webp",
     description: "Traditional Rajasthani kulfi."
   },
   {
@@ -809,7 +810,7 @@ export const products = [
     name: "Amul Rajbhog (1L)",
     category: "Amul",
     price: 22,
-    image: "images/products/product-124.webp",
+    image: "images/packs/product-124.webp",
     description: "Saffron and dry fruit ice cream."
   },
   {
@@ -817,7 +818,7 @@ export const products = [
     name: "Amul Vanilla Magic (1L)",
     category: "Amul",
     price: 20,
-    image: "images/products/product-125.webp",
+    image: "images/packs/product-125.webp",
     description: "Classic vanilla ice cream."
   },
   {
@@ -825,7 +826,7 @@ export const products = [
     name: "Amul Frositk Kulfi",
     category: "Amul",
     price: 5,
-    image: "images/products/product-126.webp",
+    image: "images/packs/product-126.webp",
     description: "Frozen stick kulfi."
   },
   {
@@ -833,7 +834,7 @@ export const products = [
     name: "Amul Chocochips (1L)",
     category: "Amul",
     price: 22,
-    image: "images/products/product-127.webp",
+    image: "images/packs/product-127.webp",
     description: "Chocolate chip ice cream."
   },
   {
@@ -841,7 +842,7 @@ export const products = [
     name: "Amul Kaju Draksh Gold (1L)",
     category: "Amul",
     price: 22,
-    image: "images/products/product-128.webp",
+    image: "images/packs/product-128.webp",
     description: "Cashew and raisin ice cream."
   },
   {
@@ -849,7 +850,7 @@ export const products = [
     name: "Amul Pista Malai Kulfi",
     category: "Amul",
     price: 22,
-    image: "images/products/product-129.webp",
+    image: "images/packs/product-129.webp",
     description: "Creamy pistachio kulfi."
   },
   {
@@ -857,7 +858,7 @@ export const products = [
     name: "Amul Moroccan Dry Fruit (1L)",
     category: "Amul",
     price: 22,
-    image: "images/products/product-130.webp",
+    image: "images/packs/product-130.webp",
     description: "Exotic dry fruit ice cream."
   },
   {
@@ -865,7 +866,7 @@ export const products = [
     name: "Amul Fruit and Nut Fantasy (1L)",
     category: "Amul",
     price: 22,
-    image: "images/products/product-131.webp",
+    image: "images/packs/product-131.webp",
     description: "Mixed fruit and nut ice cream."
   },
   {
@@ -873,7 +874,7 @@ export const products = [
     name: "Bikaji Pani Puri (240g)",
     category: "Bikaji Bikaneri",
     price: 15,
-    image: "images/products/product-140.webp",
+    image: "images/packs/product-140.webp",
     description: "Ready to eat Pani Puri kit."
   },
   {
@@ -881,7 +882,7 @@ export const products = [
     name: "Bikaji Paneer Kulcha (4pcs)",
     category: "Bikaji Bikaneri",
     price: 17,
-    image: "images/products/product-141.webp",
+    image: "images/packs/product-141.webp",
     description: "Soft paneer stuffed kulchas."
   },
   {
@@ -889,7 +890,7 @@ export const products = [
     name: "Bikaji Soya Shammi Kabab (6pcs)",
     category: "Bikaji Bikaneri",
     price: 12,
-    image: "images/products/product-142.webp",
+    image: "images/packs/product-142.webp",
     description: "Delicious soya kebabs."
   },
   {
@@ -897,7 +898,7 @@ export const products = [
     name: "Bikaji Gobi Paratha (4pcs / 400g)",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "images/products/product-143.webp",
+    image: "images/packs/product-143.webp",
     description: "Cauliflower stuffed parathas."
   },
   {
@@ -905,7 +906,7 @@ export const products = [
     name: "Bikaji Veg Spinach Shammi Kabab (6pcs)",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "images/products/product-144.webp",
+    image: "images/packs/product-144.webp",
     description: "Healthy spinach kebabs."
   },
   {
@@ -913,7 +914,7 @@ export const products = [
     name: "Bikaji Panjabi Tadka (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-145.webp",
+    image: "images/packs/product-145.webp",
     description: "Spicy namkeen mix."
   },
   {
@@ -921,7 +922,7 @@ export const products = [
     name: "Bikaji Masala Khakhara (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-146.webp",
+    image: "images/packs/product-146.webp",
     description: "Crispy spiced wheat crisps."
   },
   {
@@ -929,7 +930,7 @@ export const products = [
     name: "Bikaji Tandoori Roti (6pcs)",
     category: "Bikaji Bikaneri",
     price: 8.50,
-    image: "images/products/product-147.webp",
+    image: "images/packs/product-147.webp",
     description: "Authentic tandoori roti."
   },
   {
@@ -937,7 +938,7 @@ export const products = [
     name: "Bikaji Aloo Laccha (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-148.webp",
+    image: "images/packs/product-148.webp",
     description: "Spicy potato sticks."
   },
   {
@@ -945,7 +946,7 @@ export const products = [
     name: "Bikaji Chana Chur (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-149.webp",
+    image: "images/packs/product-149.webp",
     description: "Spicy gram flour snack."
   },
   {
@@ -953,7 +954,7 @@ export const products = [
     name: "Bikaji Pindi Chole Kathi Roll",
     category: "Bikaji Bikaneri",
     price: 12,
-    image: "images/products/product-150.webp",
+    image: "images/packs/product-150.webp",
     description: "Spicy chickpea roll."
   },
   {
@@ -961,7 +962,7 @@ export const products = [
     name: "Bikaji Bombay Mix (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-151.webp",
+    image: "images/packs/product-151.webp",
     description: "Classic Bombay mix namkeen."
   },
   {
@@ -969,7 +970,7 @@ export const products = [
     name: "Bikaji Mix Veg Kulcha (4pcs)",
     category: "Bikaji Bikaneri",
     price: 11.50,
-    image: "images/products/product-152.webp",
+    image: "images/packs/product-152.webp",
     description: "Mixed vegetable stuffed kulcha."
   },
   {
@@ -977,7 +978,7 @@ export const products = [
     name: "Bikaji Sadabahar Soan Papdi",
     category: "Bikaji Bikaneri",
     price: 8,
-    image: "images/products/product-153.webp",
+    image: "images/packs/product-153.webp",
     description: "Flaky sweet delicacy."
   },
   {
@@ -985,7 +986,7 @@ export const products = [
     name: "Bikaji Dal Biji (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-154.webp",
+    image: "images/packs/product-154.webp",
     description: "Crunchy lentil snack."
   },
   {
@@ -993,7 +994,7 @@ export const products = [
     name: "Bikaji Mawa Burfee (360g)",
     category: "Bikaji Bikaneri",
     price: 20,
-    image: "images/products/product-155.webp",
+    image: "images/packs/product-155.webp",
     description: "Rich milk fudge sweet."
   },
   {
@@ -1001,7 +1002,7 @@ export const products = [
     name: "Bikaji Moong Dal Kachori (6pcs)",
     category: "Bikaji Bikaneri",
     price: 13,
-    image: "images/products/product-156.webp",
+    image: "images/packs/product-156.webp",
     description: "Crispy stuffed pastry."
   },
   {
@@ -1009,7 +1010,7 @@ export const products = [
     name: "Bikaji Spinach Samosa (360g)",
     category: "Bikaji Bikaneri",
     price: 20,
-    image: "images/products/product-157.webp",
+    image: "images/packs/product-157.webp",
     description: "Spinach filled samosas."
   },
   {
@@ -1017,7 +1018,7 @@ export const products = [
     name: "Bikaji Salted Peanuts (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-158.webp",
+    image: "images/packs/product-158.webp",
     description: "Classic salted peanuts."
   },
   {
@@ -1025,7 +1026,7 @@ export const products = [
     name: "Bikaji Paneer Schzwan Roll",
     category: "Bikaji Bikaneri",
     price: 12,
-    image: "images/products/product-159.webp",
+    image: "images/packs/product-159.webp",
     description: "Spicy paneer roll."
   },
   {
@@ -1033,7 +1034,7 @@ export const products = [
     name: "Bikaji Aloo Paratha (4pcs)",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "images/products/product-160.webp",
+    image: "images/packs/product-160.webp",
     description: "Potato stuffed paratha."
   },
   {
@@ -1041,7 +1042,7 @@ export const products = [
     name: "Bikaji Ajwain Khakhara (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-161.webp",
+    image: "images/packs/product-161.webp",
     description: "Carom seeds flavored crisps."
   },
   {
@@ -1049,7 +1050,7 @@ export const products = [
     name: "Bikaji Phulka Roti (12pcs)",
     category: "Bikaji Bikaneri",
     price: 8.50,
-    image: "images/products/product-162.webp",
+    image: "images/packs/product-162.webp",
     description: "Soft homemade style roti."
   },
   {
@@ -1057,7 +1058,7 @@ export const products = [
     name: "Bikaji Tandoori Naan (5pcs)",
     category: "Bikaji Bikaneri",
     price: 12,
-    image: "images/products/product-163.webp",
+    image: "images/packs/product-163.webp",
     description: "Soft tandoori naan."
   },
   {
@@ -1065,7 +1066,7 @@ export const products = [
     name: "Bikaji Papad Super (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-164.webp",
+    image: "images/packs/product-164.webp",
     description: "Crispy papad."
   },
   {
@@ -1073,7 +1074,7 @@ export const products = [
     name: "Bikaji Moong Dal (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-165.webp",
+    image: "images/packs/product-165.webp",
     description: "Fried moong dal snack."
   },
   {
@@ -1081,7 +1082,7 @@ export const products = [
     name: "Bikaji Chowpati Bhelpuri",
     category: "Bikaji Bikaneri",
     price: 8,
-    image: "images/products/product-166.webp",
+    image: "images/packs/product-166.webp",
     description: "Instant bhelpuri mix."
   },
   {
@@ -1089,7 +1090,7 @@ export const products = [
     name: "Bikaji Meljol (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-167.webp",
+    image: "images/packs/product-167.webp",
     description: "Mixed savory snack."
   },
   {
@@ -1097,7 +1098,7 @@ export const products = [
     name: "Bikaji Cheese Samosa (18pcs)",
     category: "Bikaji Bikaneri",
     price: 18,
-    image: "images/products/product-168.webp",
+    image: "images/packs/product-168.webp",
     description: "Cheese filled mini samosas."
   },
   {
@@ -1105,7 +1106,7 @@ export const products = [
     name: "Bikaji Onion Paratha (4pcs)",
     category: "Bikaji Bikaneri",
     price: 10.50,
-    image: "images/products/product-169.webp",
+    image: "images/packs/product-169.webp",
     description: "Onion stuffed paratha."
   },
   {
@@ -1113,7 +1114,7 @@ export const products = [
     name: "Bikaji Aloo Tikki (8pcs)",
     category: "Bikaji Bikaneri",
     price: 10.50,
-    image: "images/products/product-170.webp",
+    image: "images/packs/product-170.webp",
     description: "Potato patties."
   },
   {
@@ -1121,7 +1122,7 @@ export const products = [
     name: "Bikaji Mix Veg Kathi Roll (6pcs)",
     category: "Bikaji Bikaneri",
     price: 12.50,
-    image: "images/products/product-171.webp",
+    image: "images/packs/product-171.webp",
     description: "Mixed vegetable roll."
   },
   {
@@ -1129,7 +1130,7 @@ export const products = [
     name: "Bikaji Soya Sticks (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-172.webp",
+    image: "images/packs/product-172.webp",
     description: "Crunchy soya sticks."
   },
   {
@@ -1137,7 +1138,7 @@ export const products = [
     name: "Bikaji Bikaneri Bhujia (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-173.webp",
+    image: "images/packs/product-173.webp",
     description: "Authentic Bikaneri bhujia."
   },
   {
@@ -1145,7 +1146,7 @@ export const products = [
     name: "Bikaji Sub Kuch (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-174.webp",
+    image: "images/packs/product-174.webp",
     description: "All in one mix."
   },
   {
@@ -1153,7 +1154,7 @@ export const products = [
     name: "Bikaji Gulab Jamun (1kg)",
     category: "Bikaji Bikaneri",
     price: 22,
-    image: "images/products/product-175.webp",
+    image: "images/packs/product-175.webp",
     description: "Sweet dumplings in syrup."
   },
   {
@@ -1161,7 +1162,7 @@ export const products = [
     name: "Bikaji Tana Tan (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-176.webp",
+    image: "images/packs/product-176.webp",
     description: "Spicy snack mix."
   },
   {
@@ -1169,7 +1170,7 @@ export const products = [
     name: "Bikaji Dahi Kebab (18pcs / 360g)",
     category: "Bikaji Bikaneri",
     price: 15,
-    image: "images/products/product-177.webp",
+    image: "images/packs/product-177.webp",
     description: "Yogurt based kebabs."
   },
   {
@@ -1177,7 +1178,7 @@ export const products = [
     name: "Bikaji Jeera Khakhara (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-178.webp",
+    image: "images/packs/product-178.webp",
     description: "Cumin flavored crisps."
   },
   {
@@ -1185,7 +1186,7 @@ export const products = [
     name: "Bikaji Dahi Bhalla (20pcs / 300g)",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "images/products/product-179.webp",
+    image: "images/packs/product-179.webp",
     description: "Soft lentil dumplings."
   },
   {
@@ -1193,7 +1194,7 @@ export const products = [
     name: "Bikaji Papad Baat Cheet (250g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-180.webp",
+    image: "images/packs/product-180.webp",
     description: "Crispy papad."
   },
   {
@@ -1201,7 +1202,7 @@ export const products = [
     name: "Bikaji Vegetable Cutlet (6pcs)",
     category: "Bikaji Bikaneri",
     price: 13,
-    image: "images/products/product-181.webp",
+    image: "images/packs/product-181.webp",
     description: "Crispy vegetable cutlets."
   },
   {
@@ -1209,7 +1210,7 @@ export const products = [
     name: "Bikaji Panjabi Samosa (6pcs)",
     category: "Bikaji Bikaneri",
     price: 12,
-    image: "images/products/product-182.webp",
+    image: "images/packs/product-182.webp",
     description: "Classic Punjabi samosas."
   },
   {
@@ -1217,7 +1218,7 @@ export const products = [
     name: "Bikaji Mini Papad (100g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-183.webp",
+    image: "images/packs/product-183.webp",
     description: "Small crispy papads."
   },
   {
@@ -1225,7 +1226,7 @@ export const products = [
     name: "Bikaji Papad Dil Khush (250g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-184.webp",
+    image: "images/packs/product-184.webp",
     description: "Crispy papad."
   },
   {
@@ -1233,7 +1234,7 @@ export const products = [
     name: "Bikaji Bikaneri Bhujia (400g)",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "images/products/product-185.webp",
+    image: "images/packs/product-185.webp",
     description: "Authentic Bikaneri bhujia."
   },
   {
@@ -1241,7 +1242,7 @@ export const products = [
     name: "Bikaji Kolkata Chana Chur Mix (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-186.webp",
+    image: "images/packs/product-186.webp",
     description: "Kolkata style spicy mix."
   },
   {
@@ -1249,7 +1250,7 @@ export const products = [
     name: "Bikaji Home Style Paratha (400g)",
     category: "Bikaji Bikaneri",
     price: 10,
-    image: "images/products/product-187.webp",
+    image: "images/packs/product-187.webp",
     description: "Homestyle parathas."
   },
   {
@@ -1257,7 +1258,7 @@ export const products = [
     name: "Bikaji Masala Peanut (200g)",
     category: "Bikaji Bikaneri",
     price: 6,
-    image: "images/products/product-188.webp",
+    image: "images/packs/product-188.webp",
     description: "Spicy coated peanuts."
   },
   {
@@ -1265,7 +1266,7 @@ export const products = [
     name: "Bikaji Manchurian Balls (5pcs / 300g)",
     category: "Bikaji Bikaneri",
     price: 13,
-    image: "images/products/product-189.webp",
+    image: "images/packs/product-189.webp",
     description: "Veg manchurian balls."
   },
   {
@@ -1281,7 +1282,7 @@ export const products = [
     name: "Sagar Pure Ghee (1L)",
     category: "Amul",
     price: 43,
-    image: "images/products/sagar-ghee-1l.webp",
+    image: "images/packs/sagar-ghee-1l.webp",
     description: "Pure traditional ghee."
   },
   {
@@ -1289,7 +1290,7 @@ export const products = [
     name: "Everest Kasuri Methi",
     category: "Spices",
     price: 7,
-    image: "images/products/everest-kasuri-methi.webp",
+    image: "images/packs/everest-kasuri-methi.webp",
     description: "Dry fenugreek leaves."
   }
 ];

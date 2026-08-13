@@ -218,7 +218,7 @@ ${deliveryFee > 0 ? `\n*Delivery Fee: AED ${deliveryFee}*` : ''}
                     <ShoppingBag className="text-brand-orange w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-brand-charcoal dark:text-white">Your bag</h2>
+                    <h2 className="font-display text-lg font-semibold text-brand-charcoal dark:text-white">Your bag</h2>
                     <p className="text-xs text-brand-muted">Cart, wishlist & orders</p>
                   </div>
                 </div>

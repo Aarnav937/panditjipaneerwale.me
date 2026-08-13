@@ -3,6 +3,7 @@ import { X, Heart, ShoppingBag, Info, Award, Leaf } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { useWishlist } from '../context/WishlistContext';
+import { formatAed, getSaleInfo } from '../lib/pricing';
 
 const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23f3f4f6' width='300' height='200'/%3E%3Ctext x='150' y='95' text-anchor='middle' fill='%239ca3af' font-family='sans-serif' font-size='14'%3EProduct Image%3C/text%3E%3Cpath d='M130 110 L150 90 L170 110 L160 110 L160 130 L140 130 L140 110 Z' fill='%23d1d5db'/%3E%3C/svg%3E";
 
@@ -14,6 +15,7 @@ const QuickViewModal = ({ product, isOpen, onClose, addToCart }) => {
 
   const isWishlisted = isInWishlist(product.id);
   const isAvailable = product.is_available !== false && (product.stock_quantity === undefined || product.stock_quantity > 0);
+  const sale = getSaleInfo(product);
 
   const imageSrc = product.image?.includes('placeholder') || !product.image
     ? FALLBACK_IMAGE
@@ -99,8 +101,14 @@ const QuickViewModal = ({ product, isOpen, onClose, addToCart }) => {
                   <div>
                     <span className="text-[10px] text-brand-muted font-medium uppercase tracking-wider block">Price</span>
                     <span className="text-2xl font-bold text-brand-saffron tabular-nums">
-                      AED {product.price}
+                      AED {formatAed(sale.price)}
                     </span>
+                    {sale.onSale && (
+                      <p className="text-xs text-brand-muted">
+                        <span className="line-through mr-1">AED {formatAed(sale.compareAt)}</span>
+                        <span className="text-brand-saffron font-bold">{sale.percent}% off</span>
+                      </p>
+                    )}
                   </div>
                   <div className="text-right">
                     <span className="text-[10px] text-brand-muted font-medium uppercase tracking-wider block">Status</span>

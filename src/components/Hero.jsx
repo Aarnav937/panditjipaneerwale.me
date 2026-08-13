@@ -18,28 +18,28 @@ const Hero = () => {
 
     const stats = [
         { value: '150+', label: 'Products', color: 'text-brand-orange' },
-        { value: 'Free', label: 'Delivery', color: 'text-brand-saffron' },
-        { value: '24/7', label: 'Orders', color: 'text-brand-goldDark dark:text-brand-gold' },
+        { value: 'Free', label: 'Delivery', color: 'text-brand-gold' },
+        { value: '24/7', label: 'Orders', color: 'text-white' },
     ];
 
     return (
-        <section className="relative flex items-center justify-center overflow-hidden border-b border-brand-gold/20 dark:border-gray-800">
-            {/* Living orbs */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden hidden md:block">
-                <div className="orb orb-float-a w-80 h-80 bg-brand-orange/25 -top-20 -right-16" />
-                <div className="orb orb-float-b w-72 h-72 bg-brand-gold/20 -bottom-16 -left-12" />
-                <div className="orb orb-float-c w-48 h-48 bg-brand-saffron/15 top-1/2 left-1/3" />
-                {/* Soft diagonal wash */}
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/[0.07] via-transparent to-brand-gold/[0.1]" />
+        <section className="relative flex items-center justify-center overflow-hidden min-h-[30rem] md:min-h-[34rem]">
+            <div className="absolute inset-0 hero-kenburns pointer-events-none" aria-hidden>
+                <img
+                    src="/images/hero-kitchen.webp"
+                    alt=""
+                    className="w-full h-full object-cover"
+                />
             </div>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-[#FFFDF9] dark:to-brand-darker" />
 
-            <div className="container mx-auto px-4 py-12 md:py-16 relative z-10">
+            <div className="container mx-auto px-4 py-14 md:py-20 relative z-10">
                 <div className="max-w-3xl mx-auto text-center">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.85, y: 12 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         transition={{ type: 'spring', stiffness: 260, damping: 18 }}
-                        className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-saffronLight via-white to-amber-50 dark:from-brand-saffron/20 dark:via-brand-card dark:to-brand-saffron/10 text-brand-saffron border border-brand-gold/40 px-4 py-2 rounded-full text-xs sm:text-sm font-bold mb-6 shadow-md shadow-brand-orange/10"
+                        className="inline-flex items-center gap-2 bg-white/15 text-white border border-white/30 px-4 py-2 rounded-full text-xs sm:text-sm font-bold mb-6 backdrop-blur-sm"
                     >
                         <span className="w-2 h-2 rounded-full bg-brand-gold live-dot" />
                         Free Delivery in Abu Dhabi
@@ -50,18 +50,16 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 28 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ type: 'spring', stiffness: 120, damping: 16, delay: 0.05 }}
-                        className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold text-brand-charcoal dark:text-white mb-4 leading-[1.15] tracking-tight"
+                        className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-semibold text-white mb-4 leading-[1.15] tracking-tight drop-shadow-md"
                     >
-                        <span className="bg-gradient-to-r from-brand-charcoal via-brand-saffron to-brand-orange dark:from-white dark:via-orange-200 dark:to-brand-gold bg-clip-text text-transparent bg-[length:200%_auto] btn-glow">
-                            {t('heroTitle')}
-                        </span>
+                        {t('heroTitle')}
                     </motion.h1>
 
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.12 }}
-                        className="text-base md:text-lg text-brand-muted dark:text-gray-300 mb-9 max-w-xl mx-auto leading-relaxed"
+                        className="text-base md:text-lg text-white/85 mb-9 max-w-xl mx-auto leading-relaxed"
                     >
                         {t('heroSubtitle')}
                     </motion.p>
@@ -82,23 +80,21 @@ const Hero = () => {
                                 backgroundSize: '200% 200%',
                             }}
                         >
-                            <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full duration-700" />
-                            <ShoppingBag className="w-5 h-5 relative z-10 live-wiggle" />
+                            <ShoppingBag className="w-5 h-5 relative z-10" />
                             <span className="relative z-10">{t('shopNow')}</span>
-                            <ArrowRight className={`w-4 h-4 relative z-10 transition-transform group-hover:translate-x-1 ${isRTL ? 'rotate-180' : ''}`} />
+                            <ArrowRight className={`w-4 h-4 relative z-10 ${isRTL ? 'rotate-180' : ''}`} />
                         </motion.button>
 
                         <motion.button
                             whileHover={{ scale: 1.04, y: -2 }}
                             whileTap={{ scale: 0.97 }}
                             onClick={scrollToProducts}
-                            className="flex items-center gap-2 bg-white/90 dark:bg-brand-card text-brand-charcoal dark:text-white px-8 py-4 rounded-full font-semibold text-base border-2 border-brand-gold/35 dark:border-brand-gold/25 hover:border-brand-orange shadow-md hover:shadow-lg transition-colors"
+                            className="flex items-center gap-2 bg-white/90 text-brand-charcoal px-8 py-4 rounded-full font-semibold text-base border border-white/50 shadow-md"
                         >
                             {t('viewProducts')}
                         </motion.button>
                     </motion.div>
 
-                    {/* Living stats cards */}
                     <motion.div
                         initial={{ opacity: 0, y: 24 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -111,11 +107,10 @@ const Hero = () => {
                                 initial={{ opacity: 0, y: 16 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.32 + i * 0.08, type: 'spring', stiffness: 200 }}
-                                whileHover={{ y: -4, scale: 1.04 }}
-                                className="rounded-2xl bg-white/80 dark:bg-brand-card/80 backdrop-blur-sm border border-brand-gold/25 dark:border-brand-gold/15 px-2 py-3 sm:px-4 sm:py-4 shadow-md shadow-brand-orange/5"
+                                className="rounded-2xl bg-black/30 border border-white/15 px-2 py-3 sm:px-4 sm:py-4 backdrop-blur-sm"
                             >
                                 <div className={`text-xl sm:text-2xl font-extrabold ${s.color}`}>{s.value}</div>
-                                <div className="text-[10px] sm:text-xs text-brand-muted dark:text-gray-400 mt-0.5 font-medium">{s.label}</div>
+                                <div className="text-[10px] sm:text-xs text-white/70 mt-0.5 font-medium">{s.label}</div>
                             </motion.div>
                         ))}
                     </motion.div>
