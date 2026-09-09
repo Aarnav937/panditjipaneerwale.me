@@ -95,7 +95,7 @@ const ReviewSection = ({ productId, productName: _productName }) => {
     };
 
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg">
+        <div className="bg-brand-cream dark:bg-brand-card rounded-[1.6rem] p-6 shadow-soft border border-brand-border/70 dark:border-white/10">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
                 <div>
@@ -112,7 +112,7 @@ const ReviewSection = ({ productId, productName: _productName }) => {
                 {userEmail && !showForm && (
                     <button
                         onClick={() => setShowForm(true)}
-                        className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center gap-2"
+                        className="px-4 py-2 bg-brand-forest text-white rounded-xl hover:brightness-110 transition-colors flex items-center gap-2"
                     >
                         <Star className="w-4 h-4" /> Write Review
                     </button>
@@ -162,7 +162,7 @@ const ReviewSection = ({ productId, productName: _productName }) => {
                                 value={formData.user_name}
                                 onChange={(e) => setFormData({ ...formData, user_name: e.target.value })}
                                 placeholder="Anonymous"
-                                className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500"
+                                className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-forest"
                             />
                         </div>
 
@@ -173,7 +173,7 @@ const ReviewSection = ({ productId, productName: _productName }) => {
                                 onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
                                 placeholder="Share your experience..."
                                 rows={3}
-                                className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500"
+                                className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-forest"
                             />
                         </div>
 
@@ -181,7 +181,7 @@ const ReviewSection = ({ productId, productName: _productName }) => {
                             <button
                                 type="submit"
                                 disabled={submitting}
-                                className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50"
+                                className="flex items-center gap-2 px-4 py-2 bg-brand-forest text-white rounded-xl hover:brightness-110 transition-colors disabled:opacity-50"
                             >
                                 {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                                 Submit

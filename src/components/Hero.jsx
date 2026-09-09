@@ -1,123 +1,203 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShoppingBag, ArrowRight, Sparkles } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Sparkles, MessageCircle, Star, ShieldCheck, Truck, Clock } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
-const Hero = () => {
-    const { t, isRTL } = useLanguage();
+const Hero = ({ onAddToCart }) => {
+  const { t, isRTL } = useLanguage();
 
-    const scrollToProducts = () => {
-        const heading = document.getElementById('catalog-heading') || document.getElementById('products');
-        if (heading) {
-            const nav = document.querySelector('nav');
-            const offset = (nav?.getBoundingClientRect().height || 88) + 12;
-            const top = heading.getBoundingClientRect().top + window.pageYOffset - offset;
-            window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-        }
-    };
+  const scrollToProducts = () => {
+    const heading = document.getElementById('catalog-heading') || document.getElementById('products');
+    if (heading) {
+      const nav = document.querySelector('header') || document.querySelector('nav');
+      const offset = (nav?.getBoundingClientRect().height || 80) + 16;
+      const top = heading.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    }
+  };
 
-    const stats = [
-        { value: '150+', label: 'Products', color: 'text-brand-orange' },
-        { value: 'Free', label: 'Delivery', color: 'text-brand-gold' },
-        { value: '24/7', label: 'Orders', color: 'text-white' },
-    ];
+  const whatsappDirectOrder = 'https://wa.me/971524676306?text=' + encodeURIComponent('Hello Pandit Ji Paneer Wale! I would like to order fresh paneer and dairy products for delivery in Abu Dhabi.');
 
-    return (
-        <section className="relative flex items-center justify-center overflow-hidden min-h-[30rem] md:min-h-[34rem]">
-            <div className="absolute inset-0 hero-kenburns pointer-events-none" aria-hidden>
-                <img
-                    src="/images/hero-kitchen.webp"
-                    alt=""
-                    className="w-full h-full object-cover"
-                />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-[#FFFDF9] dark:to-brand-darker" />
+  const signaturePaneer = {
+    id: 3,
+    name: "Fresh Paneer (500g)",
+    price: 15,
+    compareAtPrice: 21,
+    image: "images/packs/product-3.webp",
+  };
 
-            <div className="container mx-auto px-4 py-14 md:py-20 relative z-10">
-                <div className="max-w-3xl mx-auto text-center">
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.85, y: 12 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        transition={{ type: 'spring', stiffness: 260, damping: 18 }}
-                        className="inline-flex items-center gap-2 bg-white/15 text-white border border-white/30 px-4 py-2 rounded-full text-xs sm:text-sm font-bold mb-6 backdrop-blur-sm"
-                    >
-                        <span className="w-2 h-2 rounded-full bg-brand-gold live-dot" />
-                        Free Delivery in Abu Dhabi
-                        <Sparkles className="w-3.5 h-3.5 text-brand-gold live-bounce" />
-                    </motion.div>
+  return (
+    <section className="relative overflow-hidden pt-6 pb-14 md:pt-10 md:pb-20">
+      {/* Visual Ambient Glows */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-20 -left-20 w-96 h-96 bg-brand-orange/15 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 right-0 w-[30rem] h-[30rem] bg-amber-400/10 rounded-full blur-3xl" />
+      </div>
 
-                    <motion.h1
-                        initial={{ opacity: 0, y: 28 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ type: 'spring', stiffness: 120, damping: 16, delay: 0.05 }}
-                        className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-semibold text-white mb-4 leading-[1.15] tracking-tight drop-shadow-md"
-                    >
-                        {t('heroTitle')}
-                    </motion.h1>
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center max-w-7xl mx-auto">
+          
+          {/* LEFT: Headline & Value Prop */}
+          <div className="lg:col-span-7 text-center lg:text-left">
+            {/* Live Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-900 dark:text-amber-300 text-xs sm:text-sm font-bold mb-5 shadow-sm"
+            >
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 live-dot shrink-0" />
+              <span>Abu Dhabi's #1 Fresh Artisan Dairy</span>
+              <span className="text-amber-400">•</span>
+              <span className="text-brand-orange font-extrabold flex items-center gap-1">
+                <Truck className="w-3.5 h-3.5" /> Free Same-Day Delivery
+              </span>
+            </motion.div>
 
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.12 }}
-                        className="text-base md:text-lg text-white/85 mb-9 max-w-xl mx-auto leading-relaxed"
-                    >
-                        {t('heroSubtitle')}
-                    </motion.p>
+            {/* Main Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold text-brand-charcoal dark:text-white tracking-tight leading-[1.12] mb-5"
+            >
+              Handcrafted Buffalo Paneer,{' '}
+              <span className="bg-gradient-to-r from-brand-orange via-amber-500 to-brand-saffron bg-clip-text text-transparent">
+                Delivered Fresh Daily.
+              </span>
+            </motion.h1>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ type: 'spring', stiffness: 160, damping: 18, delay: 0.18 }}
-                        className={`flex flex-col sm:flex-row items-center justify-center gap-3 ${isRTL ? 'sm:flex-row-reverse' : ''}`}
-                    >
-                        <motion.button
-                            whileHover={{ scale: 1.05, y: -2 }}
-                            whileTap={{ scale: 0.96 }}
-                            onClick={scrollToProducts}
-                            className="group relative flex items-center gap-2 text-white px-8 py-4 rounded-full font-bold text-base shadow-lg shadow-brand-orange/40 overflow-hidden"
-                            style={{
-                                background: 'linear-gradient(135deg, #FF8C00, #E25822, #FF8C00)',
-                                backgroundSize: '200% 200%',
-                            }}
-                        >
-                            <ShoppingBag className="w-5 h-5 relative z-10" />
-                            <span className="relative z-10">{t('shopNow')}</span>
-                            <ArrowRight className={`w-4 h-4 relative z-10 ${isRTL ? 'rotate-180' : ''}`} />
-                        </motion.button>
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed mb-8 font-medium"
+            >
+              Soft, melt-in-the-mouth paneer prepared fresh every morning in Abu Dhabi with 100% pure buffalo milk. No preservatives, no starches. Order in 30 seconds via WhatsApp.
+            </motion.p>
 
-                        <motion.button
-                            whileHover={{ scale: 1.04, y: -2 }}
-                            whileTap={{ scale: 0.97 }}
-                            onClick={scrollToProducts}
-                            className="flex items-center gap-2 bg-white/90 text-brand-charcoal px-8 py-4 rounded-full font-semibold text-base border border-white/50 shadow-md"
-                        >
-                            {t('viewProducts')}
-                        </motion.button>
-                    </motion.div>
+            {/* Action Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 mb-10"
+            >
+              <a
+                href={whatsappDirectOrder}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white font-bold text-base shadow-xl shadow-emerald-600/25 hover:shadow-emerald-600/35 transition-all transform hover:-translate-y-0.5 active:scale-98"
+              >
+                <MessageCircle className="w-5 h-5 text-white" />
+                <span>Order via WhatsApp</span>
+              </a>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 24 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.55, delay: 0.28 }}
-                        className="mt-12 grid grid-cols-3 gap-2 sm:gap-4 max-w-md mx-auto"
-                    >
-                        {stats.map((s, i) => (
-                            <motion.div
-                                key={s.label}
-                                initial={{ opacity: 0, y: 16 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.32 + i * 0.08, type: 'spring', stiffness: 200 }}
-                                className="rounded-2xl bg-black/30 border border-white/15 px-2 py-3 sm:px-4 sm:py-4 backdrop-blur-sm"
-                            >
-                                <div className={`text-xl sm:text-2xl font-extrabold ${s.color}`}>{s.value}</div>
-                                <div className="text-[10px] sm:text-xs text-white/70 mt-0.5 font-medium">{s.label}</div>
-                            </motion.div>
-                        ))}
-                    </motion.div>
+              <button
+                onClick={scrollToProducts}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-orange to-amber-500 hover:from-brand-orangeDark hover:to-amber-600 text-white font-bold text-base shadow-xl shadow-brand-orange/25 transition-all transform hover:-translate-y-0.5 active:scale-98"
+              >
+                <ShoppingBag className="w-5 h-5" />
+                <span>Explore 150+ Products</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </motion.div>
+
+            {/* Social Proof & Guarantee Strip */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="pt-6 border-t border-gray-200/80 dark:border-white/10 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-gray-600 dark:text-gray-300"
+            >
+              <div className="flex items-center gap-2">
+                <div className="flex text-amber-400">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                  ))}
                 </div>
+                <span className="font-extrabold text-brand-charcoal dark:text-white">4.9 / 5.0</span>
+                <span className="text-gray-400">(1,450+ Happy Homes)</span>
+              </div>
+
+              <div className="flex items-center gap-1.5 font-bold text-emerald-600 dark:text-emerald-400">
+                <ShieldCheck className="w-4 h-4" />
+                <span>100% Pure Buffalo Milk</span>
+              </div>
+
+              <div className="flex items-center gap-1.5 font-bold text-amber-600 dark:text-amber-400">
+                <Clock className="w-4 h-4" />
+                <span>Made Fresh 05:00 AM Today</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* RIGHT: Interactive Signature Spotlight Card */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.5 }}
+            className="lg:col-span-5 relative"
+          >
+            <div className="relative rounded-3xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 sm:p-7 border border-amber-500/30 dark:border-white/10 shadow-2xl shadow-brand-orange/15 overflow-hidden">
+              {/* Shimmer Accent */}
+              <div className="accent-gold-line absolute top-0 left-0 right-0" />
+
+              {/* Card Top Label */}
+              <div className="flex justify-between items-center mb-4">
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-brand-orange/10 text-brand-orange font-extrabold text-xs uppercase tracking-wider">
+                  <Sparkles className="w-3.5 h-3.5" /> Signature Bestseller
+                </span>
+                <span className="bg-red-500 text-white text-xs font-black px-2.5 py-1 rounded-full shadow-md">
+                  SAVE 28%
+                </span>
+              </div>
+
+              {/* Product Visual */}
+              <div className="relative h-56 sm:h-64 w-full image-plate rounded-2xl overflow-hidden flex items-center justify-center p-4 mb-5 border border-gray-100 dark:border-white/5">
+                <img
+                  src={signaturePaneer.image}
+                  alt={signaturePaneer.name}
+                  className="product-cutout w-full h-full object-contain filter drop-shadow-xl transform hover:scale-108 transition-transform duration-500"
+                />
+                <div className="absolute bottom-3 left-3 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-bold text-gray-700 dark:text-gray-200 shadow border border-gray-100 dark:border-white/10">
+                  🥛 Farm Fresh 500g Pack
+                </div>
+              </div>
+
+              {/* Product Info */}
+              <div className="space-y-2 mb-5">
+                <h3 className="font-display text-xl font-bold text-brand-charcoal dark:text-white">
+                  Fresh Paneer (500g)
+                </h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
+                  Soft, creamy and freshly made daily for rich curries, snacks, or grilling. In-store & online sale price.
+                </p>
+                <div className="flex items-baseline gap-2 pt-1">
+                  <span className="text-2xl font-black text-brand-orange dark:text-amber-400">AED 15</span>
+                  <span className="text-sm text-gray-400 line-through">AED 21</span>
+                  <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 ml-auto">
+                    Free Abu Dhabi Delivery
+                  </span>
+                </div>
+              </div>
+
+              {/* 1-Click Action */}
+              <button
+                type="button"
+                onClick={() => onAddToCart && onAddToCart(signaturePaneer)}
+                className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-brand-orange to-amber-500 hover:from-brand-orangeDark hover:to-amber-600 text-white font-extrabold text-sm shadow-lg shadow-brand-orange/25 active:scale-98 transition-all flex items-center justify-center gap-2"
+              >
+                <ShoppingBag className="w-4 h-4" />
+                <span>Add Fresh Paneer (500g) to Bag — AED 15</span>
+              </button>
             </div>
-        </section>
-    );
+          </motion.div>
+
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default Hero;

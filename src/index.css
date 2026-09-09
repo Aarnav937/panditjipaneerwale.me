@@ -9,20 +9,26 @@ html {
 }
 
 body {
-  background-color: #FFFDF9;
-  color: #1C1917;
+  background-color: #FAF5EA;
+  color: #111827;
+  font-family: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-tap-highlight-color: rgba(226, 88, 34, 0.2);
+  -webkit-tap-highlight-color: rgba(255, 102, 0, 0.15);
   overscroll-behavior-y: contain;
 }
 
+.dark body {
+  background-color: #090D14;
+  color: #F9FAFB;
+}
+
 .font-display {
+  font-family: 'Fraunces', Georgia, serif;
   font-optical-sizing: auto;
   font-variation-settings: "SOFT" 60, "WONK" 0;
 }
 
-/* iOS Safari zooms any focused control under 16px */
 input,
 textarea,
 select {
@@ -35,78 +41,62 @@ a,
   touch-action: manipulation;
 }
 
-/* Living warm background — slow breathing gradients */
+/* Radiant Ambient Mesh Background */
 .bg-fixed-gradient {
-  background-color: #FFE8C8;
+  background-color: #FAF5EA;
   background-image:
-    radial-gradient(ellipse 80% 60% at 8% 0%, rgba(255, 140, 0, 0.55), transparent 55%),
-    radial-gradient(ellipse 70% 55% at 95% 15%, rgba(226, 88, 34, 0.38), transparent 52%),
-    radial-gradient(ellipse 60% 50% at 50% 110%, rgba(212, 175, 55, 0.4), transparent 50%),
-    radial-gradient(ellipse 40% 40% at 70% 50%, rgba(255, 180, 50, 0.28), transparent 50%);
-  background-size: 140% 140%;
-  animation: bg-drift 16s ease-in-out infinite alternate;
+    radial-gradient(circle at 10% 10%, rgba(255, 102, 0, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 90% 15%, rgba(245, 158, 11, 0.14) 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(212, 175, 55, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 60%, rgba(255, 102, 0, 0.07) 0%, transparent 40%);
+  background-size: 100% 100%;
 }
 
 .dark .bg-fixed-gradient {
-  background-color: #2A1208;
+  background-color: #070B11;
   background-image:
-    radial-gradient(ellipse 80% 60% at 8% 0%, rgba(255, 140, 0, 0.42), transparent 55%),
-    radial-gradient(ellipse 70% 55% at 95% 15%, rgba(226, 88, 34, 0.32), transparent 52%),
-    radial-gradient(ellipse 60% 50% at 50% 110%, rgba(212, 175, 55, 0.22), transparent 50%),
-    radial-gradient(ellipse 40% 40% at 70% 50%, rgba(255, 120, 40, 0.2), transparent 50%);
-  background-size: 140% 140%;
-  animation: bg-drift 16s ease-in-out infinite alternate;
+    radial-gradient(circle at 10% 10%, rgba(255, 102, 0, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 90% 15%, rgba(212, 175, 55, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 60%, rgba(255, 102, 0, 0.06) 0%, transparent 40%);
+  background-size: 100% 100%;
 }
 
-@keyframes bg-drift {
-  from { background-position: 0% 20%; }
-  to { background-position: 80% 60%; }
+/* Glassmorphism Primitives */
+.glass-capsule {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(229, 231, 235, 0.9);
 }
 
-@keyframes bg-breathe {
-  0% { filter: saturate(1) brightness(1); }
-  100% { filter: saturate(1.12) brightness(1.03); }
+.dark .glass-capsule {
+  background: rgba(14, 20, 32, 0.85);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
 }
 
-/* Floating orbs */
-.orb {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(40px);
-  pointer-events: none;
-  will-change: transform;
+.glass-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(243, 244, 246, 0.9);
 }
 
-.orb-float-a {
-  animation: float-a 9s ease-in-out infinite;
-}
-.orb-float-b {
-  animation: float-b 12s ease-in-out infinite;
-}
-.orb-float-c {
-  animation: float-c 10s ease-in-out infinite;
+.dark .glass-card {
+  background: rgba(17, 24, 39, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-@keyframes float-a {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(24px, -30px) scale(1.08); }
-}
-@keyframes float-b {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-28px, 20px) scale(1.12); }
-}
-@keyframes float-c {
-  0%, 100% { transform: translate(0, 0); }
-  33% { transform: translate(16px, 18px); }
-  66% { transform: translate(-12px, -14px); }
-}
-
-/* Shimmer line */
+/* Shimmer accent line */
 .accent-gold-line {
-  height: 2.5px;
-  background: linear-gradient(90deg, transparent, #D4AF37 15%, #E25822 50%, #FF8C00 70%, #D4AF37 85%, transparent);
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #D4AF37 15%, #FF6600 50%, #F59E0B 85%, transparent);
   background-size: 200% 100%;
-  animation: shimmer-line 3.5s linear infinite;
+  animation: shimmer-line 3.2s linear infinite;
 }
 
 @keyframes shimmer-line {
@@ -114,60 +104,44 @@ a,
   100% { background-position: -100% 0; }
 }
 
-/* Soft living shadows */
-.shadow-gold-glow {
-  box-shadow:
-    0 2px 8px rgba(28, 25, 23, 0.06),
-    0 8px 24px rgba(255, 140, 0, 0.08);
-}
-
-.shadow-gold-glow-hover:hover {
-  box-shadow:
-    0 8px 20px rgba(28, 25, 23, 0.1),
-    0 16px 40px rgba(226, 88, 34, 0.16),
-    0 0 0 1px rgba(212, 175, 55, 0.25);
-}
-
-/* Product plate — shared marble photo (one file, every card) */
+/* Product Plate Presentation */
 .image-plate {
-  background-color: #FFF6F0;
+  background-color: #FAF4E9;
   background-image:
-    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.55) 0%, transparent 62%),
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 68%),
     url('/images/plate-marble.webp');
   background-size: cover;
   background-position: center;
 }
 
 .dark .image-plate {
-  background-color: #3A2418;
-  background-image: url('/images/plate-marble.webp');
+  background-color: #141C2B;
+  background-image:
+    radial-gradient(circle at 50% 30%, rgba(30, 41, 59, 0.65) 0%, transparent 68%),
+    url('/images/plate-marble.webp');
   background-size: cover;
+  background-position: center;
 }
 
 .image-plate img.product-cutout {
   mix-blend-mode: multiply;
 }
 
-.hero-kenburns img {
-  animation: kenburns 22s ease-in-out infinite alternate;
-  will-change: transform;
+.dark .image-plate img.product-cutout {
+  mix-blend-mode: normal;
+  filter: contrast(1.05) brightness(0.98);
 }
 
-@keyframes kenburns {
-  from { transform: scale(1) translate3d(0, 0, 0); }
-  to { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
-}
-
+/* Marquee & Tickers */
 .offer-ticker {
   overflow: hidden;
   white-space: nowrap;
 }
 
 .offer-ticker-track {
-  display: inline-block;
+  display: inline-flex;
   min-width: 100%;
-  padding: 0.4rem 0;
-  animation: ticker 28s linear infinite;
+  animation: ticker 30s linear infinite;
 }
 
 @keyframes ticker {
@@ -175,97 +149,46 @@ a,
   to { transform: translate3d(-50%, 0, 0); }
 }
 
-.image-plate::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 40%, rgba(255, 140, 0, 0.08), transparent 55%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
-.group:hover .image-plate::after {
-  opacity: 1;
-}
-
-/* Pulse / pop helpers */
+/* Radar Pulse / Micro-animations */
 @keyframes pulse-dot {
-  0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.5); }
-  50% { transform: scale(1.15); opacity: 0.9; box-shadow: 0 0 0 8px rgba(212, 175, 55, 0); }
+  0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+  50% { transform: scale(1.1); opacity: 0.9; box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
 }
 
-@keyframes pulse-soft {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.04); }
-}
-
-@keyframes bounce-soft {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-@keyframes wiggle {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-6deg); }
-  75% { transform: rotate(6deg); }
-}
-
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes cart-glow {
-  0%, 100% { box-shadow: 0 8px 28px rgba(255, 140, 0, 0.35); }
-  50% { box-shadow: 0 8px 36px rgba(226, 88, 34, 0.55), 0 0 0 3px rgba(212, 175, 55, 0.25); }
+@keyframes pulse-orange {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0.5); }
+  50% { box-shadow: 0 0 0 10px rgba(255, 102, 0, 0); }
 }
 
 .live-dot {
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
-.live-bounce {
-  animation: bounce-soft 2.4s ease-in-out infinite;
+.live-orange {
+  animation: pulse-orange 2.2s ease-in-out infinite;
 }
 
-.live-wiggle:hover {
-  animation: wiggle 0.45s ease-in-out;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
 }
 
-.btn-glow {
-  background-size: 200% 200%;
-  animation: gradient-shift 4s ease infinite;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.cart-bar-live {
-  animation: cart-glow 2.5s ease-in-out infinite;
+::-webkit-scrollbar-thumb {
+  background: rgba(209, 213, 219, 0.8);
+  border-radius: 9999px;
 }
 
-/* Stagger entrance utility via animation-delay classes */
-.stagger-in {
-  animation: fade-up 0.45s ease both;
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(75, 85, 99, 0.8);
 }
 
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(16px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@keyframes add-burst {
-  0% { transform: scale(1); }
-  35% { transform: scale(1.08); }
-  100% { transform: scale(1); }
-}
-
-.just-added {
-  animation: add-burst 0.42s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.will-change-transform {
-  will-change: transform;
-  transform: translateZ(0);
+::-webkit-scrollbar-thumb:hover {
+  background: #FF6600;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -283,108 +206,4 @@ a,
 
 .safe-area-top {
   padding-top: env(safe-area-inset-top, 0);
-}
-
-/* Phone: drop page-wide filter animation (janky on Android) */
-@media (max-width: 767px) {
-  .bg-fixed-gradient {
-    animation: none;
-    background-size: 100% 100%;
-  }
-
-  .orb-float-a,
-  .orb-float-b,
-  .orb-float-c {
-    animation: none;
-  }
-
-  .accent-gold-line {
-    animation: none;
-    background-size: 100% 100%;
-  }
-
-  .cart-bar-live {
-    animation: none;
-  }
-
-  .chip-active {
-    animation: none;
-    background: #E25822;
-    background-image: none;
-  }
-}
-
-/* Hover shine/lift only when a real pointer can hover */
-@media (hover: none) {
-  .shadow-gold-glow-hover:hover {
-    box-shadow:
-      0 2px 8px rgba(28, 25, 23, 0.06),
-      0 8px 24px rgba(255, 140, 0, 0.08);
-  }
-
-  .group:hover .image-plate::after {
-    opacity: 0;
-  }
-
-  .chip-idle:hover {
-    transform: none;
-  }
-}
-
-:focus-visible {
-  outline: 2px solid #FF8C00;
-  outline-offset: 2px;
-}
-
-/* Prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .bg-fixed-gradient {
-    animation: none !important;
-  }
-
-  .bg-fixed-gradient,
-  .orb-float-a,
-  .orb-float-b,
-  .orb-float-c,
-  .accent-gold-line,
-  .live-dot,
-  .live-bounce,
-  .btn-glow,
-  .cart-bar-live,
-  .stagger-in,
-  .just-added,
-  .hero-kenburns img,
-  .offer-ticker-track {
-    animation: none !important;
-  }
-}
-
-@layer components {
-  .chip {
-    @apply whitespace-nowrap px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 border;
-  }
-
-  .chip-active {
-    @apply bg-gradient-to-r from-brand-orange via-brand-saffron to-brand-orange text-white border-transparent shadow-md scale-105;
-    background-size: 200% 100%;
-    animation: gradient-shift 3s ease infinite;
-  }
-
-  .chip-idle {
-    @apply bg-white/90 dark:bg-brand-card text-brand-charcoal dark:text-gray-300 border-brand-border dark:border-gray-700 hover:border-brand-orange hover:text-brand-saffron hover:shadow-md hover:-translate-y-0.5 active:scale-95;
-  }
-
-  .btn-primary {
-    @apply text-white font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.97];
-    background: linear-gradient(135deg, #FF8C00, #E25822, #FF8C00);
-    background-size: 200% 200%;
-  }
-
-  .btn-primary:hover {
-    animation: gradient-shift 2s ease infinite;
-  }
-
-  .btn-secondary {
-    @apply bg-white dark:bg-brand-card text-brand-charcoal dark:text-white font-semibold rounded-xl border-2 border-brand-border dark:border-gray-700 hover:border-brand-orange hover:text-brand-orange transition-all duration-200 hover:-translate-y-0.5;
-  }
 }

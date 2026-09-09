@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Sparkles, Flame, ArrowRight } from 'lucide-react';
 import { products } from '../data/products';
 import { formatAed, getSaleInfo } from '../lib/pricing';
 
@@ -12,24 +13,24 @@ const OffersRail = ({ onOpenProduct }) => {
   if (cards.length === 0) return null;
 
   return (
-    <section className="relative overflow-hidden border-b border-brand-gold/20 dark:border-gray-800">
-      <div
-        className="absolute inset-0 bg-cover bg-center scale-105"
-        style={{ backgroundImage: "url('/images/offers-banner.webp')" }}
-        aria-hidden
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#FFE8C8]/80 via-[#FFF6F0]/70 to-[#FFD7A8]/75 dark:from-[#2A1208]/80 dark:via-[#1A0E08]/75 dark:to-[#3A1808]/80" />
+    <section className="relative overflow-hidden py-10 md:py-14 border-y border-amber-500/20 bg-gradient-to-b from-amber-50/60 via-white to-amber-50/40 dark:from-slate-900/80 dark:via-slate-950 dark:to-slate-900/60">
+      <div className="container mx-auto px-4 max-w-7xl relative z-10">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+          <div>
+            <div className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-brand-orange mb-1">
+              <Flame className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+              <span>Handpicked Daily Specials</span>
+            </div>
+            <h2 className="font-display text-2xl md:text-3xl font-extrabold text-brand-charcoal dark:text-white tracking-tight">
+              Featured <span className="bg-gradient-to-r from-brand-orange to-amber-500 bg-clip-text text-transparent">Abu Dhabi Deals</span>
+            </h2>
+          </div>
+          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 max-w-md">
+            Fresh daily batches & top customer favorites in Abu Dhabi with same-day doorstep delivery.
+          </p>
+        </div>
 
-      <div className="container mx-auto px-4 py-10 md:py-12 relative z-10">
-        <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-saffron mb-1">Today</p>
-        <h2 className="font-display text-2xl md:text-3xl font-semibold text-brand-charcoal dark:text-white mb-1">
-          Exclusive <span className="text-brand-saffron">Offers</span>
-        </h2>
-        <p className="text-sm text-brand-muted dark:text-orange-100/70 mb-6">
-          Fresh Paneer 500g is on a real online sale. Other picks are shop favourites at their usual price.
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {cards.map((product) => {
             const sale = getSaleInfo(product);
             return (
@@ -37,25 +38,34 @@ const OffersRail = ({ onOpenProduct }) => {
                 key={product.id}
                 type="button"
                 onClick={() => onOpenProduct?.(product)}
+                whileHover={{ y: -3, scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                className="text-left bg-white/95 dark:bg-[#2A1810]/95 rounded-2xl border border-brand-gold/40 dark:border-brand-orange/25 p-3 flex gap-3 shadow-gold-glow"
+                className="text-left bg-white/95 dark:bg-slate-900/95 rounded-3xl border border-amber-500/20 hover:border-brand-orange/60 dark:border-white/10 dark:hover:border-amber-400/40 p-4 flex gap-3.5 shadow-sm hover:shadow-xl hover:shadow-brand-orange/10 transition-all group cursor-pointer"
               >
-                <div className="w-20 h-20 shrink-0 rounded-xl overflow-hidden image-plate">
-                  <img src={product.image} alt="" className="product-cutout w-full h-full object-contain p-1.5" />
+                <div className="w-20 h-20 shrink-0 rounded-2xl overflow-hidden image-plate flex items-center justify-center p-2 relative border border-gray-100 dark:border-white/5">
+                  <img src={product.image} alt={product.name} className="product-cutout w-full h-full object-contain group-hover:scale-110 transition-transform" />
                 </div>
-                <div className="min-w-0 flex-1">
-                  <span className={`inline-block text-[10px] font-extrabold uppercase tracking-wide px-2 py-0.5 rounded-full mb-1 ${
-                    sale.onSale ? 'bg-brand-saffron text-white' : 'bg-brand-orange/15 text-brand-saffron'
-                  }`}>
-                    {sale.onSale ? `${sale.percent}% off` : 'Popular'}
-                  </span>
-                  <p className="font-bold text-sm text-brand-charcoal dark:text-white line-clamp-2">{product.name}</p>
-                  <p className="mt-1 text-sm">
+                <div className="min-w-0 flex-1 flex flex-col justify-between">
+                  <div>
+                    <span className={`inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full mb-1 ${
+                      sale.onSale 
+                        ? 'bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20' 
+                        : 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20'
+                    }`}>
+                      {sale.onSale ? `${sale.percent}% OFF` : '⭐ Popular'}
+                    </span>
+                    <p className="font-bold text-xs sm:text-sm text-brand-charcoal dark:text-white line-clamp-2 leading-snug group-hover:text-brand-orange transition-colors">
+                      {product.name}
+                    </p>
+                  </div>
+                  <div className="mt-1 flex items-baseline gap-1.5">
                     {sale.onSale && (
-                      <span className="line-through text-brand-muted mr-2">AED {formatAed(sale.compareAt)}</span>
+                      <span className="line-through text-[11px] text-gray-400">AED {formatAed(sale.compareAt)}</span>
                     )}
-                    <span className="font-extrabold text-brand-saffron">AED {formatAed(sale.price)}</span>
-                  </p>
+                    <span className="text-sm sm:text-base font-black text-brand-orange dark:text-amber-400">
+                      AED {formatAed(sale.price)}
+                    </span>
+                  </div>
                 </div>
               </motion.button>
             );

@@ -58,6 +58,25 @@ export const translations = {
         aboutTitle: "About Pandit Ji Paneer Wale",
         getInTouch: "Get in Touch",
 
+        // Premium overhaul
+        guestMode: "Guest mode — login optional for local testing",
+        shopFresh: "Shop fresh",
+        freeDeliveryAD: "Free delivery in Abu Dhabi",
+        openNow: "Open now",
+        visitStore: "Visit our store",
+        orderWhatsApp: "Order on WhatsApp",
+        todaysOffers: "Today's offers",
+        bestSellers: "Bestsellers",
+        freshness: "Freshness",
+        freshnessBody: "Daily-ready paneer & dairy you can trust.",
+        authentic: "Authentic",
+        authenticBody: "Real desi flavours for home cooking.",
+        deliveryTitle: "Delivery",
+        deliveryBody: "Free delivery across Abu Dhabi.",
+        call: "Call",
+        visit: "Visit",
+        email: "Email",
+
         // Footer
         quickLinks: "Quick Links",
         contactUs: "Contact Us",
@@ -121,6 +140,25 @@ export const translations = {
         // Section Headers
         aboutTitle: "عن بانديت جي بانير والي",
         getInTouch: "اتصل بنا",
+
+        // Premium overhaul
+        guestMode: "وضع الضيف — تسجيل الدخول اختياري للتجربة المحلية",
+        shopFresh: "تسوق طازج",
+        freeDeliveryAD: "توصيل مجاني في أبوظبي",
+        openNow: "مفتوح الآن",
+        visitStore: "زوروا متجرنا",
+        orderWhatsApp: "اطلب عبر واتساب",
+        todaysOffers: "عروض اليوم",
+        bestSellers: "الأكثر مبيعاً",
+        freshness: "طزاجة",
+        freshnessBody: "ألبان وبانير يومية تثق بها.",
+        authentic: "أصالة",
+        authenticBody: "نكهات هندية أصلية لطبخ البيت.",
+        deliveryTitle: "توصيل",
+        deliveryBody: "توصيل مجاني في جميع أنحاء أبوظبي.",
+        call: "اتصال",
+        visit: "زيارة",
+        email: "بريد",
 
         // Footer
         quickLinks: "روابط سريعة",

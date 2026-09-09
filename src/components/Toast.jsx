@@ -2,12 +2,10 @@ import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, X, Undo2 } from 'lucide-react';
 
-const Toast = ({ show, message, onClose, onUndo, duration = 3000 }) => {
+const Toast = ({ show, message, onClose, onUndo, duration = 3200 }) => {
     useEffect(() => {
         if (show && duration) {
-            const timer = setTimeout(() => {
-                onClose();
-            }, duration);
+            const timer = setTimeout(() => { onClose(); }, duration);
             return () => clearTimeout(timer);
         }
     }, [show, duration, onClose]);
@@ -16,44 +14,26 @@ const Toast = ({ show, message, onClose, onUndo, duration = 3000 }) => {
         <AnimatePresence>
             {show && (
                 <motion.div
-                    initial={{ opacity: 0, y: 60, scale: 0.85 }}
+                    initial={{ opacity: 0, y: 48, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 24, scale: 0.9 }}
-                    transition={{ type: 'spring', damping: 18, stiffness: 340 }}
-                    className="fixed bottom-[7.5rem] md:bottom-8 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm"
+                    exit={{ opacity: 0, y: 20, scale: 0.96 }}
+                    transition={{ type: 'spring', damping: 22, stiffness: 340 }}
+                    className="fixed bottom-[7.5rem] md:bottom-8 left-1/2 -translate-x-1/2 z-[100] w-[92%] max-w-md"
                 >
-                    <div className="bg-gradient-to-r from-brand-charcoal via-[#2a1810] to-brand-charcoal dark:from-white dark:to-amber-50 text-white dark:text-brand-charcoal px-4 py-3.5 rounded-2xl shadow-lg shadow-brand-orange/25 flex items-center gap-3 border border-brand-gold/40">
-                        <motion.div
-                            initial={{ scale: 0, rotate: -40 }}
-                            animate={{ scale: 1, rotate: 0 }}
-                            transition={{ delay: 0.05, type: 'spring', stiffness: 420 }}
-                            className="flex-shrink-0"
-                        >
-                            <div className="bg-gradient-to-br from-green-400 to-green-600 p-1.5 rounded-full shadow">
-                                <CheckCircle className="w-4 h-4 text-white" />
-                            </div>
-                        </motion.div>
-
-                        <span className="flex-1 font-semibold text-sm">{message}</span>
-
+                    <div className="bg-brand-forestDeep text-white ps-3 pe-2 py-2.5 rounded-2xl shadow-soft-hover flex items-center gap-3 border border-brand-gold/30">
+                        <span className="w-10 h-10 rounded-xl bg-green-600 flex items-center justify-center shrink-0">
+                            <CheckCircle className="w-5 h-5 text-white" />
+                        </span>
+                        <span className="flex-1 font-semibold text-sm leading-snug">{message}</span>
                         {onUndo && (
                             <button
-                                onClick={() => {
-                                    onUndo();
-                                    onClose();
-                                }}
-                                className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-brand-orange to-brand-saffron hover:brightness-110 text-white text-xs font-bold rounded-full transition shadow"
+                                onClick={() => { onUndo(); onClose(); }}
+                                className="flex items-center gap-1 px-3.5 py-2 bg-brand-gold text-brand-forestDeep text-xs font-extrabold rounded-xl hover:brightness-105 transition shrink-0"
                             >
-                                <Undo2 size={12} />
-                                Undo
+                                <Undo2 size={13} /> Undo
                             </button>
                         )}
-
-                        {/* Close Button */}
-                        <button
-                            onClick={onClose}
-                            className="p-1 hover:bg-gray-700 dark:hover:bg-gray-200 rounded-full transition-colors"
-                        >
+                        <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-xl transition-colors shrink-0" aria-label="Dismiss">
                             <X size={16} />
                         </button>
                     </div>

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Heart, Plus } from 'lucide-react';
+import { Heart, Plus, Check, Eye, Sparkles } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useWishlist } from '../context/WishlistContext';
 import { formatAed, getSaleInfo } from '../lib/pricing';
 
-const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23FFF6F0' width='300' height='200'/%3E%3Ctext x='150' y='100' text-anchor='middle' fill='%23D4AF37' font-family='sans-serif' font-size='13'%3EProduct%3C/text%3E%3C/svg%3E";
+const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23FFF8F2' width='300' height='200'/%3E%3Ctext x='150' y='100' text-anchor='middle' fill='%23D4AF37' font-family='sans-serif' font-size='14' font-weight='700'%3E🧀 Pandit Ji Fresh%3C/text%3E%3C/svg%3E";
 
 const ProductCard = ({ product, addToCart, onViewDetails }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -29,22 +29,26 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
     if (!isAvailable) return;
     addToCart(product);
     setJustAdded(true);
-    setTimeout(() => setJustAdded(false), 650);
+    setTimeout(() => setJustAdded(false), 700);
   };
 
   return (
     <motion.div
       onClick={() => onViewDetails && onViewDetails(product)}
-      whileHover={reduceMotion ? undefined : { y: -6, scale: 1.012 }}
-      whileTap={reduceMotion ? undefined : { scale: 0.98 }}
-      transition={{ type: 'spring', stiffness: 360, damping: 24 }}
-      className={`group relative flex flex-col h-full bg-white dark:bg-brand-card border border-brand-border/70 dark:border-gray-800 rounded-2xl shadow-gold-glow shadow-gold-glow-hover overflow-hidden cursor-pointer ${!isAvailable ? 'opacity-70' : ''}`}
+      whileHover={reduceMotion ? undefined : { y: -6, scale: 1.015 }}
+      whileTap={reduceMotion ? undefined : { scale: 0.985 }}
+      transition={{ type: 'spring', stiffness: 320, damping: 22 }}
+      className={`group relative flex flex-col h-full bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-white/10 hover:border-amber-400/60 dark:hover:border-amber-400/40 shadow-sm hover:shadow-2xl hover:shadow-brand-orange/15 transition-all duration-300 overflow-hidden cursor-pointer ${
+        !isAvailable ? 'opacity-70 grayscale-[30%]' : ''
+      }`}
     >
-      <div className="accent-gold-line" />
+      {/* Top Accent Shimmer Line */}
+      <div className="accent-gold-line opacity-75 group-hover:opacity-100 transition-opacity" />
 
-      <div className="relative h-28 sm:h-48 w-full image-plate overflow-hidden">
+      {/* Image Showcase Plate */}
+      <div className="relative h-40 sm:h-52 w-full image-plate overflow-hidden flex items-center justify-center p-3">
         {!imageLoaded && (
-          <div className="absolute inset-0 bg-gradient-to-br from-brand-saffronLight via-orange-50 to-amber-100 dark:from-gray-800 dark:to-gray-900 animate-pulse" />
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50/50 to-amber-100/30 dark:from-slate-800 dark:to-slate-900 animate-pulse" />
         )}
 
         <img
@@ -52,17 +56,24 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
           alt={product.name}
           loading="lazy"
           decoding="async"
-          className={`product-cutout relative z-[1] w-full h-full object-contain p-2.5 sm:p-4 transition-transform duration-500 ease-out ${imageLoaded ? 'opacity-100' : 'opacity-0'} md:group-hover:scale-110`}
+          className={`product-cutout relative z-[1] w-full h-full object-contain transition-transform duration-500 ease-out ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          } group-hover:scale-110`}
           onLoad={() => setImageLoaded(true)}
-          onError={() => { setImageError(true); setImageLoaded(true); }}
+          onError={() => {
+            setImageError(true);
+            setImageLoaded(true);
+          }}
         />
 
+        {/* Sale / Discount Badge */}
         {sale.onSale && (
-          <span className="absolute top-2 right-2 z-10 bg-brand-saffron text-white text-[10px] font-extrabold uppercase tracking-wide px-2 py-1 rounded-full shadow">
-            {sale.percent}% off
+          <span className="absolute top-3 right-3 z-10 bg-gradient-to-r from-brand-orange to-red-500 text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md shadow-red-500/25">
+            {sale.percent}% OFF
           </span>
         )}
 
+        {/* Wishlist Heart Button */}
         <button
           type="button"
           onClick={(e) => {
@@ -70,70 +81,93 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
             toggleWishlist(product.id);
           }}
           aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-          className={`absolute top-2 left-2 z-10 min-w-[40px] min-h-[40px] sm:min-w-0 sm:min-h-0 p-2 rounded-full shadow-md transition-colors duration-200 ${isWishlisted
-            ? 'bg-brand-saffron text-white'
-            : 'bg-white/95 dark:bg-gray-800 text-gray-400'
-            }`}
+          className={`absolute top-3 left-3 z-10 w-9 h-9 rounded-full shadow-md flex items-center justify-center transition-all duration-200 ${
+            isWishlisted
+              ? 'bg-red-500 text-white shadow-red-500/30 scale-105'
+              : 'bg-white/95 dark:bg-slate-800/95 text-gray-400 hover:text-red-500 hover:scale-105 backdrop-blur-sm'
+          }`}
         >
-          <Heart className="w-4 h-4 mx-auto" fill={isWishlisted ? 'currentColor' : 'none'} />
+          <Heart className="w-4 h-4" fill={isWishlisted ? 'currentColor' : 'none'} />
         </button>
 
+        {/* Quick View Floating Overlay on Hover */}
+        <div className="absolute inset-x-0 bottom-2 z-10 hidden sm:flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/75 text-white text-[11px] font-bold backdrop-blur-md shadow-lg">
+            <Eye className="w-3.5 h-3.5" /> Quick View
+          </span>
+        </div>
+
+        {/* Out of Stock Overlay */}
         {!isAvailable && (
-          <div className="absolute inset-0 z-10 bg-black/45 flex items-center justify-center">
-            <span className="bg-brand-saffron text-white px-3 py-1.5 rounded-full font-semibold text-xs tracking-wide">
+          <div className="absolute inset-0 z-20 bg-black/60 backdrop-blur-[2px] flex items-center justify-center">
+            <span className="bg-red-600 text-white px-3.5 py-1.5 rounded-full font-black text-xs tracking-wide shadow-lg">
               Out of Stock
             </span>
           </div>
         )}
       </div>
 
-      <div className="p-2.5 sm:p-4 flex flex-col flex-grow gap-1">
-        <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-brand-goldDark dark:text-brand-gold truncate">
-          {product.category || 'Fresh'}
-        </p>
+      {/* Content Container */}
+      <div className="p-3.5 sm:p-5 flex flex-col flex-grow gap-1.5">
+        {/* Category Pill */}
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 truncate">
+            {product.category || 'Pure Dairy'}
+          </span>
+          <span className="text-[10px] text-gray-400 font-medium hidden sm:inline">Abu Dhabi</span>
+        </div>
 
-        <h3 className="text-[13px] sm:text-base font-bold text-brand-charcoal dark:text-white leading-snug line-clamp-2 min-h-[2.4em]">
+        {/* Product Name */}
+        <h3 className="text-sm sm:text-base font-bold text-brand-charcoal dark:text-white leading-snug line-clamp-2 min-h-[2.6em] group-hover:text-brand-orange transition-colors">
           {product.name}
         </h3>
 
-        <div className="mt-auto pt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+        {/* Price & Add Action Row */}
+        <div className="mt-auto pt-3 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3 border-t border-gray-100 dark:border-white/5">
           <div>
             {sale.onSale && (
-              <p className="text-[11px] text-brand-muted line-through tabular-nums leading-none mb-0.5">
+              <p className="text-[11px] text-gray-400 line-through tabular-nums leading-none mb-0.5">
                 AED {formatAed(sale.compareAt)}
               </p>
             )}
-            <p className="flex items-baseline gap-1 leading-none">
-              <span className="text-[10px] uppercase tracking-wider text-brand-muted font-semibold">AED</span>
-              <span className="text-lg sm:text-xl font-extrabold text-brand-saffron tabular-nums">
+            <div className="flex items-baseline gap-1 leading-none">
+              <span className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 font-bold">AED</span>
+              <span className="text-xl sm:text-2xl font-black text-brand-orange dark:text-amber-400 tabular-nums">
                 {formatAed(sale.price)}
               </span>
-            </p>
+            </div>
           </div>
 
           <motion.button
             type="button"
-            whileTap={isAvailable && !reduceMotion ? { scale: 0.92 } : undefined}
+            whileTap={isAvailable && !reduceMotion ? { scale: 0.94 } : undefined}
             onClick={handleAdd}
             disabled={!isAvailable}
             aria-label={isAvailable ? `Add ${product.name} to cart` : 'Unavailable'}
-            className={`inline-flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto sm:min-w-[7.5rem] font-bold py-2 px-3 rounded-xl transition-colors ${justAdded ? 'just-added' : ''} ${isAvailable
-              ? 'text-white shadow-md shadow-brand-orange/30'
-              : 'bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed'
-              }`}
-            style={isAvailable ? {
-              background: justAdded
-                ? 'linear-gradient(135deg, #16a34a, #22c55e)'
-                : 'linear-gradient(135deg, #FF8C00, #E25822)',
-            } : undefined}
+            className={`inline-flex items-center justify-center gap-1.5 min-h-[42px] w-full sm:w-auto sm:min-w-[7.5rem] font-black text-xs sm:text-sm py-2 px-3.5 rounded-xl transition-all ${
+              justAdded ? 'just-added bg-emerald-600 text-white' : ''
+            } ${
+              isAvailable
+                ? justAdded
+                  ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30'
+                  : 'bg-gradient-to-r from-brand-orange to-amber-500 hover:from-brand-orangeDark hover:to-amber-600 text-white shadow-md shadow-brand-orange/25 hover:shadow-lg'
+                : 'bg-gray-200 dark:bg-slate-800 text-gray-400 cursor-not-allowed'
+            }`}
           >
             {isAvailable ? (
-              <>
-                <Plus className="w-4 h-4" strokeWidth={2.5} />
-                <span>{justAdded ? 'Added!' : t('add')}</span>
-              </>
+              justAdded ? (
+                <>
+                  <Check className="w-4 h-4" strokeWidth={3} />
+                  <span>{t('added') || 'Added!'}</span>
+                </>
+              ) : (
+                <>
+                  <Plus className="w-4 h-4" strokeWidth={3} />
+                  <span>{t('add') || 'Add'}</span>
+                </>
+              )
             ) : (
-              <span>Unavailable</span>
+              <span>{t('outOfStock') || 'Unavailable'}</span>
             )}
           </motion.button>
         </div>
