@@ -21,7 +21,7 @@ import {
   updateItemQuantity,
   undoLastAdd,
 } from './lib/cart';
-import { ArrowUpDown, Sparkles, ShieldCheck, Truck, HeartHandshake, ShieldAlert } from 'lucide-react';
+import { ArrowUpDown, Sparkles, ShieldCheck, Truck, HeartHandshake } from 'lucide-react';
 
 const Cart = lazy(() => import('./components/Cart'));
 const QuickViewModal = lazy(() => import('./components/QuickViewModal'));
@@ -271,45 +271,6 @@ function App() {
     () => cartItems.reduce((sum, item) => sum + (Number(item.price) || 0) * item.quantity, 0),
     [cartItems]
   );
-
-  // =========================================================================
-  // SITE STATUS TOGGLE (Testing Mode)
-  // Set to true to display the disabled notice, or false to restore the store.
-  // =========================================================================
-  const IS_SITE_DISABLED = true;
-
-  if (IS_SITE_DISABLED) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white p-6 relative overflow-hidden font-sans">
-        {/* Ambient background glow */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 bg-red-600/15 rounded-full blur-3xl" />
-        </div>
-
-        <div className="relative z-10 max-w-lg w-full bg-slate-900/90 border border-red-500/30 rounded-3xl p-8 sm:p-10 shadow-2xl backdrop-blur-md text-center">
-          <div className="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 mx-auto flex items-center justify-center mb-6 shadow-inner">
-            <ShieldAlert className="w-8 h-8" />
-          </div>
-
-          <span className="inline-block px-3 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-xs font-bold uppercase tracking-wider mb-4">
-            Notice: Access Restricted
-          </span>
-
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-4">
-            Website Disabled
-          </h1>
-
-          <div className="p-4 rounded-2xl bg-red-950/50 border border-red-900/50 text-red-200 text-base sm:text-lg font-semibold leading-relaxed mb-6">
-            owner has not paid for the website so i am disablleling it
-          </div>
-
-          <p className="text-xs text-slate-400 leading-relaxed">
-            This web service has been deactivated by the administrator. All storefront operations, catalog browsing, and ordering are temporarily suspended.
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex flex-col transition-colors duration-300 font-sans relative text-brand-charcoal dark:text-gray-100">
