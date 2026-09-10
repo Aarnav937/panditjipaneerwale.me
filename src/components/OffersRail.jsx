@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Flame, ArrowRight } from 'lucide-react';
-import { products } from '../data/products';
+import { Flame } from 'lucide-react';
+import { products as defaultProducts } from '../data/products';
 import { formatAed, getSaleInfo } from '../lib/pricing';
+import { getDailyFeaturedDeals } from '../lib/discounts';
 
-const FEATURED_IDS = [3, 51, 6, 5, 7, 10, 25, 91];
-
-const OffersRail = ({ onOpenProduct }) => {
-  const byId = new Map(products.map((p) => [p.id, p]));
-  const cards = FEATURED_IDS.map((id) => byId.get(id)).filter(Boolean);
+const OffersRail = ({ onOpenProduct, products: propProducts }) => {
+  const sourceProducts = propProducts && propProducts.length > 0 ? propProducts : defaultProducts;
+  const cards = useMemo(() => getDailyFeaturedDeals(sourceProducts, 8), [sourceProducts]);
 
   if (cards.length === 0) return null;
 

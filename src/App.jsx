@@ -11,6 +11,7 @@ import OurStore from './components/OurStore';
 import OfferTicker from './components/OfferTicker';
 import OffersRail from './components/OffersRail';
 import { products as initialProducts, categories } from './data/products';
+import { getDailyDiscountedProducts } from './lib/discounts';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from './context/LanguageContext';
 import { useAdmin } from './context/AdminContext';
@@ -50,6 +51,7 @@ const CATEGORY_ICONS = {
 
 function App() {
   const [products] = useState(() => {
+    let base = initialProducts;
     const saved = localStorage.getItem('products_custom');
     if (saved) {
       try {
@@ -62,12 +64,12 @@ function App() {
           return p;
         });
         const customAdded = parsedSaved.filter(sp => !initialProducts.some(p => p.id === sp.id));
-        return [...mergedProducts, ...customAdded];
+        base = [...mergedProducts, ...customAdded];
       } catch (e) {
-        return initialProducts;
+        base = initialProducts;
       }
     }
-    return initialProducts;
+    return getDailyDiscountedProducts(base);
   });
 
   const [cartItems, setCartItems] = useState(() => {
@@ -305,7 +307,7 @@ function App() {
             transition={{ duration: 0.25 }}
           >
             <Hero onAddToCart={addToCart} />
-            <OffersRail onOpenProduct={handleViewDetails} />
+            <OffersRail onOpenProduct={handleViewDetails} products={products} />
           </motion.div>
         )}
       </AnimatePresence>

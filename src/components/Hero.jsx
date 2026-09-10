@@ -1,10 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingBag, ArrowRight, Sparkles, MessageCircle, Star, ShieldCheck, Truck, Clock } from 'lucide-react';
-import { useLanguage } from '../context/LanguageContext';
-
 const Hero = ({ onAddToCart }) => {
-  const { t, isRTL } = useLanguage();
 
   const scrollToProducts = () => {
     const heading = document.getElementById('catalog-heading') || document.getElementById('products');

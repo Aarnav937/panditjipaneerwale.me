@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  X, Trash2, MessageCircle, ShoppingBag, ShoppingCart, 
-  ArrowRight, Plus, Minus, Clock, Truck, Heart, Package, RotateCcw, Check, Sparkles, ShieldCheck 
+  X, Trash2, MessageCircle, ShoppingBag, 
+  Plus, Minus, Truck, Heart, Package, RotateCcw, Sparkles 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { useAdmin } from '../context/AdminContext';
 import { useWishlist } from '../context/WishlistContext';
 import { products } from '../data/products';
 import { useMediaQuery, useVisualViewport } from '../lib/useMediaQuery';
+import { calculateCartSavings } from '../lib/discounts';
 
 const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23FFF8F2' width='300' height='200'/%3E%3Ctext x='150' y='100' text-anchor='middle' fill='%23D4AF37' font-family='sans-serif' font-size='14' font-weight='700'%3E🧀 Pandit Ji Fresh%3C/text%3E%3C/svg%3E";
 
@@ -29,13 +29,12 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
   const [timeSlot, setTimeSlot] = useState(() => localStorage.getItem('deliveryTimeSlot') || 'morning');
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const { t } = useLanguage();
   const { placeOrder, loginAsGuest } = useAuth();
   const { checkAdminCode } = useAdmin();
   const isPhone = useMediaQuery('(max-width: 767px)');
   const viewport = useVisualViewport();
 
-  const { wishlist, removeFromWishlist, clearWishlist } = useWishlist();
+  const { wishlist, removeFromWishlist } = useWishlist();
   const wishlistProducts = products.filter(p => wishlist.includes(p.id));
 
   const handleWishlistAddToCart = (product) => {
@@ -69,7 +68,7 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
     setActiveTab('cart');
   };
 
-  const clearHistory = () => {
+  const _clearHistory = () => {
     if (window.confirm('Are you sure you want to clear your order history?')) {
       localStorage.setItem('orderHistory', '[]');
       setOrders([]);
@@ -106,6 +105,7 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
   useEffect(() => localStorage.setItem('deliveryTimeSlot', timeSlot), [timeSlot]);
 
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalSavings = calculateCartSavings(cartItems);
   const deliveryFee = 0;
   const grandTotal = total;
 
@@ -461,6 +461,15 @@ _Thank you! Please confirm delivery timing._`;
                           <span>Abu Dhabi Delivery</span>
                           <span className="font-bold text-emerald-600">FREE</span>
                         </div>
+                        {totalSavings > 0 && (
+                          <div className="flex justify-between items-center text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1.5 rounded-xl border border-emerald-500/20">
+                            <span className="flex items-center gap-1.5">
+                              <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
+                              <span>Special Deal Savings</span>
+                            </span>
+                            <span>- AED {totalSavings}</span>
+                          </div>
+                        )}
                         <div className="flex justify-between text-sm font-black text-brand-charcoal dark:text-white pt-2 border-t border-gray-100 dark:border-white/10">
                           <span>Total Amount</span>
                           <span className="text-brand-orange dark:text-amber-400 text-base">AED {grandTotal}</span>

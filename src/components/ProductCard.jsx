@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Heart, Plus, Check, Eye, Sparkles } from 'lucide-react';
+import { Heart, Plus, Check, Eye } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useWishlist } from '../context/WishlistContext';
 import { formatAed, getSaleInfo } from '../lib/pricing';
