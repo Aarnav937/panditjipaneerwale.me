@@ -471,7 +471,7 @@ function App() {
               </h2>
               <div className="w-16 h-1 bg-amber-500 mx-auto rounded-full mb-4" />
               <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-                Handcrafted daily from pure buffalo milk with authentic Indian quality standards and doorstep delivery across Abu Dhabi.
+                Handcrafted daily with authentic Indian quality standards and doorstep delivery across Abu Dhabi.
               </p>
             </div>
 
@@ -481,7 +481,7 @@ function App() {
                   <Sparkles className="w-6 h-6" />
                 </div>
                 <h3 className="font-bold text-base text-brand-charcoal dark:text-white mb-2">
-                  100% Buffalo Milk
+                  Prepared Fresh Daily
                 </h3>
                 <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
                   Zero starches, palm oil, or artificial softeners. Pure farm dairy crafted for soft, melt-in-the-mouth texture.

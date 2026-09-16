@@ -70,7 +70,7 @@ const Hero = ({ onAddToCart }) => {
               transition={{ delay: 0.2 }}
               className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed mb-8 font-medium"
             >
-              Soft, melt-in-the-mouth paneer prepared fresh every morning in Abu Dhabi with 100% pure buffalo milk. No preservatives, no starches. Order in 30 seconds via WhatsApp.
+              Soft, melt-in-the-mouth paneer prepared fresh every morning in Abu Dhabi. No preservatives, no starches. Order in 30 seconds via WhatsApp.
             </motion.p>
 
             {/* Action Buttons */}
@@ -119,7 +119,7 @@ const Hero = ({ onAddToCart }) => {
 
               <div className="flex items-center gap-1.5 font-bold text-emerald-600 dark:text-emerald-400">
                 <ShieldCheck className="w-4 h-4" />
-                <span>100% Pure Buffalo Milk</span>
+                <span>Made Fresh Every Morning</span>
               </div>
 
               <div className="flex items-center gap-1.5 font-bold text-amber-600 dark:text-amber-400">
