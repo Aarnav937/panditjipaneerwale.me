@@ -148,20 +148,8 @@ function App() {
   useEffect(() => {
     if (!promotionalProduct) return undefined;
 
-    const sessionKey = `promotion_seen_${promotionalProduct.id}`;
-    try {
-      if (sessionStorage.getItem(sessionKey)) return undefined;
-    } catch {
-      // The popup can still work when session storage is unavailable.
-    }
-
     const timer = window.setTimeout(() => {
       setIsPromotionalOfferOpen(true);
-      try {
-        sessionStorage.setItem(sessionKey, 'true');
-      } catch {
-        // Ignore storage restrictions; this only controls display frequency.
-      }
     }, 1100);
 
     return () => window.clearTimeout(timer);
