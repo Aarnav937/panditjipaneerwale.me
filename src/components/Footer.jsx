@@ -23,7 +23,7 @@ const Footer = ({ onToggleAdmin }) => {
               </span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Abu Dhabi's trusted destination for handcrafted fresh buffalo paneer, pure dairy, authentic Everest spices, and pantry staples.
+              Abu Dhabi's trusted destination for fresh paneer, organic milk, pure dairy, authentic Everest spices, and pantry staples.
             </p>
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-black">
               <span className="w-2 h-2 rounded-full bg-emerald-400 live-dot" />

@@ -57,7 +57,7 @@ const Hero = ({ onAddToCart }) => {
               transition={{ delay: 0.1 }}
               className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold text-brand-charcoal dark:text-white tracking-tight leading-[1.12] mb-5"
             >
-              Handcrafted Buffalo Paneer,{' '}
+              Fresh Paneer,{' '}
               <span className="bg-gradient-to-r from-brand-orange via-amber-500 to-brand-saffron bg-clip-text text-transparent">
                 Delivered Fresh Daily.
               </span>

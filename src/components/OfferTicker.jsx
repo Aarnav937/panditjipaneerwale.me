@@ -21,7 +21,7 @@ const OfferTicker = () => (
           </span>
           <span className="opacity-40 font-light">•</span>
           <span className="inline-flex items-center gap-1 text-white/90">
-            <Sparkles className="w-3 h-3 text-amber-300" /> 100% Pure Buffalo Paneer
+            <Sparkles className="w-3 h-3 text-amber-300" /> Fresh Paneer Made with Pure Buffalo Milk
           </span>
         </span>
       ))}
