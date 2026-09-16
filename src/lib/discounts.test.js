@@ -73,7 +73,7 @@ describe('getDailyFeaturedDeals', () => {
     { id: 3, name: 'Fresh Paneer (500g)', category: 'Milk Products', price: 15 },
     {
       id: 193,
-      name: 'Organic Fresh Milk (1L)',
+      name: 'Organic Fresh Milk (1.5L)',
       category: 'Milk Products',
       price: 21,
       featuredPromotion: true,

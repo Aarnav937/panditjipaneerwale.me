@@ -119,7 +119,7 @@ const PromotionalOfferModal = ({ product, isOpen, onClose, onAddToCart, onViewPr
 
                 <button
                   type="button"
-                  aria-label={`Add ${product.name.replace(' (1L)', '')} to cart`}
+                  aria-label={`Add ${product.name.replace(/ \([\d.]+L\)$/, '')} to cart`}
                   onClick={handleAddToCart}
                   className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-brand-orange to-red-500 px-5 py-3.5 text-sm font-black text-white shadow-xl shadow-orange-500/20 transition hover:-translate-y-0.5 hover:brightness-105 active:translate-y-0"
                 >

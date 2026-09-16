@@ -23,7 +23,7 @@ vi.mock('framer-motion', () => {
 
 const organicMilk = {
   id: 193,
-  name: 'Organic Fresh Milk (1L)',
+  name: 'Organic Fresh Milk (1.5L)',
   category: 'Milk Products',
   price: 21,
   compareAtPrice: 25,
@@ -45,7 +45,7 @@ describe('PromotionalOfferModal', () => {
     expect(
       screen.getByRole('dialog', { name: /organic fresh milk.*launch offer/i })
     ).toBeInTheDocument();
-    expect(screen.getByText('Organic Fresh Milk (1L)')).toBeInTheDocument();
+    expect(screen.getByText('Organic Fresh Milk (1.5L)')).toBeInTheDocument();
     expect(screen.getByText('AED 21')).toBeInTheDocument();
     expect(screen.getByText('AED 25')).toBeInTheDocument();
     expect(screen.getByText('16% OFF')).toBeInTheDocument();

@@ -73,7 +73,7 @@ describe('product catalog integrity', () => {
     const organicMilk = products.find((p) => p.id === 193);
 
     expect(organicMilk).toMatchObject({
-      name: 'Organic Fresh Milk (1L)',
+      name: 'Organic Fresh Milk (1.5L)',
       category: 'Milk Products',
       price: 21,
       compareAtPrice: 25,
