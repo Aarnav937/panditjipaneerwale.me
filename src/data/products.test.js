@@ -4,7 +4,7 @@ import { products, categories } from './products';
 describe('product catalog integrity', () => {
   it('exports a non-empty product list (full catalog retained)', () => {
     expect(products.length).toBeGreaterThanOrEqual(150);
-    expect(products.length).toBe(158);
+    expect(products.length).toBe(159);
   });
 
   it('has the expected category list including All', () => {
@@ -67,5 +67,19 @@ describe('product catalog integrity', () => {
     expect(paneer.price).toBe(15);
     expect(paneer.compareAtPrice).toBe(21);
     expect(paneer.image).toBe('images/packs/product-3.webp');
+  });
+
+  it('includes the organic milk launch offer as a regular catalog product', () => {
+    const organicMilk = products.find((p) => p.id === 193);
+
+    expect(organicMilk).toMatchObject({
+      name: 'Organic Fresh Milk (1L)',
+      category: 'Milk Products',
+      price: 21,
+      compareAtPrice: 25,
+      image: 'images/packs/product-193.png',
+      featuredPromotion: true,
+      promotionalPopup: true,
+    });
   });
 });

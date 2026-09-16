@@ -80,7 +80,7 @@ const Footer = ({ onToggleAdmin }) => {
               </li>
               <li>
                 <a href="#products" className="hover:text-brand-orange transition">
-                  Fresh Catalog (~158 Products)
+                  Fresh Catalog (159 Products)
                 </a>
               </li>
               <li>

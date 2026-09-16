@@ -71,6 +71,13 @@ describe('getDailyDiscountedProducts', () => {
 describe('getDailyFeaturedDeals', () => {
   const sampleProducts = [
     { id: 3, name: 'Fresh Paneer (500g)', category: 'Milk Products', price: 15 },
+    {
+      id: 193,
+      name: 'Organic Fresh Milk (1L)',
+      category: 'Milk Products',
+      price: 21,
+      featuredPromotion: true,
+    },
     { id: 50, name: 'Fresh Khoa Mava (1kg)', category: 'Milk Products', price: 50 },
     { id: 5, name: 'Bikaji Bhujia', category: 'Bikaji Bikaneri', price: 10 },
     { id: 6, name: 'Amul Butter (100g)', category: 'Amul', price: 20 },
@@ -84,6 +91,11 @@ describe('getDailyFeaturedDeals', () => {
   it('always keeps Fresh Paneer (id: 3) as the first deal', () => {
     const deals = getDailyFeaturedDeals(sampleProducts, 8, '2026-09-10');
     expect(deals[0].id).toBe(3);
+  });
+
+  it('keeps an explicit featured promotion in the daily offer rail', () => {
+    const deals = getDailyFeaturedDeals(sampleProducts, 8, '2026-09-10');
+    expect(deals[1].id).toBe(193);
   });
 
   it('returns the requested number of unique deals', () => {

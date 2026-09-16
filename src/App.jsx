@@ -10,6 +10,7 @@ import MobileCartBar from './components/MobileCartBar';
 import OurStore from './components/OurStore';
 import OfferTicker from './components/OfferTicker';
 import OffersRail from './components/OffersRail';
+import PromotionalOfferModal from './components/PromotionalOfferModal';
 import { products as initialProducts, categories } from './data/products';
 import { getDailyDiscountedProducts } from './lib/discounts';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -86,6 +87,7 @@ function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+  const [isPromotionalOfferOpen, setIsPromotionalOfferOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('featured');
@@ -137,6 +139,33 @@ function App() {
     setSelectedProduct(product);
     setIsQuickViewOpen(true);
   }, []);
+
+  const promotionalProduct = useMemo(
+    () => products.find((product) => product.promotionalPopup),
+    [products]
+  );
+
+  useEffect(() => {
+    if (!promotionalProduct) return undefined;
+
+    const sessionKey = `promotion_seen_${promotionalProduct.id}`;
+    try {
+      if (sessionStorage.getItem(sessionKey)) return undefined;
+    } catch {
+      // The popup can still work when session storage is unavailable.
+    }
+
+    const timer = window.setTimeout(() => {
+      setIsPromotionalOfferOpen(true);
+      try {
+        sessionStorage.setItem(sessionKey, 'true');
+      } catch {
+        // Ignore storage restrictions; this only controls display frequency.
+      }
+    }, 1100);
+
+    return () => window.clearTimeout(timer);
+  }, [promotionalProduct]);
 
   const addToCart = useCallback((product) => {
     const { cart, error } = addItemToCart(cartItems, product);
@@ -565,6 +594,17 @@ function App() {
           />
         </Suspense>
       )}
+
+      <PromotionalOfferModal
+        product={promotionalProduct}
+        isOpen={isPromotionalOfferOpen}
+        onClose={() => setIsPromotionalOfferOpen(false)}
+        onAddToCart={addToCart}
+        onViewProduct={(product) => {
+          setIsPromotionalOfferOpen(false);
+          handleViewDetails(product);
+        }}
+      />
 
       <Toast
         show={showToast}

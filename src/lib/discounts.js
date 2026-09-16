@@ -133,7 +133,14 @@ export function getDailyFeaturedDeals(products, count = 8, dateSeed) {
 
   const seed = dateSeed || getTodaySeed();
   const signaturePaneer = products.find((p) => p.id === 3);
-  const others = products.filter((p) => p.id !== 3);
+  const featuredPromotions = products
+    .filter((p) => p.id !== 3 && p.featuredPromotion)
+    .sort((a, b) => {
+      const priorityDifference = (a.promotionPriority || 100) - (b.promotionPriority || 100);
+      return priorityDifference || seededRandom(seed, a.id) - seededRandom(seed, b.id);
+    });
+  const promotedIds = new Set(featuredPromotions.map((p) => p.id));
+  const others = products.filter((p) => p.id !== 3 && !promotedIds.has(p.id));
 
   // Deterministically sort others using daily seed + product id
   const shuffled = [...others].sort(
@@ -141,6 +148,12 @@ export function getDailyFeaturedDeals(products, count = 8, dateSeed) {
   );
 
   const selected = signaturePaneer ? [signaturePaneer] : [];
+
+  for (const promotion of featuredPromotions) {
+    if (selected.length >= count) break;
+    selected.push(promotion);
+  }
+
   const seenCategories = new Set(selected.map((p) => p.category));
 
   // Pass 1: Select 1 item per category for visual and culinary variety

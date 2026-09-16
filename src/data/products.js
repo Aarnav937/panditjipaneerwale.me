@@ -1292,5 +1292,16 @@ export const products = [
     price: 7,
     image: "images/packs/everest-kasuri-methi.webp",
     description: "Dry fenugreek leaves."
+  },
+  {
+    id: 193,
+    name: "Organic Fresh Milk (1L)",
+    category: "Milk Products",
+    price: 21,
+    compareAtPrice: 25,
+    image: "images/packs/product-193.png",
+    description: "Creamy organic fresh milk in a 1 litre bottle. Launch offer AED 21, regular price AED 25.",
+    featuredPromotion: true,
+    promotionalPopup: true
   }
 ];
