@@ -13,7 +13,7 @@ const OfferTicker = () => (
           <span className="font-extrabold">Fresh Paneer 500g</span>
           <span className="bg-white/20 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-black">
             <span className="line-through opacity-75 mr-1">AED 21</span>
-            <span className="text-amber-200">AED 15</span>
+            <span className="text-amber-200">AED 20</span>
           </span>
           <span className="opacity-40 font-light">•</span>
           <span className="inline-flex items-center gap-1">

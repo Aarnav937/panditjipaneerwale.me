@@ -18,7 +18,7 @@ const Hero = ({ onAddToCart }) => {
   const signaturePaneer = {
     id: 3,
     name: "Fresh Paneer (500g)",
-    price: 15,
+    price: 20,
     compareAtPrice: 21,
     image: "images/packs/product-3.webp",
   };
@@ -146,7 +146,7 @@ const Hero = ({ onAddToCart }) => {
                   <Sparkles className="w-3.5 h-3.5" /> Signature Bestseller
                 </span>
                 <span className="bg-red-500 text-white text-xs font-black px-2.5 py-1 rounded-full shadow-md">
-                  SAVE 28%
+                  SAVE 5%
                 </span>
               </div>
 
@@ -171,7 +171,7 @@ const Hero = ({ onAddToCart }) => {
                   Soft, creamy and freshly made daily for rich curries, snacks, or grilling. In-store & online sale price.
                 </p>
                 <div className="flex items-baseline gap-2 pt-1">
-                  <span className="text-2xl font-black text-brand-orange dark:text-amber-400">AED 15</span>
+                  <span className="text-2xl font-black text-brand-orange dark:text-amber-400">AED 20</span>
                   <span className="text-sm text-gray-400 line-through">AED 21</span>
                   <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 ml-auto">
                     Free Abu Dhabi Delivery
@@ -186,7 +186,7 @@ const Hero = ({ onAddToCart }) => {
                 className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-brand-orange to-amber-500 hover:from-brand-orangeDark hover:to-amber-600 text-white font-extrabold text-sm shadow-lg shadow-brand-orange/25 active:scale-98 transition-all flex items-center justify-center gap-2"
               >
                 <ShoppingBag className="w-4 h-4" />
-                <span>Add Fresh Paneer (500g) to Bag — AED 15</span>
+                <span>Add Fresh Paneer (500g) to Bag — AED 20</span>
               </button>
             </div>
           </motion.div>

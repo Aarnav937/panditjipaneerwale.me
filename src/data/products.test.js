@@ -67,7 +67,7 @@ describe('product catalog integrity', () => {
     const paneer = products.find((p) => p.id === 3);
     expect(paneer).toBeDefined();
     expect(paneer.name).toBe('Fresh Paneer (500g)');
-    expect(paneer.price).toBe(15);
+    expect(paneer.price).toBe(20);
     expect(paneer.compareAtPrice).toBe(21);
     expect(paneer.image).toBe('images/packs/product-3.webp');
   });

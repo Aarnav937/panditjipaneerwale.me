@@ -29,10 +29,10 @@ export const products = [
     id: 3,
     name: "Fresh Paneer (500g)",
     category: "Milk Products",
-    price: 15,
+    price: 20,
     compareAtPrice: 21,
     image: "images/packs/product-3.webp",
-    description: "Soft and fresh paneer, perfect for curries. Online list AED 21 — sale AED 15 (same as in-store)."
+    description: "Soft and fresh paneer, perfect for curries. Online list AED 21 — sale AED 20 (same as in-store)."
   },
   {
     id: 50,
