@@ -60,7 +60,7 @@ const PromotionalOfferModal = ({ product, isOpen, onClose, onAddToCart, onViewPr
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 18, scale: 0.96 }}
             transition={{ type: 'spring', stiffness: 300, damping: 26 }}
-            className="relative z-10 w-full max-w-3xl overflow-hidden rounded-[2rem] border border-emerald-300/30 bg-white shadow-2xl shadow-emerald-950/30 dark:bg-slate-950"
+            className="relative z-10 max-h-[calc(100dvh-2rem)] w-full max-w-3xl overflow-y-auto rounded-[2rem] border border-emerald-300/30 bg-white shadow-2xl shadow-emerald-950/30 dark:bg-slate-950"
           >
             <button
               type="button"
@@ -97,8 +97,7 @@ const PromotionalOfferModal = ({ product, isOpen, onClose, onAddToCart, onViewPr
                   {product.name}
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-                  Creamy, wholesome organic milk for tea, coffee, breakfast and everyday family
-                  goodness.
+                  {product.promotionDescription || product.description}
                 </p>
 
                 <div className="my-6 flex flex-wrap items-end gap-3">
@@ -119,7 +118,7 @@ const PromotionalOfferModal = ({ product, isOpen, onClose, onAddToCart, onViewPr
 
                 <button
                   type="button"
-                  aria-label={`Add ${product.name.replace(/ \([\d.]+L\)$/, '')} to cart`}
+                  aria-label={`Add ${product.name.replace(/ \([\d.]+(?:L|kg)\)$/, '')} to cart`}
                   onClick={handleAddToCart}
                   className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-brand-orange to-red-500 px-5 py-3.5 text-sm font-black text-white shadow-xl shadow-orange-500/20 transition hover:-translate-y-0.5 hover:brightness-105 active:translate-y-0"
                 >

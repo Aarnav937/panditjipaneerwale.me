@@ -82,7 +82,6 @@ describe('product catalog integrity', () => {
       compareAtPrice: 25,
       image: 'images/packs/product-193.png',
       featuredPromotion: true,
-      promotionalPopup: true,
     });
   });
 
@@ -96,6 +95,7 @@ describe('product catalog integrity', () => {
       compareAtPrice: 15,
       image: 'images/packs/product-194.png',
       featuredPromotion: true,
+      promotionalPopup: true,
     });
     expect(getSaleInfo(curd)).toMatchObject({ onSale: true, price: 10, compareAt: 15, percent: 33 });
     expect(parseProductUnit(curd.name)).toEqual({ weight: 1, volume: 0 });

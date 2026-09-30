@@ -21,21 +21,21 @@ vi.mock('framer-motion', () => {
   };
 });
 
-const organicMilk = {
-  id: 193,
-  name: 'Organic Fresh Milk (1.5L)',
+const organicCurd = {
+  id: 194,
+  name: 'Organic Cow Curd (Dahi) (1kg)',
   category: 'Milk Products',
-  price: 21,
-  compareAtPrice: 25,
-  image: 'images/packs/product-193.png',
+  price: 10,
+  compareAtPrice: 15,
+  image: 'images/packs/product-194.png',
 };
 
 describe('PromotionalOfferModal', () => {
-  it('shows the organic milk launch offer with its real prices', () => {
+  it('shows the organic curd launch offer with its real prices', () => {
     render(
       <PromotionalOfferModal
         isOpen
-        product={organicMilk}
+        product={organicCurd}
         onClose={vi.fn()}
         onAddToCart={vi.fn()}
         onViewProduct={vi.fn()}
@@ -43,12 +43,12 @@ describe('PromotionalOfferModal', () => {
     );
 
     expect(
-      screen.getByRole('dialog', { name: /organic fresh milk.*launch offer/i })
+      screen.getByRole('dialog', { name: /organic cow curd.*launch offer/i })
     ).toBeInTheDocument();
-    expect(screen.getByText('Organic Fresh Milk (1.5L)')).toBeInTheDocument();
-    expect(screen.getByText('AED 21')).toBeInTheDocument();
-    expect(screen.getByText('AED 25')).toBeInTheDocument();
-    expect(screen.getByText('16% OFF')).toBeInTheDocument();
+    expect(screen.getByText('Organic Cow Curd (Dahi) (1kg)')).toBeInTheDocument();
+    expect(screen.getByText('AED 10')).toBeInTheDocument();
+    expect(screen.getByText('AED 15')).toBeInTheDocument();
+    expect(screen.getByText('33% OFF')).toBeInTheDocument();
   });
 
   it('adds the promoted product to the cart and dismisses the popup', () => {
@@ -58,15 +58,15 @@ describe('PromotionalOfferModal', () => {
     render(
       <PromotionalOfferModal
         isOpen
-        product={organicMilk}
+        product={organicCurd}
         onClose={onClose}
         onAddToCart={onAddToCart}
         onViewProduct={vi.fn()}
       />
     );
 
-    fireEvent.click(screen.getByRole('button', { name: /add organic fresh milk to cart/i }));
-    expect(onAddToCart).toHaveBeenCalledWith(organicMilk);
+    fireEvent.click(screen.getByRole('button', { name: /add organic cow curd.*to cart/i }));
+    expect(onAddToCart).toHaveBeenCalledWith(organicCurd);
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
@@ -77,7 +77,7 @@ describe('PromotionalOfferModal', () => {
     render(
       <PromotionalOfferModal
         isOpen
-        product={organicMilk}
+        product={organicCurd}
         onClose={onClose}
         onAddToCart={vi.fn()}
         onViewProduct={onViewProduct}
@@ -85,7 +85,7 @@ describe('PromotionalOfferModal', () => {
     );
 
     fireEvent.click(screen.getByRole('button', { name: /view product details/i }));
-    expect(onViewProduct).toHaveBeenCalledWith(organicMilk);
+    expect(onViewProduct).toHaveBeenCalledWith(organicCurd);
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
@@ -94,7 +94,7 @@ describe('PromotionalOfferModal', () => {
     const { rerender } = render(
       <PromotionalOfferModal
         isOpen={false}
-        product={organicMilk}
+        product={organicCurd}
         onClose={onClose}
         onAddToCart={vi.fn()}
         onViewProduct={vi.fn()}
@@ -106,7 +106,7 @@ describe('PromotionalOfferModal', () => {
     rerender(
       <PromotionalOfferModal
         isOpen
-        product={organicMilk}
+        product={organicCurd}
         onClose={onClose}
         onAddToCart={vi.fn()}
         onViewProduct={vi.fn()}

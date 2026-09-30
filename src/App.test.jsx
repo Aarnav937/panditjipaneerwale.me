@@ -62,7 +62,7 @@ describe('promotional offer scheduling', () => {
     vi.useRealTimers();
   });
 
-  it('opens the milk promotion on every page load even when an old session flag exists', async () => {
+  it('opens the dahi promotion on every page load even when an old session flag exists', async () => {
     sessionStorage.setItem('promotion_seen_193', 'true');
 
     render(<App />);
@@ -74,7 +74,7 @@ describe('promotional offer scheduling', () => {
     });
 
     expect(screen.getByRole('dialog')).toHaveTextContent(
-      'Organic Fresh Milk (1.5L) promotional offer'
+      'Organic Cow Curd (Dahi) (1kg) promotional offer'
     );
   });
 });
