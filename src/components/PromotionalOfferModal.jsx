@@ -72,7 +72,7 @@ const PromotionalOfferModal = ({ product, isOpen, onClose, onAddToCart, onViewPr
             </button>
 
             <div className="grid md:grid-cols-[0.88fr_1.12fr]">
-              <div className="relative min-h-[290px] overflow-hidden bg-gradient-to-br from-emerald-50 via-lime-50 to-amber-50 p-7 sm:min-h-[390px] sm:p-10 dark:from-emerald-950/60 dark:via-slate-900 dark:to-amber-950/30">
+              <div className="relative min-h-[205px] overflow-hidden bg-gradient-to-br from-emerald-50 via-lime-50 to-amber-50 p-5 sm:min-h-[390px] sm:p-10 dark:from-emerald-950/60 dark:via-slate-900 dark:to-amber-950/30">
                 <div className="absolute -left-16 -top-16 h-52 w-52 rounded-full bg-lime-300/30 blur-3xl" />
                 <div className="absolute -bottom-16 -right-12 h-52 w-52 rounded-full bg-emerald-400/25 blur-3xl" />
                 <div className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-white/85 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700 shadow-sm backdrop-blur dark:bg-slate-900/80 dark:text-emerald-300">
@@ -81,26 +81,26 @@ const PromotionalOfferModal = ({ product, isOpen, onClose, onAddToCart, onViewPr
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="relative z-10 mx-auto h-[255px] w-full object-contain drop-shadow-[0_24px_25px_rgba(15,80,55,0.22)] sm:h-[350px]"
+                  className="relative z-10 mx-auto h-[175px] w-full object-contain drop-shadow-[0_24px_25px_rgba(15,80,55,0.22)] sm:h-[350px]"
                 />
               </div>
 
-              <div className="flex flex-col justify-center p-7 sm:p-10">
-                <div className="mb-4 inline-flex w-fit items-center gap-2 rounded-full bg-gradient-to-r from-brand-orange to-red-500 px-3.5 py-1.5 text-[11px] font-black uppercase tracking-[0.16em] text-white shadow-lg shadow-orange-500/20">
+              <div className="flex flex-col justify-center p-5 sm:p-10">
+                <div className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-gradient-to-r from-brand-orange to-red-500 px-3.5 py-1.5 text-[11px] font-black uppercase tracking-[0.16em] text-white shadow-lg shadow-orange-500/20">
                   <Sparkles className="h-3.5 w-3.5" /> New launch special
                 </div>
 
                 <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.18em] text-emerald-600 dark:text-emerald-400">
                   Limited promotional offer
                 </p>
-                <h2 className="font-display text-3xl font-extrabold leading-tight text-brand-charcoal dark:text-white sm:text-4xl">
+                <h2 className="font-display text-2xl font-extrabold leading-tight text-brand-charcoal dark:text-white sm:text-4xl">
                   {product.name}
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
                   {product.promotionDescription || product.description}
                 </p>
 
-                <div className="my-6 flex flex-wrap items-end gap-3">
+                <div className="my-4 sm:my-6 flex flex-wrap items-end gap-3">
                   <span className="text-4xl font-black tracking-tight text-brand-orange">
                     AED {formatAed(sale.price)}
                   </span>

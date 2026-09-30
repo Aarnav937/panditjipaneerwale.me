@@ -7,7 +7,8 @@ const Hero = ({ onAddToCart }) => {
     const heading = document.getElementById('catalog-heading') || document.getElementById('products');
     if (heading) {
       const nav = document.querySelector('header') || document.querySelector('nav');
-      const offset = (nav?.getBoundingClientRect().height || 80) + 16;
+      const categories = document.getElementById('catalog-categories');
+      const offset = (nav?.getBoundingClientRect().height || 80) + (categories?.getBoundingClientRect().height || 0) + 16;
       const top = heading.getBoundingClientRect().top + window.pageYOffset - offset;
       window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
     }
@@ -24,7 +25,7 @@ const Hero = ({ onAddToCart }) => {
   };
 
   return (
-    <section className="relative overflow-hidden pt-6 pb-14 md:pt-10 md:pb-20">
+    <section className="store-hero relative overflow-hidden pt-6 pb-14 md:pt-10 md:pb-20">
       {/* Visual Ambient Glows */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-20 -left-20 w-96 h-96 bg-brand-orange/15 rounded-full blur-3xl" />
@@ -40,11 +41,11 @@ const Hero = ({ onAddToCart }) => {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-900 dark:text-amber-300 text-xs sm:text-sm font-bold mb-5 shadow-sm"
+              className="hero-delivery-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-900 dark:text-amber-300 text-xs sm:text-sm font-bold mb-5 shadow-sm"
             >
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 live-dot shrink-0" />
-              <span>Abu Dhabi's #1 Fresh Artisan Dairy</span>
-              <span className="text-amber-400">•</span>
+              <span className="hidden md:inline">Abu Dhabi's #1 Fresh Artisan Dairy</span>
+              <span className="hidden md:inline text-amber-400">•</span>
               <span className="text-brand-orange font-extrabold flex items-center gap-1">
                 <Truck className="w-3.5 h-3.5" /> Free Same-Day Delivery
               </span>
@@ -78,7 +79,7 @@ const Hero = ({ onAddToCart }) => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 mb-10"
+              className="hero-actions flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 mb-10"
             >
               <a
                 href={whatsappDirectOrder}
@@ -105,7 +106,7 @@ const Hero = ({ onAddToCart }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="pt-6 border-t border-gray-200/80 dark:border-white/10 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-gray-600 dark:text-gray-300"
+              className="hero-assurances pt-6 border-t border-gray-200/80 dark:border-white/10 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-gray-600 dark:text-gray-300"
             >
               <div className="flex items-center gap-2">
                 <div className="flex text-amber-400">
@@ -136,7 +137,7 @@ const Hero = ({ onAddToCart }) => {
             transition={{ delay: 0.25, duration: 0.5 }}
             className="lg:col-span-5 relative"
           >
-            <div className="relative rounded-3xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 sm:p-7 border border-amber-500/30 dark:border-white/10 shadow-2xl shadow-brand-orange/15 overflow-hidden">
+            <div className="hero-spotlight relative rounded-3xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 sm:p-7 border border-amber-500/30 dark:border-white/10 shadow-2xl shadow-brand-orange/15 overflow-hidden">
               {/* Shimmer Accent */}
               <div className="accent-gold-line absolute top-0 left-0 right-0" />
 
@@ -151,7 +152,7 @@ const Hero = ({ onAddToCart }) => {
               </div>
 
               {/* Product Visual */}
-              <div className="relative h-56 sm:h-64 w-full image-plate rounded-2xl overflow-hidden flex items-center justify-center p-4 mb-5 border border-gray-100 dark:border-white/5">
+              <div className="hero-spotlight-image relative h-56 sm:h-64 w-full image-plate rounded-2xl overflow-hidden flex items-center justify-center p-4 mb-5 border border-gray-100 dark:border-white/5">
                 <img
                   src={signaturePaneer.image}
                   alt={signaturePaneer.name}
@@ -163,7 +164,7 @@ const Hero = ({ onAddToCart }) => {
               </div>
 
               {/* Product Info */}
-              <div className="space-y-2 mb-5">
+              <div className="hero-spotlight-info space-y-2 mb-5">
                 <h3 className="font-display text-xl font-bold text-brand-charcoal dark:text-white">
                   Fresh Paneer (500g)
                 </h3>

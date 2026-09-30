@@ -14,7 +14,7 @@ const BottomNav = ({ cartCount, onCartClick, onProfileClick, isLoggedIn }) => {
     setActive('Shop');
     const productsSection = document.getElementById('products');
     if (productsSection) {
-      const offset = 80;
+      const offset = document.querySelector('header')?.getBoundingClientRect().height || 80;
       const elementPosition = productsSection.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
       window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
@@ -42,7 +42,8 @@ const BottomNav = ({ cartCount, onCartClick, onProfileClick, isLoggedIn }) => {
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ type: 'spring', damping: 22, stiffness: 260 }}
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-gray-200/80 dark:border-white/10 shadow-2xl safe-area-bottom"
+      aria-label="Store navigation"
+      className="store-bottom-nav md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-gray-200/80 dark:border-white/10 shadow-2xl safe-area-bottom"
     >
       <div className="flex justify-around items-center py-1.5 px-2">
         {navItems.map((item) => {
@@ -51,6 +52,7 @@ const BottomNav = ({ cartCount, onCartClick, onProfileClick, isLoggedIn }) => {
             <motion.button
               key={item.label}
               type="button"
+              aria-current={isActive ? 'page' : undefined}
               onClick={item.action}
               whileTap={{ scale: 0.9 }}
               className="flex flex-col items-center gap-0.5 py-1 px-3 min-w-[64px] min-h-[48px] relative rounded-2xl transition-colors"

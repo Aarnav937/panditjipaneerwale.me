@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { 
   ShoppingCart, Search, Menu, X, Moon, Sun, Languages, 
   Settings2, User, LogOut, MessageCircle, MapPin, Sparkles, ChevronDown 
@@ -26,10 +26,27 @@ const Navbar = ({
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { language, toggleLanguage, t } = useLanguage();
   const { isAdmin } = useAdmin();
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    const header = headerRef.current;
+    const updateHeight = () => {
+      document.documentElement.style.setProperty('--store-header-height', `${header.getBoundingClientRect().height}px`);
+    };
+    updateHeight();
+    const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(updateHeight) : null;
+    observer?.observe(header);
+    window.addEventListener('resize', updateHeight);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', updateHeight);
+      document.documentElement.style.removeProperty('--store-header-height');
+    };
+  }, []);
 
   return (
     <>
-      <header className="safe-area-top sticky top-0 z-50 transition-all duration-300 glass-capsule border-b border-gray-200/80 dark:border-white/10">
+      <header ref={headerRef} className="store-header safe-area-top sticky top-0 z-50 transition-all duration-300 glass-capsule border-b border-gray-200/80 dark:border-white/10">
         {/* Top Mini Info Bar (Desktop) */}
         <div className="hidden lg:block border-b border-gray-100 dark:border-white/5 py-1 px-4 text-xs">
           <div className="container mx-auto flex items-center justify-between text-brand-muted dark:text-gray-400">
@@ -63,17 +80,17 @@ const Navbar = ({
         </div>
 
         {/* Main Navbar */}
-        <div className="container mx-auto px-4 py-2.5 sm:py-3 flex items-center justify-between gap-3 md:gap-6 max-w-7xl">
+        <div className="store-header-row container mx-auto px-4 py-2.5 sm:py-3 flex items-center justify-between gap-3 md:gap-6 max-w-7xl">
           {/* Brand Logo */}
           <a
             href="#"
-            className="group flex items-center gap-2.5 min-w-0 shrink-0 select-none"
+            className="store-brand group flex items-center gap-2.5 min-w-0 shrink-0 select-none"
             onClick={(e) => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           >
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-brand-saffron to-brand-orange flex items-center justify-center shadow-md shadow-brand-orange/25 group-hover:scale-105 transition-transform duration-300">
+            <div className="store-brand-mark w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-brand-saffron to-brand-orange flex items-center justify-center shadow-md shadow-brand-orange/25 group-hover:scale-105 transition-transform duration-300">
               <span className="text-xl">🧀</span>
             </div>
             <div className="leading-tight">
@@ -84,7 +101,8 @@ const Navbar = ({
                 <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse hidden sm:inline-block" />
               </div>
               <span className="block text-[10px] font-extrabold uppercase tracking-[0.18em] text-amber-600 dark:text-amber-400 -mt-0.5">
-                Paneer Wale • Abu Dhabi
+                <span className="md:hidden">Paneer Wale</span>
+                <span className="hidden md:inline">Paneer Wale • Abu Dhabi</span>
               </span>
             </div>
           </a>
@@ -261,7 +279,7 @@ const Navbar = ({
           </div>
 
           {/* Mobile Right Controls */}
-          <div className="md:hidden flex items-center gap-1.5">
+          <div className="store-mobile-controls md:hidden flex items-center gap-1.5">
             <button
               onClick={toggleLanguage}
               className="px-2 py-1 rounded-lg text-xs font-black text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-white/10"
@@ -271,7 +289,7 @@ const Navbar = ({
             </button>
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg text-gray-600 dark:text-gray-300"
+              className="hidden min-[420px]:inline-flex p-2 rounded-lg text-gray-600 dark:text-gray-300"
               aria-label="Theme switch"
             >
               {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
@@ -299,7 +317,7 @@ const Navbar = ({
         </div>
 
         {/* Mobile Search Field */}
-        <div className="md:hidden px-4 pb-3">
+        <div className="store-mobile-search md:hidden px-4 pb-3">
           <div className="relative">
             <input
               type="text"
@@ -340,7 +358,7 @@ const Navbar = ({
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 280 }}
-              className="md:hidden fixed right-0 top-0 h-full w-80 bg-white dark:bg-slate-900 z-[70] shadow-2xl border-l border-gray-200 dark:border-white/10 flex flex-col justify-between"
+              className="md:hidden fixed right-0 top-0 h-full w-80 max-w-[90vw] bg-white dark:bg-slate-900 z-[70] shadow-2xl border-l border-gray-200 dark:border-white/10 flex flex-col justify-between"
             >
               <div className="p-5">
                 <div className="flex justify-between items-center mb-6 pb-4 border-b border-gray-100 dark:border-white/10">
@@ -350,11 +368,17 @@ const Navbar = ({
                   </div>
                   <button
                     onClick={() => setIsMobileMenuOpen(false)}
+                    aria-label="Close navigation menu"
                     className="p-2 rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                   >
                     <X className="w-5 h-5" />
                   </button>
                 </div>
+
+                <button type="button" onClick={toggleTheme} className="min-[420px]:hidden mb-4 flex min-h-11 items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-200" aria-label="Theme switch">
+                  {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                  {isDarkMode ? 'Light appearance' : 'Dark appearance'}
+                </button>
 
                 <div className="flex flex-col gap-1.5 font-bold text-sm">
                   <button

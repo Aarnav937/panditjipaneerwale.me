@@ -12,9 +12,9 @@ const OffersRail = ({ onOpenProduct, products: propProducts }) => {
   if (cards.length === 0) return null;
 
   return (
-    <section className="relative overflow-hidden py-10 md:py-14 border-y border-amber-500/20 bg-gradient-to-b from-amber-50/60 via-white to-amber-50/40 dark:from-slate-900/80 dark:via-slate-950 dark:to-slate-900/60">
+    <section aria-label="Daily offers" className="daily-offers relative overflow-hidden py-10 md:py-14 border-y border-amber-500/20 bg-gradient-to-b from-amber-50/60 via-white to-amber-50/40 dark:from-slate-900/80 dark:via-slate-950 dark:to-slate-900/60">
       <div className="container mx-auto px-4 max-w-7xl relative z-10">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+        <div className="daily-offers-heading flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-brand-orange mb-1">
               <Flame className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
@@ -25,11 +25,12 @@ const OffersRail = ({ onOpenProduct, products: propProducts }) => {
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 max-w-md">
-            Fresh daily batches & top customer favorites in Abu Dhabi with same-day doorstep delivery.
+            <span className="md:hidden">Swipe to discover today's offers</span>
+            <span className="hidden md:inline">Fresh daily batches & top customer favorites in Abu Dhabi with same-day doorstep delivery.</span>
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="daily-offers-track grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {cards.map((product) => {
             const sale = getSaleInfo(product);
             return (
@@ -39,10 +40,10 @@ const OffersRail = ({ onOpenProduct, products: propProducts }) => {
                 onClick={() => onOpenProduct?.(product)}
                 whileHover={{ y: -3, scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                className="text-left bg-white/95 dark:bg-slate-900/95 rounded-3xl border border-amber-500/20 hover:border-brand-orange/60 dark:border-white/10 dark:hover:border-amber-400/40 p-4 flex gap-3.5 shadow-sm hover:shadow-xl hover:shadow-brand-orange/10 transition-all group cursor-pointer"
+                className="daily-offer-card text-left bg-white/95 dark:bg-slate-900/95 rounded-3xl border border-amber-500/20 hover:border-brand-orange/60 dark:border-white/10 dark:hover:border-amber-400/40 p-4 flex gap-3.5 shadow-sm hover:shadow-xl hover:shadow-brand-orange/10 transition-all group cursor-pointer"
               >
-                <div className="w-20 h-20 shrink-0 rounded-2xl overflow-hidden image-plate flex items-center justify-center p-2 relative border border-gray-100 dark:border-white/5">
-                  <img src={product.image} alt={product.name} className="product-cutout w-full h-full object-contain group-hover:scale-110 transition-transform" />
+                <div className="daily-offer-image w-20 h-20 shrink-0 rounded-2xl overflow-hidden image-plate flex items-center justify-center p-2 relative border border-gray-100 dark:border-white/5">
+                  <img src={product.image} alt={product.name} loading="lazy" decoding="async" className="product-cutout w-full h-full object-contain group-hover:scale-110 transition-transform" />
                 </div>
                 <div className="min-w-0 flex-1 flex flex-col justify-between">
                   <div>

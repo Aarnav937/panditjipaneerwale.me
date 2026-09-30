@@ -38,7 +38,7 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
       whileHover={reduceMotion ? undefined : { y: -6, scale: 1.015 }}
       whileTap={reduceMotion ? undefined : { scale: 0.985 }}
       transition={{ type: 'spring', stiffness: 320, damping: 22 }}
-      className={`group relative flex flex-col h-full bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-white/10 hover:border-amber-400/60 dark:hover:border-amber-400/40 shadow-sm hover:shadow-2xl hover:shadow-brand-orange/15 transition-all duration-300 overflow-hidden cursor-pointer ${
+      className={`catalog-product group relative flex flex-col h-full bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-white/10 hover:border-amber-400/60 dark:hover:border-amber-400/40 shadow-sm hover:shadow-2xl hover:shadow-brand-orange/15 transition-all duration-300 overflow-hidden cursor-pointer ${
         !isAvailable ? 'opacity-70 grayscale-[30%]' : ''
       }`}
     >

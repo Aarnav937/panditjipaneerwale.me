@@ -260,7 +260,8 @@ function App() {
 
   const headerOffset = () => {
     const nav = document.querySelector('header') || document.querySelector('nav');
-    return (nav?.getBoundingClientRect().height || 80) + 16;
+    const categories = document.getElementById('catalog-categories');
+    return (nav?.getBoundingClientRect().height || 80) + (categories?.getBoundingClientRect().height || 0) + 16;
   };
 
   const handleCategoryChange = (category, e) => {
@@ -273,8 +274,8 @@ function App() {
         behavior: 'smooth',
       });
     }
-    if (e && e.target) {
-      e.target.scrollIntoView({
+    if (e && e.currentTarget) {
+      e.currentTarget.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
         inline: 'center'
@@ -330,9 +331,9 @@ function App() {
       </AnimatePresence>
 
       {/* Main Catalog Section */}
-      <main className="flex-1 container mx-auto px-4 py-8 md:py-12 max-w-7xl" id="products">
+      <main className="store-catalog flex-1 container mx-auto px-4 py-8 md:py-12 max-w-7xl" id="products">
         {/* Sticky Visual Category Bar */}
-        <div className="sticky top-[4.2rem] md:top-[4rem] z-40 -mx-4 px-4 py-3 mb-8 glass-capsule border-y border-amber-500/20 shadow-md">
+        <div id="catalog-categories" className="catalog-categories sticky top-[var(--store-header-height,7rem)] z-40 -mx-4 px-4 py-3 mb-8 glass-capsule border-y border-amber-500/20 shadow-md">
           <div className="relative">
             <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-1 md:flex-wrap md:overflow-visible items-center">
               {sortedCategories.map((category, i) => {
@@ -348,6 +349,7 @@ function App() {
                     transition={{ delay: Math.min(i * 0.02, 0.2) }}
                     whileTap={{ scale: 0.94 }}
                     onClick={(e) => handleCategoryChange(category, e)}
+                    aria-pressed={isSelected}
                     className={`whitespace-nowrap px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold transition-all duration-200 border flex items-center gap-2 shrink-0 ${
                       isSelected
                         ? 'bg-gradient-to-r from-brand-orange to-amber-500 text-white border-transparent shadow-md shadow-brand-orange/25 scale-[1.03]'
@@ -417,7 +419,7 @@ function App() {
 
         {/* Product Cards Grid */}
         {filteredProducts.length > 0 ? (
-          <div className="relative z-0 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 sm:gap-5">
+          <div className="catalog-grid relative z-0 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 sm:gap-5">
             {filteredProducts.map((product, index) => (
               <motion.div
                 key={product.id}
