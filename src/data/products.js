@@ -1300,8 +1300,19 @@ export const products = [
     price: 21,
     compareAtPrice: 25,
     image: "images/packs/product-193.png",
-    description: "Creamy organic fresh milk in a 1 litre bottle. Launch offer AED 21, regular price AED 25.",
+    description: "Creamy organic fresh milk in a 1.5 litre bottle. Launch offer AED 21, regular price AED 25.",
     featuredPromotion: true,
     promotionalPopup: true
+  },
+  {
+    id: 194,
+    name: "Organic Cow Curd (Dahi) (1kg)",
+    category: "Milk Products",
+    price: 10,
+    compareAtPrice: 15,
+    image: "images/packs/product-194.png",
+    description: "Al Dayaa organic cow curd (dahi) in a 1kg tub. Creamy curd for raita, lassi, cooking and everyday meals. Promotional price AED 10, regular price AED 15.",
+    featuredPromotion: true,
+    promotionPriority: 10
   }
 ];

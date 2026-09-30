@@ -1,10 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { products, categories } from './products';
+import { getSaleInfo } from '../lib/pricing';
+import { addItemToCart, cartSubtotal, parseProductUnit } from '../lib/cart';
+import { getDailyDiscountedProducts, getDailyFeaturedDeals } from '../lib/discounts';
 
 describe('product catalog integrity', () => {
   it('exports a non-empty product list (full catalog retained)', () => {
     expect(products.length).toBeGreaterThanOrEqual(150);
-    expect(products.length).toBe(159);
+    expect(products.length).toBe(160);
   });
 
   it('has the expected category list including All', () => {
@@ -81,5 +84,29 @@ describe('product catalog integrity', () => {
       featuredPromotion: true,
       promotionalPopup: true,
     });
+  });
+
+  it('keeps the cow curd offer, cart price and 1kg quantity consistent', () => {
+    const curd = products.find((product) => product.id === 194);
+
+    expect(curd).toMatchObject({
+      name: 'Organic Cow Curd (Dahi) (1kg)',
+      category: 'Milk Products',
+      price: 10,
+      compareAtPrice: 15,
+      image: 'images/packs/product-194.png',
+      featuredPromotion: true,
+    });
+    expect(getSaleInfo(curd)).toMatchObject({ onSale: true, price: 10, compareAt: 15, percent: 33 });
+    expect(parseProductUnit(curd.name)).toEqual({ weight: 1, volume: 0 });
+    const { cart, error } = addItemToCart([], curd);
+    expect(error).toBeNull();
+    expect(cartSubtotal(cart)).toBe(10);
+
+    for (const date of ['2026-09-30', '2026-10-01']) {
+      const dailyCatalog = getDailyDiscountedProducts(products, date);
+      expect(dailyCatalog.find((product) => product.id === 194).compareAtPrice).toBe(15);
+      expect(getDailyFeaturedDeals(dailyCatalog, 8, date).map((product) => product.id)).toContain(194);
+    }
   });
 });

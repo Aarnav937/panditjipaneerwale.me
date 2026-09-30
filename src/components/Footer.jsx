@@ -1,6 +1,7 @@
 import React from 'react';
 import { Phone, MapPin, Mail, MessageCircle, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { products } from '../data/products';
 
 const Footer = ({ onToggleAdmin }) => {
   const { t } = useLanguage();
@@ -80,7 +81,7 @@ const Footer = ({ onToggleAdmin }) => {
               </li>
               <li>
                 <a href="#products" className="hover:text-brand-orange transition">
-                  Fresh Catalog (159 Products)
+                  Fresh Catalog ({products.length} Products)
                 </a>
               </li>
               <li>
