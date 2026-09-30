@@ -7,7 +7,7 @@ import { getDailyDiscountedProducts, getDailyFeaturedDeals } from '../lib/discou
 describe('product catalog integrity', () => {
   it('exports a non-empty product list (full catalog retained)', () => {
     expect(products.length).toBeGreaterThanOrEqual(150);
-    expect(products.length).toBe(160);
+    expect(products.length).toBe(161);
   });
 
   it('has the expected category list including All', () => {
@@ -83,6 +83,31 @@ describe('product catalog integrity', () => {
       image: 'images/packs/product-193.png',
       featuredPromotion: true,
     });
+  });
+
+  it('keeps the white butter offer, cart price and 250g quantity consistent', () => {
+    const butter = products.find((product) => product.id === 195);
+
+    expect(butter).toMatchObject({
+      name: 'Organic White Butter (250g)',
+      category: 'Milk Products',
+      price: 15,
+      compareAtPrice: 20,
+      image: 'images/packs/product-195.webp',
+      featuredPromotion: true,
+    });
+    expect(getSaleInfo(butter)).toMatchObject({ onSale: true, price: 15, compareAt: 20, percent: 25 });
+    expect(parseProductUnit(butter.name)).toEqual({ weight: 0.25, volume: 0 });
+    const { cart, error } = addItemToCart([], butter);
+    expect(error).toBeNull();
+    expect(cartSubtotal(cart)).toBe(15);
+
+    for (const dateSeed of ['2026-09-30', '2026-10-01']) {
+      const dailyCatalog = getDailyDiscountedProducts(products, { dateSeed });
+      expect(dailyCatalog.find((product) => product.id === 195).compareAtPrice).toBe(20);
+      expect(getDailyFeaturedDeals(dailyCatalog, 8, dateSeed).map((product) => product.id)).toContain(195);
+    }
+    expect(products.filter((product) => product.promotionalPopup).map((product) => product.id)).toEqual([194]);
   });
 
   it('keeps the cow curd offer, cart price and 1kg quantity consistent', () => {

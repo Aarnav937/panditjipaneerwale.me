@@ -1315,5 +1315,16 @@ export const products = [
     promotionPriority: 10,
     promotionalPopup: true,
     promotionDescription: "Creamy organic cow curd for raita, lassi, cooking and everyday meals. Fresh goodness in a 1kg tub."
+  },
+  {
+    id: 195,
+    name: "Organic White Butter (250g)",
+    category: "Milk Products",
+    price: 15,
+    compareAtPrice: 20,
+    image: "images/packs/product-195.webp",
+    description: "Al Dayaa organic white butter in a 250g pack. Creamy butter for spreading, cooking and everyday meals. Promotional price AED 15, regular price AED 20.",
+    featuredPromotion: true,
+    promotionPriority: 20
   }
 ];
