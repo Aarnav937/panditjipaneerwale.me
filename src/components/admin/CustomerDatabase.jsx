@@ -2,10 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, Search, Download, Eye, X, Loader2, ShoppingBag, Phone, MapPin, Calendar } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { exportCsv, isSale } from '../../lib/orderReports';
+import { loadAdminRecords } from '../../lib/adminRecords';
 
 const CustomerDatabase = () => {
     const [customers, setCustomers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCustomer, setSelectedCustomer] = useState(null);
     const [customerOrders, setCustomerOrders] = useState([]);
@@ -14,22 +17,12 @@ const CustomerDatabase = () => {
     // Load customers
     const loadCustomers = useCallback(async () => {
         setLoading(true);
+        setErrorMessage('');
         try {
             if (supabase) {
                 // Get customers with order stats
-                const { data: customersData, error: customersError } = await supabase
-                    .from('customers')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-
-                if (customersError) throw customersError;
-
-                // Get order stats per customer
-                const { data: ordersData, error: ordersError } = await supabase
-                    .from('orders')
-                    .select('customer_phone, total');
-
-                if (ordersError) throw ordersError;
+                const customersData = await loadAdminRecords('customers');
+                const ordersData = await loadAdminRecords('orders', { columns: 'customer_phone, total, status' });
 
                 // Calculate stats
                 const orderStats = {};
@@ -38,7 +31,7 @@ const CustomerDatabase = () => {
                         orderStats[order.customer_phone] = { count: 0, total: 0 };
                     }
                     orderStats[order.customer_phone].count++;
-                    orderStats[order.customer_phone].total += parseFloat(order.total) || 0;
+                    if (isSale(order)) orderStats[order.customer_phone].total += parseFloat(order.total) || 0;
                 });
 
                 // Merge stats with customers
@@ -53,7 +46,7 @@ const CustomerDatabase = () => {
                 setCustomers([]);
             }
         } catch (error) {
-            console.error('Error loading customers:', error);
+            setErrorMessage(error.message || 'Could not load customer records.');
             setCustomers([]);
         } finally {
             setLoading(false);
@@ -69,17 +62,10 @@ const CustomerDatabase = () => {
         setLoadingOrders(true);
         try {
             if (supabase) {
-                const { data, error } = await supabase
-                    .from('orders')
-                    .select('*')
-                    .eq('customer_phone', phone)
-                    .order('created_at', { ascending: false });
-
-                if (error) throw error;
-                setCustomerOrders(data || []);
+                setCustomerOrders(await loadAdminRecords('orders', { phone }));
             }
         } catch (error) {
-            console.error('Error loading orders:', error);
+            setErrorMessage(error.message || 'Could not load this customer’s orders.');
             setCustomerOrders([]);
         } finally {
             setLoadingOrders(false);
@@ -104,13 +90,7 @@ const CustomerDatabase = () => {
             new Date(c.created_at).toLocaleDateString()
         ]);
 
-        const csv = [headers, ...rows].map(row => row.join(',')).join('\n');
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `customers_${new Date().toISOString().split('T')[0]}.csv`;
-        a.click();
+        exportCsv(`customers_${new Date().toISOString().split('T')[0]}.csv`, headers, rows);
     };
 
     // Filter customers
@@ -133,6 +113,7 @@ const CustomerDatabase = () => {
 
     return (
         <div className="space-y-4">
+            {errorMessage && <p role="alert" className="rounded-xl bg-red-950 p-4 text-sm text-red-200">{errorMessage}</p>}
             {/* Header */}
             <div className="flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center">
                 <h3 className="text-xl font-bold flex items-center gap-2">

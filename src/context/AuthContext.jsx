@@ -59,39 +59,15 @@ export const AuthProvider = ({ children }) => {
         return () => subscription?.unsubscribe();
     }, []);
 
-    // Guest login with phone (stores in localStorage, tries Supabase if available)
+    // A typed phone is a delivery contact, not proof of account ownership.
     const loginAsGuest = async (phone, name, address) => {
         // Always save to localStorage first
         localStorage.setItem('customerPhone', phone);
         localStorage.setItem('customerName', name);
         localStorage.setItem('customerAddress', address);
 
-        // If no supabase, just return success
-        if (!supabase) {
-            setCustomer({ phone, name, address });
-            return { success: true };
-        }
-
-        try {
-            let { data: existingCustomer } = await db.customers.getByPhone(phone);
-
-            if (existingCustomer) {
-                const { data, error } = await db.customers.update(existingCustomer.id, {
-                    name: name || existingCustomer.name,
-                    address: address || existingCustomer.address,
-                    updated_at: new Date().toISOString()
-                });
-                if (!error && data) setCustomer(data);
-            } else {
-                const { data, error } = await db.customers.create({ phone, name, address });
-                if (!error && data) setCustomer(data);
-            }
-            return { success: true };
-        } catch (error) {
-            console.warn('Supabase save failed:', error);
-            // Still return success since localStorage works
-            return { success: true };
-        }
+        setCustomer({ phone, name, address });
+        return { success: true };
     };
 
     // Restore customer from localStorage
@@ -104,12 +80,6 @@ export const AuthProvider = ({ children }) => {
             // Set from localStorage immediately
             setCustomer({ phone: savedPhone, name: savedName || '', address: savedAddress || '' });
 
-            // Try to get from Supabase if available
-            if (supabase) {
-                db.customers.getByPhone(savedPhone).then(({ data }) => {
-                    if (data) setCustomer(data);
-                }).catch(() => { });
-            }
         }
     }, []);
 
@@ -128,30 +98,29 @@ export const AuthProvider = ({ children }) => {
     };
 
     // Place order
-    const placeOrder = async (cartItems, total, notes = '') => {
+    const placeOrder = async (cartItems, total, notes = '', details = {}, requestId = crypto.randomUUID()) => {
         const orderData = {
-            customer_id: customer?.id || null,
-            customer_phone: customer?.phone || localStorage.getItem('customerPhone') || 'guest',
-            customer_name: customer?.name || localStorage.getItem('customerName') || 'Guest',
-            customer_address: customer?.address || localStorage.getItem('customerAddress') || '',
-            items: cartItems,
+            request_id: requestId,
+            customer_phone: details.phone ?? customer?.phone ?? localStorage.getItem('customerPhone') ?? '',
+            customer_name: details.name ?? customer?.name ?? localStorage.getItem('customerName') ?? 'Customer',
+            customer_address: details.address ?? customer?.address ?? localStorage.getItem('customerAddress') ?? '',
+            items: cartItems.map(({ id, quantity }) => ({ id, quantity })),
             total: total,
-            status: 'pending',
             notes: notes
         };
 
-        // If no supabase, just return success (order goes via WhatsApp anyway)
+        // A WhatsApp message alone is not a persisted order receipt.
         if (!supabase) {
-            return { success: true, order: orderData };
+            return { success: false, error: 'Online ordering is temporarily unavailable. Please contact the store on WhatsApp.' };
         }
 
         try {
             const { data, error } = await db.orders.create(orderData);
             if (error) throw error;
+            if (!data?.id) throw new Error('We could not confirm that your order was saved. Please retry.');
             return { success: true, order: data };
         } catch (error) {
-            console.warn('Supabase order save failed:', error);
-            return { success: true, order: orderData }; // Still success for WhatsApp
+            return { success: false, error: error.message || 'We could not save your order. Please try again.' };
         }
     };
 
@@ -177,7 +146,7 @@ export const AuthProvider = ({ children }) => {
         logout,
         placeOrder,
         getOrderHistory,
-        isLoggedIn: !!customer
+        isLoggedIn: !!customer || !!user
     };
 
     return (

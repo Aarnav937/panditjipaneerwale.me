@@ -2,7 +2,7 @@
 
 Modern e-commerce storefront for **[panditjipaneerwale.me](https://panditjipaneerwale.me)** — dairy, spices, and grocery delivery ordered via WhatsApp.
 
-**Stack:** React 18 · Vite 5 · Tailwind CSS · Framer Motion · Supabase (optional) · GitHub Pages
+**Stack:** React 18 · Vite 5 · Tailwind CSS · Framer Motion · Supabase · GitHub Pages
 
 ---
 
@@ -10,16 +10,16 @@ Modern e-commerce storefront for **[panditjipaneerwale.me](https://panditjipanee
 
 | Area | What shoppers / staff get |
 |------|---------------------------|
-| **Catalog** | Full product list from `src/data/products.js` with categories, search, filters |
+| **Catalog** | Supabase prices and availability, with local catalog metadata for categories, search and filters |
 | **Cart** | Local cart with quantity limits (50 items / 50kg / 50L) |
-| **Checkout** | WhatsApp order message (no payment gateway) |
+| **Checkout** | Server-validated order receipt, followed by a WhatsApp message for delivery confirmation (no payment gateway) |
 | **Wishlist** | Heart products; syncs to Supabase when logged in |
 | **Reviews** | Product ratings & review section |
-| **Auth** | Guest phone login + optional Supabase email OTP |
+| **Auth** | Guest checkout details; administrator Supabase email/password login |
 | **Addresses** | Saved delivery addresses (`AddressManager`) |
 | **i18n** | Multi-language UI (`LanguageContext` + `translations.js`) |
 | **Push** | Web push + service worker (`public/sw.js`) |
-| **Admin** | Secret-code unlock → dashboard for analytics, products, inventory, customers, notifications, review moderation |
+| **Admin** | Verified Supabase login and database administrator allowlist; orders, sales reports, customers, products and inventory |
 
 ---
 
@@ -74,11 +74,10 @@ Create a `.env` file in the project root (never commit real secrets).
 |----------|----------|---------|
 | `VITE_SUPABASE_URL` | For DB/auth | Supabase project URL |
 | `VITE_SUPABASE_ANON_KEY` | For DB/auth | Supabase **anon** public key (not service_role) |
-| `VITE_ADMIN_SECRET` | For admin UI | Phrase that unlocks the admin dashboard (client-side gate) |
 | `VITE_GA_MEASUREMENT_ID` | Optional | Google Analytics measurement ID |
 | `GEMINI_API_KEY` | Optional | Only for `npm run images:sync` (Node script, not the browser) |
 
-Without Supabase vars the shop still works: cart + WhatsApp checkout run offline; DB features degrade gracefully.
+Without Supabase configuration the catalog remains available for browsing, but checkout reports that the order could not be saved and keeps the cart. Production deployment fails if either required Supabase setting is absent.
 
 **Important:** Any `VITE_*` value is embedded in the public JS bundle. Never put `service_role` or private API keys in `VITE_*`.
 
@@ -95,12 +94,11 @@ The deploy workflow injects env vars at build time from **repository secrets**.
 |-------------|---------------|
 | `VITE_SUPABASE_URL` | Supabase project URL |
 | `VITE_SUPABASE_ANON_KEY` | Supabase anon key |
-| `VITE_ADMIN_SECRET` | Strong random admin phrase |
 | `VITE_GA_MEASUREMENT_ID` | Optional GA id |
 
 3. Push to `main` (or run **Actions** → **Deploy to GitHub Pages** → **Run workflow**)
 
-If secrets are missing, the site still deploys; Supabase/admin features are disabled or limited.
+If either required Supabase secret is missing, the production build fails before deploying. A successful build still needs an actual checkout/database verification; it alone does not prove backend availability.
 
 Also enable **Pages**: Settings → Pages → Source = **GitHub Actions**.
 
@@ -148,7 +146,7 @@ Also enable **Pages**: Settings → Pages → Source = **GitHub Actions**.
 
 | Task | File / place |
 |------|----------------|
-| Products (prices, names, images) | `src/data/products.js` |
+| Products (prices, names, images) | Supabase products via the admin dashboard; keep `src/data/products.js` in sync for local fallback |
 | Product photos | `public/images/products/*` |
 | Brand colors | `tailwind.config.js` |
 | Contact / WhatsApp | `Footer.jsx`, `Cart.jsx`, `FloatingWhatsApp.jsx` |
@@ -160,9 +158,10 @@ Also enable **Pages**: Settings → Pages → Source = **GitHub Actions**.
 
 ## Security notes (short)
 
-- Admin unlock is a **client-side** secret (`VITE_ADMIN_SECRET`). Protect real data with **Supabase RLS**.
+- Administrator access requires a verified Supabase user and membership of the private `store_admins` database table. Browser storage and client phrases grant no access.
 - Do not commit `.env`. Use `.env.example` as the template.
-- Prefer a strong unique admin secret in GitHub Secrets and local `.env`.
+- Never place a service-role key in frontend variables. The checkout Edge Function uses its server environment to validate and save orders atomically.
+- Setup, operating instructions and remaining email/push limitations are documented in [the backend guide](docs/store-backend.md).
 
 ---
 

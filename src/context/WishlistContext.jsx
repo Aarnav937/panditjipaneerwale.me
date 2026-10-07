@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, createContext, useContext } from 'react';
 import { supabase } from '../lib/supabase';
+import { useAuth } from './AuthContext';
 
 const WishlistContext = createContext({});
 
@@ -12,6 +13,7 @@ export const useWishlist = () => {
 };
 
 export const WishlistProvider = ({ children }) => {
+    const { user } = useAuth();
     const [wishlist, setWishlist] = useState(() => {
         // Load from localStorage initially
         const saved = localStorage.getItem('wishlist');
@@ -27,13 +29,13 @@ export const WishlistProvider = ({ children }) => {
     // Sync with Supabase if available
     const syncWithSupabase = useCallback(async () => {
         const phone = localStorage.getItem('customerPhone');
-        if (!phone || !supabase) return;
+        if (!phone || !user?.id || !supabase) return;
 
         try {
             const { data, error } = await supabase
                 .from('wishlists')
                 .select('product_id')
-                .eq('customer_phone', phone);
+                .eq('owner_id', user.id);
 
             if (error && error.code !== 'PGRST116') throw error;
 
@@ -43,7 +45,7 @@ export const WishlistProvider = ({ children }) => {
         } catch (error) {
             console.warn('Wishlist sync failed:', error);
         }
-    }, []);
+    }, [user?.id]);
 
     useEffect(() => {
         syncWithSupabase();
@@ -62,16 +64,16 @@ export const WishlistProvider = ({ children }) => {
 
         // Sync with Supabase
         const phone = localStorage.getItem('customerPhone');
-        if (phone && supabase) {
+        if (phone && user?.id && supabase) {
             try {
                 await supabase
                     .from('wishlists')
-                    .insert([{ customer_phone: phone, product_id: productId }]);
+                    .insert([{ customer_phone: phone, product_id: productId, owner_id: user.id }]);
             } catch (error) {
                 console.warn('Wishlist add failed:', error);
             }
         }
-    }, [wishlist]);
+    }, [wishlist, user?.id]);
 
     // Remove from wishlist
     const removeFromWishlist = useCallback(async (productId) => {
@@ -79,18 +81,18 @@ export const WishlistProvider = ({ children }) => {
 
         // Sync with Supabase
         const phone = localStorage.getItem('customerPhone');
-        if (phone && supabase) {
+        if (phone && user?.id && supabase) {
             try {
                 await supabase
                     .from('wishlists')
                     .delete()
-                    .eq('customer_phone', phone)
+                    .eq('owner_id', user.id)
                     .eq('product_id', productId);
             } catch (error) {
                 console.warn('Wishlist remove failed:', error);
             }
         }
-    }, []);
+    }, [user?.id]);
 
     // Toggle wishlist
     const toggleWishlist = useCallback(async (productId) => {
@@ -106,17 +108,17 @@ export const WishlistProvider = ({ children }) => {
         setWishlist([]);
 
         const phone = localStorage.getItem('customerPhone');
-        if (phone && supabase) {
+        if (phone && user?.id && supabase) {
             try {
                 await supabase
                     .from('wishlists')
                     .delete()
-                    .eq('customer_phone', phone);
+                    .eq('owner_id', user.id);
             } catch (error) {
                 console.warn('Wishlist clear failed:', error);
             }
         }
-    }, []);
+    }, [user?.id]);
 
     const value = {
         wishlist,

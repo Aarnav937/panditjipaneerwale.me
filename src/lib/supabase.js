@@ -54,8 +54,13 @@ export const db = {
     orders: {
         create: async (order) => {
             if (!supabase) return { data: null, error: { message: 'Supabase not configured' } }
-            const { data, error } = await supabase.from('orders').insert([order]).select().single()
-            return { data, error }
+            const { data, error } = await supabase.functions.invoke('create-order', { body: order })
+            if (error) {
+                let message = 'We could not save your order. Please try again.'
+                try { message = (await error.context?.json())?.error || message } catch { /* Keep the safe fallback. */ }
+                return { data: null, error: { message } }
+            }
+            return { data: data?.order, error: data?.error ? { message: data.error } : null }
         },
         getByCustomer: async (customerId) => {
             if (!supabase) return { data: [], error: null }
@@ -69,7 +74,7 @@ export const db = {
         },
         updateStatus: async (id, status) => {
             if (!supabase) return { data: null, error: { message: 'Supabase not configured' } }
-            const { data, error } = await supabase.from('orders').update({ status }).eq('id', id).select().single()
+            const { data, error } = await supabase.from('orders').update({ status, updated_at: new Date().toISOString() }).eq('id', id).select().single()
             return { data, error }
         }
     }

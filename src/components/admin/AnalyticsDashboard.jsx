@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { BarChart3, TrendingUp, Package, Users, DollarSign, ShoppingCart, Loader2, Calendar, RefreshCw } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
+import { loadAdminRecords, reportStartDate } from '../../lib/adminRecords';
+import { summarizeOrders } from '../../lib/orderReports';
 
 const AnalyticsDashboard = () => {
     const [loading, setLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
     const [dateRange, setDateRange] = useState('7'); // days
     const [stats, setStats] = useState({
         totalRevenue: 0,
@@ -18,70 +20,12 @@ const AnalyticsDashboard = () => {
 
     const loadAnalytics = useCallback(async () => {
         setLoading(true);
+        setErrorMessage('');
         try {
-            if (supabase) {
-                const startDate = new Date();
-                startDate.setDate(startDate.getDate() - parseInt(dateRange));
-
-                // Get orders in date range
-                const { data: orders, error: ordersError } = await supabase
-                    .from('orders')
-                    .select('*')
-                    .gte('created_at', startDate.toISOString())
-                    .order('created_at', { ascending: false });
-
-                if (ordersError) throw ordersError;
-
-                // Get order items for top products
-                const { data: orderItems, error: itemsError } = await supabase
-                    .from('order_items')
-                    .select('product_id, product_name, quantity, unit_price')
-                    .gte('created_at', startDate.toISOString());
-
-                if (itemsError) throw itemsError;
-
-                // Calculate stats
-                const totalRevenue = orders?.reduce((sum, o) => sum + parseFloat(o.total_amount || 0), 0) || 0;
-                const totalOrders = orders?.length || 0;
-                const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
-
-                // Get unique customers
-                const uniqueCustomers = new Set(orders?.map(o => o.customer_email).filter(Boolean));
-
-                // Top products
-                const productStats = {};
-                orderItems?.forEach(item => {
-                    if (!productStats[item.product_name]) {
-                        productStats[item.product_name] = { name: item.product_name, quantity: 0, revenue: 0 };
-                    }
-                    productStats[item.product_name].quantity += item.quantity;
-                    productStats[item.product_name].revenue += item.quantity * parseFloat(item.unit_price || 0);
-                });
-                const topProducts = Object.values(productStats)
-                    .sort((a, b) => b.quantity - a.quantity)
-                    .slice(0, 5);
-
-                // Orders by day
-                const ordersByDay = {};
-                orders?.forEach(order => {
-                    const day = new Date(order.created_at).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-                    if (!ordersByDay[day]) ordersByDay[day] = { day, orders: 0, revenue: 0 };
-                    ordersByDay[day].orders += 1;
-                    ordersByDay[day].revenue += parseFloat(order.total_amount || 0);
-                });
-
-                setStats({
-                    totalRevenue,
-                    totalOrders,
-                    averageOrderValue,
-                    totalCustomers: uniqueCustomers.size,
-                    topProducts,
-                    recentOrders: orders?.slice(0, 5) || [],
-                    ordersByDay: Object.values(ordersByDay).reverse()
-                });
-            }
+            const orders = await loadAdminRecords('orders', { startDate: reportStartDate(dateRange) });
+            setStats(summarizeOrders(orders));
         } catch (error) {
-            console.error('Error loading analytics:', error);
+            setErrorMessage(error.message || 'Could not load order reports.');
         } finally {
             setLoading(false);
         }
@@ -103,23 +47,27 @@ const AnalyticsDashboard = () => {
 
     return (
         <div className="space-y-6">
+            {errorMessage && <p role="alert" className="rounded-xl bg-red-950 p-4 text-red-200">{errorMessage}</p>}
+            <p className="text-sm text-gray-400">Order requests are recorded at checkout. Sales totals include confirmed and delivered orders. Dates use Abu Dhabi time.</p>
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-3">
                 <h3 className="text-xl font-bold">Analytics Dashboard</h3>
                 <div className="flex items-center gap-3">
                     <select
                         value={dateRange}
                         onChange={(e) => setDateRange(e.target.value)}
-                        className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm"
+                        aria-label="Report period" className="min-h-11 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm"
                     >
+                        <option value="today">Today (Abu Dhabi)</option>
                         <option value="7">Last 7 days</option>
                         <option value="30">Last 30 days</option>
                         <option value="90">Last 90 days</option>
                         <option value="365">Last year</option>
+                        <option value="all">All time</option>
                     </select>
                     <button
                         onClick={loadAnalytics}
-                        className="p-2 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700"
+                        aria-label="Refresh reports" className="p-2 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700"
                     >
                         <RefreshCw className="w-4 h-4" />
                     </button>
@@ -137,7 +85,7 @@ const AnalyticsDashboard = () => {
                         <div className="w-10 h-10 rounded-lg bg-green-600/30 flex items-center justify-center">
                             <DollarSign className="w-5 h-5 text-green-400" />
                         </div>
-                        <span className="text-gray-400 text-sm">Revenue</span>
+                        <span className="text-gray-400 text-sm">Confirmed sales</span>
                     </div>
                     <p className="text-2xl font-bold text-green-400">{formatCurrency(stats.totalRevenue)}</p>
                 </motion.div>
@@ -152,7 +100,7 @@ const AnalyticsDashboard = () => {
                         <div className="w-10 h-10 rounded-lg bg-blue-600/30 flex items-center justify-center">
                             <ShoppingCart className="w-5 h-5 text-blue-400" />
                         </div>
-                        <span className="text-gray-400 text-sm">Orders</span>
+                        <span className="text-gray-400 text-sm">Order requests</span>
                     </div>
                     <p className="text-2xl font-bold text-blue-400">{stats.totalOrders}</p>
                 </motion.div>
@@ -167,7 +115,7 @@ const AnalyticsDashboard = () => {
                         <div className="w-10 h-10 rounded-lg bg-purple-600/30 flex items-center justify-center">
                             <TrendingUp className="w-5 h-5 text-purple-400" />
                         </div>
-                        <span className="text-gray-400 text-sm">Avg Order</span>
+                        <span className="text-gray-400 text-sm">Avg confirmed order</span>
                     </div>
                     <p className="text-2xl font-bold text-purple-400">{formatCurrency(stats.averageOrderValue)}</p>
                 </motion.div>
@@ -275,9 +223,9 @@ const AnalyticsDashboard = () => {
                                     <tr key={order.id} className="border-b border-gray-700/50">
                                         <td className="py-3">
                                             <p className="font-medium">{order.customer_name || 'Guest'}</p>
-                                            <p className="text-xs text-gray-400">{order.customer_email}</p>
+                                            <p className="text-xs text-gray-400">{order.customer_phone}</p>
                                         </td>
-                                        <td className="py-3 text-green-400">{formatCurrency(order.total_amount)}</td>
+                                        <td className="py-3 text-green-400">{formatCurrency(order.total)}</td>
                                         <td className="py-3">
                                             <span className={`px-2 py-1 rounded-full text-xs ${order.status === 'delivered' ? 'bg-green-600/20 text-green-400' :
                                                     order.status === 'pending' ? 'bg-yellow-600/20 text-yellow-400' :
@@ -287,7 +235,7 @@ const AnalyticsDashboard = () => {
                                             </span>
                                         </td>
                                         <td className="py-3 text-sm text-gray-400">
-                                            {new Date(order.created_at).toLocaleDateString()}
+                                            {new Date(order.created_at).toLocaleDateString('en-AE', { timeZone: 'Asia/Dubai' })}
                                         </td>
                                     </tr>
                                 ))}

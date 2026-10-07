@@ -122,19 +122,19 @@ const Footer = ({ onToggleAdmin }) => {
         <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
           <div>
             <span>&copy; {new Date().getFullYear()} Pandit Ji Paneer Wale. All rights reserved.</span>
+            {onToggleAdmin && (
+              <button
+                onClick={onToggleAdmin}
+                className="mt-3 flex min-h-11 items-center rounded-xl border border-white/15 px-4 text-xs font-semibold text-gray-300 transition-colors hover:border-amber-400/50 hover:text-amber-400"
+                title="Admin portal access"
+              >
+                Admin portal
+              </button>
+            )}
           </div>
 
           <div className="flex items-center gap-4">
             <span className="text-gray-600">Abu Dhabi, UAE</span>
-            {onToggleAdmin && (
-              <button
-                onClick={onToggleAdmin}
-                className="text-gray-600 hover:text-amber-400 transition-colors text-[11px] font-mono"
-                title="Admin portal access"
-              >
-                [Admin Portal]
-              </button>
-            )}
           </div>
         </div>
       </div>

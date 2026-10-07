@@ -12,6 +12,7 @@ vi.mock('./CustomerDatabase', () => ({ default: () => <div>CustomerDatabase</div
 vi.mock('./NotificationManager', () => ({ default: () => <div>NotificationManager</div> }));
 vi.mock('./AnalyticsDashboard', () => ({ default: () => <div>AnalyticsDashboard</div> }));
 vi.mock('./ReviewModerator', () => ({ default: () => <div>ReviewModerator</div> }));
+vi.mock('./OrdersManager', () => ({ default: () => <div>OrdersManager</div> }));
 
 vi.mock('framer-motion', () => {
   const React = require('react');
@@ -29,15 +30,16 @@ vi.mock('framer-motion', () => {
 import { useAdmin } from '../../context/AdminContext';
 
 describe('AdminDashboard gate', () => {
-  it('renders nothing when not admin', () => {
+  it('shows secure sign-in instead of customer data when not admin', () => {
     useAdmin.mockReturnValue({
       isAdmin: false,
       logoutAdmin: vi.fn(),
       getSessionTimeRemaining: vi.fn(),
     });
 
-    const { container } = render(<AdminDashboard isOpen onClose={vi.fn()} />);
-    expect(container.firstChild).toBeNull();
+    render(<AdminDashboard isOpen onClose={vi.fn()} />);
+    expect(screen.getByRole('dialog')).toHaveTextContent('Store administrator');
+    expect(screen.queryByText('AnalyticsDashboard')).not.toBeInTheDocument();
   });
 
   it('shows admin chrome and default analytics tab when admin', () => {

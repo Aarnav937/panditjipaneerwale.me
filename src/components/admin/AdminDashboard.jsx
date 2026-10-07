@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Package, Users, Bell, Settings, BarChart3, LogOut, Clock, Box, Star } from 'lucide-react';
+import { X, Package, Users, Bell, Settings, BarChart3, LogOut, ShieldCheck, Box, Star, ShoppingBag } from 'lucide-react';
 import { useAdmin } from '../../context/AdminContext';
 import ProductManager from './ProductManager';
 import InventoryManager from './InventoryManager';
@@ -8,8 +8,11 @@ import CustomerDatabase from './CustomerDatabase';
 import NotificationManager from './NotificationManager';
 import AnalyticsDashboard from './AnalyticsDashboard';
 import ReviewModerator from './ReviewModerator';
+import AdminSignIn from './AdminSignIn';
+import OrdersManager from './OrdersManager';
 
 const tabs = [
+    { id: 'orders', label: 'Orders', icon: ShoppingBag },
     { id: 'analytics', label: 'Analytics', icon: BarChart3 },
     { id: 'products', label: 'Products', icon: Package },
     { id: 'inventory', label: 'Inventory', icon: Box },
@@ -19,36 +22,26 @@ const tabs = [
 ];
 
 const AdminDashboard = ({ isOpen, onClose }) => {
-    const { isAdmin, logoutAdmin, getSessionTimeRemaining } = useAdmin();
+    const { isAdmin, logoutAdmin, adminEmail } = useAdmin();
     const [activeTab, setActiveTab] = useState('analytics');
-    const [sessionTime, setSessionTime] = useState(null);
 
-    // Update session time every minute
     useEffect(() => {
-        if (isAdmin && isOpen) {
-            const updateTime = () => setSessionTime(getSessionTimeRemaining());
-            updateTime();
-            const interval = setInterval(updateTime, 60000);
-            return () => clearInterval(interval);
-        }
-    }, [isAdmin, isOpen, getSessionTimeRemaining]);
-
-    if (!isAdmin) return null;
+        if (!isOpen) return;
+        document.body.style.overflow = 'hidden';
+        return () => { document.body.style.overflow = ''; };
+    }, [isOpen]);
+    if (!isOpen) return null;
+    if (!isAdmin) return <AdminSignIn onClose={onClose} />;
 
     const handleLogout = () => {
         logoutAdmin();
         onClose();
     };
 
-    const formatTime = (minutes) => {
-        if (!minutes) return '';
-        const hours = Math.floor(minutes / 60);
-        const mins = minutes % 60;
-        return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
-    };
-
     const renderContent = () => {
         switch (activeTab) {
+            case 'orders':
+                return <OrdersManager />;
             case 'analytics':
                 return <AnalyticsDashboard />;
             case 'products':
@@ -96,8 +89,8 @@ const AdminDashboard = ({ isOpen, onClose }) => {
                                 <div>
                                     <h2 className="font-bold text-lg">Admin Dashboard</h2>
                                     <div className="flex items-center gap-2 text-sm text-gray-400">
-                                        <Clock className="w-3 h-3" />
-                                        <span>Session: {formatTime(sessionTime)} remaining</span>
+                                        <ShieldCheck className="w-3 h-3" />
+                                        <span className="break-all">Verified admin · {adminEmail}</span>
                                     </div>
                                 </div>
                             </div>

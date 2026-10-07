@@ -40,9 +40,10 @@ jobs:
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-          VITE_ADMIN_SECRET: ${{ secrets.VITE_ADMIN_SECRET }}
           VITE_GA_MEASUREMENT_ID: ${{ secrets.VITE_GA_MEASUREMENT_ID }}
-        run: npm run build
+        run: |
+          node --input-type=module -e 'for (const name of ["VITE_SUPABASE_URL", "VITE_SUPABASE_ANON_KEY"]) { if (!process.env[name]?.trim()) { console.error(`Missing required deployment secret: ${name}`); process.exit(1); } }'
+          npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

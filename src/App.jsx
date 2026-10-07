@@ -13,6 +13,7 @@ import OffersRail from './components/OffersRail';
 import PromotionalOfferModal from './components/PromotionalOfferModal';
 import { products as initialProducts, categories } from './data/products';
 import { getDailyDiscountedProducts } from './lib/discounts';
+import { loadStoreCatalog } from './lib/catalogApi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from './context/LanguageContext';
 import { useAdmin } from './context/AdminContext';
@@ -51,7 +52,7 @@ const CATEGORY_ICONS = {
 };
 
 function App() {
-  const [products] = useState(() => {
+  const [products, setProducts] = useState(() => {
     let base = initialProducts;
     const saved = localStorage.getItem('products_custom');
     if (saved) {
@@ -102,6 +103,20 @@ function App() {
   const { t } = useLanguage();
   const { isAdmin } = useAdmin();
   const { isLoggedIn, customer, logout } = useAuth();
+
+  useEffect(() => {
+    let cancelled = false;
+    loadStoreCatalog(initialProducts).then((catalog) => {
+      if (!catalog || cancelled) return;
+      const priced = getDailyDiscountedProducts(catalog);
+      setProducts(priced);
+      setCartItems((items) => items.map((item) => {
+        const current = priced.find((product) => product.id === item.id);
+        return current ? { ...current, quantity: item.quantity } : item;
+      }));
+    }).catch(() => { /* Browsing remains available; checkout verifies prices on the server. */ });
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     if (isAdmin && !isAdminDashboardOpen) {

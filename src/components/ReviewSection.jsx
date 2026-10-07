@@ -25,7 +25,7 @@ const ReviewSection = ({ productId, productName: _productName }) => {
         try {
             if (supabase && productId) {
                 const { data, error } = await supabase
-                    .from('reviews')
+                    .from('approved_reviews')
                     .select('*')
                     .eq('product_id', productId)
                     .eq('is_approved', true)

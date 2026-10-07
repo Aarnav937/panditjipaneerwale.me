@@ -2,6 +2,7 @@ import React from 'react';
 import { act, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import App from './App';
+vi.mock('./lib/catalogApi', () => ({ loadStoreCatalog: async () => null }));
 
 vi.mock('framer-motion', () => {
   const React = require('react');

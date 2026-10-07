@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   X, Trash2, MessageCircle, ShoppingBag, 
   Plus, Minus, Truck, Heart, Package, RotateCcw, Sparkles 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
-import { useAdmin } from '../context/AdminContext';
 import { useWishlist } from '../context/WishlistContext';
 import { products } from '../data/products';
 import { useMediaQuery, useVisualViewport } from '../lib/useMediaQuery';
@@ -28,9 +27,11 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
   const [address, setAddress] = useState(() => localStorage.getItem('customerAddress') || '');
   const [timeSlot, setTimeSlot] = useState(() => localStorage.getItem('deliveryTimeSlot') || 'morning');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [checkoutError, setCheckoutError] = useState('');
+  const [receipt, setReceipt] = useState(null);
+  const submittingRef = useRef(false);
   
   const { placeOrder, loginAsGuest } = useAuth();
-  const { checkAdminCode } = useAdmin();
   const isPhone = useMediaQuery('(max-width: 767px)');
   const viewport = useVisualViewport();
 
@@ -45,8 +46,10 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     if (isOpen) {
-      const savedOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-      setOrders(savedOrders);
+      try {
+        const savedOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+        setOrders(Array.isArray(savedOrders) ? savedOrders : []);
+      } catch { setOrders([]); }
     }
   }, [isOpen]);
 
@@ -75,18 +78,6 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
     }
   };
 
-  // Check for admin secret code in address field
-  useEffect(() => {
-    if (address) {
-      const isAdmin = checkAdminCode(address);
-      if (isAdmin) {
-        setAddress('');
-        localStorage.removeItem('customerAddress');
-        onClose();
-      }
-    }
-  }, [address, checkAdminCode, onClose]);
-
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -110,6 +101,7 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
   const grandTotal = total;
 
   const handleCheckout = async () => {
+    if (submittingRef.current || !cartItems.length) return;
     if (!address.trim()) {
       alert('Please enter your Abu Dhabi delivery address.');
       return;
@@ -120,26 +112,35 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
       return;
     }
 
+    submittingRef.current = true;
     setIsSubmitting(true);
+    setCheckoutError('');
+    setReceipt(null);
     const selectedTimeSlot = TIME_SLOTS.find(t => t.id === timeSlot)?.value || 'Not specified';
-
+    let result;
     try {
       await loginAsGuest(customerPhone, customerName, address);
       const orderNotes = `Time: ${selectedTimeSlot}`;
-      const result = await placeOrder(cartItems, grandTotal, orderNotes);
-      if (!result.success) {
-        console.warn('Supabase backup logged with note:', result.error);
-      }
+      const fingerprint = JSON.stringify({ items: cartItems.map(({ id, quantity }) => ({ id, quantity })), customerPhone, customerName, address, grandTotal, selectedTimeSlot });
+      let pending;
+      try { pending = JSON.parse(localStorage.getItem('pendingOrderRequest') || 'null'); } catch { /* Ignore obsolete data. */ }
+      if (pending?.fingerprint !== fingerprint) pending = { fingerprint, id: crypto.randomUUID() };
+      localStorage.setItem('pendingOrderRequest', JSON.stringify(pending));
+      result = await placeOrder(cartItems, grandTotal, orderNotes, { phone: customerPhone, name: customerName, address }, pending.id);
+      if (!result.success) throw new Error(result.error);
     } catch (error) {
-      console.warn('Supabase checkout handling note:', error);
+      setCheckoutError(error.message || 'Your order could not be saved. Please try again.');
+      setIsSubmitting(false);
+      submittingRef.current = false;
+      return;
     }
 
     const order = {
-      id: Date.now(),
-      date: new Date().toISOString(),
-      items: cartItems.map(item => ({ ...item })),
-      total: grandTotal,
-      subtotal: total,
+      id: result.order.id,
+      date: result.order.created_at,
+      items: result.order.items,
+      total: result.order.total,
+      subtotal: result.order.total,
       deliveryFee,
       address,
       customerName,
@@ -147,17 +148,17 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
       timeSlot: selectedTimeSlot,
     };
 
-    const existingOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-    existingOrders.unshift(order);
-    localStorage.setItem('orderHistory', JSON.stringify(existingOrders.slice(0, 20)));
+    let existingOrders = [];
+    try { existingOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]'); } catch { /* Keep the server receipt even if local history is damaged. */ }
+    if (!Array.isArray(existingOrders)) existingOrders = [];
+    if (!existingOrders.some((saved) => saved.id === order.id)) existingOrders.unshift(order);
+    try { localStorage.setItem('orderHistory', JSON.stringify(existingOrders.slice(0, 20))); } catch { /* Central history is already saved. */ }
     setOrders(existingOrders.slice(0, 20));
-
-    if (onOrderPlaced) {
-      onOrderPlaced(order);
-    }
 
     // Format WhatsApp invoice order
     const message = `🧀 *NEW ORDER: Pandit Ji Paneer Wale*
+
+*Order Reference:* PJ-${order.id.slice(0, 8).toUpperCase()}
 
 *Customer Details:*
 • Name: ${customerName || 'Customer'}
@@ -166,16 +167,21 @@ const Cart = ({ isOpen, onClose, cartItems, removeFromCart, updateQuantity, onOr
 • Preferred Delivery: ${selectedTimeSlot}
 
 *Order Items:*
-${cartItems.map(item => `• ${item.name} × ${item.quantity} = AED ${item.price * item.quantity}`).join('\n')}
+${order.items.map(item => `• ${item.name} × ${item.quantity} = AED ${item.price * item.quantity}`).join('\n')}
 
 *Delivery:* FREE (Abu Dhabi)
-*Grand Total:* AED ${grandTotal}
+*Grand Total:* AED ${order.total}
 
 _Thank you! Please confirm delivery timing._`;
 
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/971524676306?text=${encodedMessage}`, '_blank');
+    const whatsappUrl = `https://wa.me/971524676306?text=${encodedMessage}`;
+    setReceipt({ reference: `PJ-${order.id.slice(0, 8).toUpperCase()}`, whatsappUrl });
+    try { localStorage.removeItem('pendingOrderRequest'); } catch { /* The server receipt remains valid. */ }
+    onOrderPlaced?.(order);
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     setIsSubmitting(false);
+    submittingRef.current = false;
   };
 
   return (
@@ -281,6 +287,16 @@ _Thank you! Please confirm delivery timing._`;
 
             {/* Content Body */}
             <div className="flex-1 overflow-y-auto p-4 sm:p-5 bg-amber-50/20 dark:bg-slate-950/40">
+              {checkoutError && <div role="alert" className="mb-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 dark:bg-red-950 dark:text-red-200">
+                <p className="font-semibold">{checkoutError}</p>
+                <p className="mt-1">Your cart is still here. Retry, or contact our store for help.</p>
+                <a href="https://wa.me/971524676306?text=Hello%2C%20I%20need%20help%20placing%20an%20order." target="_blank" rel="noopener noreferrer" className="mt-2 inline-block font-bold underline">Contact store on WhatsApp</a>
+              </div>}
+              {receipt && <div role="status" className="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200">
+                <p className="font-bold">Order request saved · {receipt.reference}</p>
+                <p className="mt-1">Send the WhatsApp message so our store can confirm delivery.</p>
+                <a href={receipt.whatsappUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center rounded-xl bg-emerald-600 px-4 font-bold text-white">Continue to WhatsApp</a>
+              </div>}
               {activeTab === 'cart' && (
                 <>
                   {cartItems.length === 0 ? (
@@ -584,7 +600,7 @@ _Thank you! Please confirm delivery timing._`;
                   className="w-full py-4 px-5 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 disabled:opacity-70 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl shadow-emerald-600/30 active:scale-98 transition-all"
                 >
                   <MessageCircle className="w-5 h-5" />
-                  <span>{isSubmitting ? 'Preparing WhatsApp Order…' : 'Place Order via WhatsApp'}</span>
+                  <span>{isSubmitting ? 'Saving your order…' : 'Place Order via WhatsApp'}</span>
                 </button>
 
                 <p className="text-[10px] text-center text-gray-400 mt-2">
