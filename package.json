@@ -54,7 +54,7 @@
     "prettier": "3.9.10",
     "sharp": "0.35.5",
     "tailwindcss": "3.4.19",
-    "vite": "7.3.7",
+    "vite": "8.3.4",
     "vitest": "4.1.12"
   }
 }
