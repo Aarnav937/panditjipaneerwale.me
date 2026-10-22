@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=24.22.1 <25"
   },
   "scripts": {
     "dev": "vite",
@@ -16,40 +16,45 @@
     "format:check": "prettier --check \"src/**/*.{js,jsx,css}\" \"*.{js,cjs,json,md}\"",
     "test": "vitest run",
     "test:watch": "vitest",
+    "security:audit": "node scripts/security-audit.mjs",
+    "security:test": "node --test scripts/security-audit.test.mjs",
     "images:sync": "node sync_by_name.js",
     "images:fix": "node fix_images.js",
     "images:report": "node generate_report.js"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
-    "@supabase/supabase-js": "^2.90.1",
-    "canvas-confetti": "^1.9.4",
-    "dotenv": "^16.4.5",
-    "framer-motion": "^11.0.8",
-    "lucide-react": "^0.344.0",
-    "ogl": "^1.0.11",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "sharp": "^0.34.5"
+    "@google/generative-ai": "0.21.0",
+    "@supabase/supabase-js": "2.118.0",
+    "canvas-confetti": "1.9.4",
+    "dotenv": "16.6.1",
+    "framer-motion": "11.18.2",
+    "lucide-react": "0.344.0",
+    "ogl": "1.0.11",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "overrides": {
+    "postcss-selector-parser": "7.1.7"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
-    "@testing-library/user-event": "^14.6.1",
-    "@types/react": "^18.2.64",
-    "@types/react-dom": "^18.2.21",
-    "@vitejs/plugin-react": "^4.2.1",
-    "autoprefixer": "^10.4.18",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-react": "^7.34.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.5",
-    "jsdom": "^25.0.1",
-    "postcss": "^8.4.35",
-    "prettier": "^3.4.2",
-    "tailwindcss": "^3.4.1",
-    "vite": "^5.4.21",
-    "vitest": "^2.1.8"
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.8",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "@vitejs/plugin-react": "5.2.0",
+    "autoprefixer": "10.6.1",
+    "eslint": "8.57.1",
+    "eslint-config-prettier": "9.1.2",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "4.6.2",
+    "eslint-plugin-react-refresh": "0.4.26",
+    "jsdom": "25.0.1",
+    "postcss": "8.5.31",
+    "prettier": "3.9.10",
+    "sharp": "0.35.5",
+    "tailwindcss": "3.4.19",
+    "vite": "7.3.7",
+    "vitest": "4.1.12"
   }
 }

@@ -5,8 +5,10 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: true,
+    host: '127.0.0.1',
+    watch: { ignored: ['**/rrc_work/**', '**/artifact_build/**', '**/outputs/**'] },
   },
+  preview: { host: '127.0.0.1' },
   build: {
     rollupOptions: {
       output: {
