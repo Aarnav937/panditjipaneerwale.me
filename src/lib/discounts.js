@@ -38,9 +38,8 @@ export function seededRandom(seed, id) {
 /**
  * Returns today's standard date seed in YYYY-MM-DD format
  */
-export function getTodaySeed() {
-  const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+export function getTodaySeed(now = new Date()) {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Dubai', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
 }
 
 /**

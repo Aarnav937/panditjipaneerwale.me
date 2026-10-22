@@ -1,7 +1,6 @@
 // Service Worker for Push Notifications
 // This file should be in the public folder
 
-const CACHE_NAME = 'panditji-v1';
 
 // Install event
 self.addEventListener('install', (event) => {
@@ -22,8 +21,7 @@ self.addEventListener('push', (event) => {
     let data = {
         title: 'Pandit Ji Paneer Wale',
         body: 'You have a new notification!',
-        icon: '/images/logo.png',
-        badge: '/images/badge.png',
+        icon: '/images/packs/product-194.webp',
         url: '/'
     };
 
@@ -37,8 +35,8 @@ self.addEventListener('push', (event) => {
 
     const options = {
         body: data.body,
-        icon: data.icon || '/images/logo.png',
-        badge: data.badge || '/images/badge.png',
+        icon: '/images/packs/product-194.webp',
+        tag: data.tag,
         vibrate: [100, 50, 100],
         data: {
             url: data.url || '/'
@@ -61,7 +59,11 @@ self.addEventListener('notificationclick', (event) => {
 
     if (event.action === 'close') return;
 
-    const urlToOpen = event.notification.data?.url || '/';
+    let urlToOpen = new URL('/', self.location.origin).href;
+    try {
+        const requested = new URL(event.notification.data?.url || '/', self.location.origin);
+        if (requested.origin === self.location.origin) urlToOpen = requested.href;
+    } catch { /* Keep the store homepage. */ }
 
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true })

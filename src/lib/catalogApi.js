@@ -1,5 +1,12 @@
 import { supabase } from './supabase';
 
+export async function loadDailyFeatureIds(day) {
+  if (!supabase) return null;
+  const { data, error } = await supabase.from('store_daily_features').select('product_ids').eq('day', day).maybeSingle();
+  if (error) throw error;
+  return data?.product_ids || null;
+}
+
 export async function loadStoreCatalog(localProducts) {
   if (!supabase) return null;
   const { data, error } = await supabase.from('products').select('*').order('id');

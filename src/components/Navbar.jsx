@@ -169,7 +169,7 @@ const Navbar = ({
             </button>
 
             {/* Notification Bell */}
-            {isLoggedIn && <NotificationBell />}
+            <NotificationBell />
 
             {/* Admin Portal Button */}
             {isAdmin && (
@@ -280,6 +280,7 @@ const Navbar = ({
 
           {/* Mobile Right Controls */}
           <div className="store-mobile-controls md:hidden flex items-center gap-1.5">
+            <NotificationBell />
             <button
               onClick={toggleLanguage}
               className="px-2 py-1 rounded-lg text-xs font-black text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-white/10"

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
+import { useAutomaticRefresh } from '../../lib/useAutomaticRefresh';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, Search, Download, Eye, X, Loader2, ShoppingBag, Phone, MapPin, Calendar } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
@@ -15,8 +16,8 @@ const CustomerDatabase = () => {
     const [loadingOrders, setLoadingOrders] = useState(false);
 
     // Load customers
-    const loadCustomers = useCallback(async () => {
-        setLoading(true);
+    const loadCustomers = useCallback(async (background = false) => {
+        if (background !== true) setLoading(true);
         setErrorMessage('');
         try {
             if (supabase) {
@@ -43,7 +44,7 @@ const CustomerDatabase = () => {
 
                 setCustomers(enrichedCustomers);
             } else {
-                setCustomers([]);
+                throw new Error('Store database is not connected.');
             }
         } catch (error) {
             setErrorMessage(error.message || 'Could not load customer records.');
@@ -53,9 +54,7 @@ const CustomerDatabase = () => {
         }
     }, []);
 
-    useEffect(() => {
-        loadCustomers();
-    }, [loadCustomers]);
+    useAutomaticRefresh(loadCustomers);
 
     // Load customer orders
     const loadCustomerOrders = async (phone) => {

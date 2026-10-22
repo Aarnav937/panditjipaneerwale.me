@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Box, AlertTriangle, Search, Loader2, RefreshCw, MinusCircle, PlusCircle } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
-import { products as localProducts } from '../../data/products';
 
 const InventoryManager = () => {
     const [products, setProducts] = useState([]);
@@ -12,56 +11,18 @@ const InventoryManager = () => {
     const [saving, setSaving] = useState(null);
     const [message, setMessage] = useState(null);
 
-    // Load products
+    // Administrative data must come from the database; never fabricate stock.
     const loadProducts = useCallback(async () => {
         setLoading(true);
         try {
-            if (supabase) {
-                const { data, error } = await supabase
-                    .from('products')
-                    .select('id, name, category, stock_quantity, is_available, low_stock_threshold, image')
-                    .order('name', { ascending: true });
-
-                if (error) throw error;
-
-                if (data && data.length > 0) {
-                    setProducts(data);
-                } else {
-                    setProducts(localProducts.map(p => ({
-                        id: p.id,
-                        name: p.name,
-                        category: p.category,
-                        image: p.image,
-                        stock_quantity: 100,
-                        is_available: true,
-                        low_stock_threshold: 10
-                    })));
-                }
-            } else {
-                setProducts(localProducts.map(p => ({
-                    id: p.id,
-                    name: p.name,
-                    category: p.category,
-                    image: p.image,
-                    stock_quantity: 100,
-                    is_available: true,
-                    low_stock_threshold: 10
-                })));
-            }
+            if (!supabase) throw new Error('Store database is not connected.');
+            const { data, error } = await supabase.from('products').select('*').order('name', { ascending: true });
+            if (error) throw error;
+            setProducts(data || []);
         } catch (error) {
-            console.error('Error loading products:', error);
-            setProducts(localProducts.map(p => ({
-                id: p.id,
-                name: p.name,
-                category: p.category,
-                image: p.image,
-                stock_quantity: 100,
-                is_available: true,
-                low_stock_threshold: 10
-            })));
-        } finally {
-            setLoading(false);
-        }
+            setProducts([]);
+            setMessage({ text: error.message || 'Could not load products. Please retry.', type: 'error' });
+        } finally { setLoading(false); }
     }, []);
 
     useEffect(() => {
@@ -96,10 +57,11 @@ const InventoryManager = () => {
 
     // Update stock
     const updateStock = async (productId, newQuantity) => {
-        if (newQuantity < 0) return;
+        if (!Number.isInteger(newQuantity) || newQuantity < 0) return;
 
         setSaving(productId);
         try {
+            if (!supabase) throw new Error('Store database is not connected.');
             if (supabase) {
                 const { error } = await supabase
                     .from('products')
@@ -107,7 +69,7 @@ const InventoryManager = () => {
                         stock_quantity: newQuantity,
                         is_available: newQuantity > 0
                     })
-                    .eq('id', productId);
+                    .eq('id', productId).select('id').single();
 
                 if (error) throw error;
             }
@@ -129,11 +91,12 @@ const InventoryManager = () => {
     const toggleAvailability = async (productId, currentStatus) => {
         setSaving(productId);
         try {
+            if (!supabase) throw new Error('Store database is not connected.');
             if (supabase) {
                 const { error } = await supabase
                     .from('products')
                     .update({ is_available: !currentStatus })
-                    .eq('id', productId);
+                    .eq('id', productId).select('id').single();
 
                 if (error) throw error;
             }

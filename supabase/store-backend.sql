@@ -64,13 +64,15 @@ create policy staff_catalog_delete on public.products for delete to authenticate
 alter table public.wishlists add column if not exists owner_id uuid default auth.uid() references auth.users(id);
 alter table public.addresses add column if not exists owner_id uuid default auth.uid() references auth.users(id);
 alter table public.push_subscriptions add column if not exists owner_id uuid default auth.uid() references auth.users(id);
-grant select, insert, update, delete on public.wishlists, public.addresses, public.push_subscriptions to authenticated;
+grant select, insert, update, delete on public.wishlists, public.addresses to authenticated;
+-- Push writes are validated/rate-limited by the push-subscription Edge Function.
+grant select on public.push_subscriptions to authenticated;
 create policy wishlist_owner on public.wishlists for all to authenticated
   using (owner_id = (select auth.uid())) with check (owner_id = (select auth.uid()));
 create policy address_owner on public.addresses for all to authenticated
   using (owner_id = (select auth.uid())) with check (owner_id = (select auth.uid()));
-create policy push_owner on public.push_subscriptions for all to authenticated
-  using (owner_id = (select auth.uid())) with check (owner_id = (select auth.uid()));
+create policy push_owner on public.push_subscriptions for select to authenticated
+  using (owner_id = (select auth.uid()));
 
 grant select, insert, update, delete on public.reviews to authenticated;
 create policy reviews_own_read on public.reviews for select to authenticated

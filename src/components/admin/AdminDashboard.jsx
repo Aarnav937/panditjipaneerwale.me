@@ -10,6 +10,7 @@ import AnalyticsDashboard from './AnalyticsDashboard';
 import ReviewModerator from './ReviewModerator';
 import AdminSignIn from './AdminSignIn';
 import OrdersManager from './OrdersManager';
+import OperationsStatus from './OperationsStatus';
 
 const tabs = [
     { id: 'orders', label: 'Orders', icon: ShoppingBag },
@@ -43,7 +44,7 @@ const AdminDashboard = ({ isOpen, onClose }) => {
             case 'orders':
                 return <OrdersManager />;
             case 'analytics':
-                return <AnalyticsDashboard />;
+                return <><OperationsStatus /><AnalyticsDashboard /></>;
             case 'products':
                 return <ProductManager />;
             case 'inventory':

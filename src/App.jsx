@@ -13,7 +13,8 @@ import OffersRail from './components/OffersRail';
 import PromotionalOfferModal from './components/PromotionalOfferModal';
 import { products as initialProducts, categories } from './data/products';
 import { getDailyDiscountedProducts } from './lib/discounts';
-import { loadStoreCatalog } from './lib/catalogApi';
+import { loadStoreCatalog, loadDailyFeatureIds } from './lib/catalogApi';
+import { useStoreDay } from './lib/storeDay';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from './context/LanguageContext';
 import { useAdmin } from './context/AdminContext';
@@ -52,6 +53,8 @@ const CATEGORY_ICONS = {
 };
 
 function App() {
+  const storeDay = useStoreDay();
+  const [dailyFeatureIds, setDailyFeatureIds] = useState(null);
   const [products, setProducts] = useState(() => {
     let base = initialProducts;
     const saved = localStorage.getItem('products_custom');
@@ -106,17 +109,27 @@ function App() {
 
   useEffect(() => {
     let cancelled = false;
-    loadStoreCatalog(initialProducts).then((catalog) => {
+    const refreshCatalog = () => loadStoreCatalog(initialProducts).then((catalog) => {
       if (!catalog || cancelled) return;
-      const priced = getDailyDiscountedProducts(catalog);
+      const priced = getDailyDiscountedProducts(catalog, { dateSeed: storeDay });
       setProducts(priced);
       setCartItems((items) => items.map((item) => {
         const current = priced.find((product) => product.id === item.id);
         return current ? { ...current, quantity: item.quantity } : item;
       }));
     }).catch(() => { /* Browsing remains available; checkout verifies prices on the server. */ });
-    return () => { cancelled = true; };
-  }, []);
+    const refresh = () => {
+      refreshCatalog();
+      loadDailyFeatureIds(storeDay).then(ids => { if (!cancelled) setDailyFeatureIds(ids); }).catch(() => { if (!cancelled) setDailyFeatureIds(null); });
+    };
+    refresh();
+    const featureTimer = setInterval(() => {
+      if (document.visibilityState === 'visible') loadDailyFeatureIds(storeDay).then(ids => { if (!cancelled && ids) setDailyFeatureIds(ids); }).catch(() => {});
+    }, 60000);
+    const wake = () => { if (document.visibilityState === 'visible') refresh(); };
+    document.addEventListener('visibilitychange', wake);
+    return () => { cancelled = true; clearInterval(featureTimer); document.removeEventListener('visibilitychange', wake); };
+  }, [storeDay]);
 
   useEffect(() => {
     if (isAdmin && !isAdminDashboardOpen) {
@@ -168,7 +181,7 @@ function App() {
     }, 1100);
 
     return () => window.clearTimeout(timer);
-  }, [promotionalProduct]);
+  }, [promotionalProduct?.id]);
 
   const addToCart = useCallback((product) => {
     const { cart, error } = addItemToCart(cartItems, product);
@@ -340,7 +353,7 @@ function App() {
             transition={{ duration: 0.25 }}
           >
             <Hero onAddToCart={addToCart} />
-            <OffersRail onOpenProduct={handleViewDetails} products={products} />
+            <OffersRail onOpenProduct={handleViewDetails} products={products} featureIds={dailyFeatureIds} />
           </motion.div>
         )}
       </AnimatePresence>

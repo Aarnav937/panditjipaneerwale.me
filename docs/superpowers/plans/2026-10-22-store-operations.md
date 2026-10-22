@@ -1,0 +1,12 @@
+# Store operations completion
+
+Owner request: configure the existing store's backend and automatic features, preserve products/prices/orders, publish verified fixes. Execution is inline under the owner's existing authority to fix and publish. No paid purchases, password invention, credential disclosure, or automatic WhatsApp messages.
+
+1. Repair broadcast notifications to match `title/body/target`; read public broadcasts for guests, keep read/dismiss state on each device instead of modifying shared announcements. Test guest retrieval, body display, persistence and no global writes.
+2. Persist a daily featured selection in Supabase, schedule refresh at 20:00 UTC (00:00 Abu Dhabi), use Abu Dhabi dates in the frontend and refresh after midnight/wake. Preserve actual product prices. Test timezone boundaries, server selection/fallback and no repeated promotional modal on refresh.
+3. Implement opt-in Web Push using server-only VAPID material, validated vendor endpoints, private outbox and retries, cron worker and expired-subscription cleanup. No email provider is required for Web Push. Test permission denial, missing server configuration, payload validation, authorization and queue behavior. Register only from an explicit user click.
+4. Repair admin notification sending so it saves actual announcements and reports actual queue results. Add operational status reporting, order/customer report refresh, fail-closed customer email login and email-code admin option. Keep password sign-in.
+5. Prepare Brevo signup (Resend could not be used), DNS verification and Supabase SMTP; owner completes new-account consent and credential entry. Configure auth email templates and verify login only once delivery is ready. Do not label SMTP or additional accounts working until exercised.
+6. Run existing and new tests, lint, audit and build; apply reviewed additive SQL and deploy functions with JWT verification. Test database policies/cron/checkout with rolled-back or precisely removed fixtures. Review the final diff, publish, and verify live behavior.
+
+Review focus: public callers cannot read subscription endpoints/private keys, notify arbitrary destinations or invoke the worker; retries do not duplicate jobs; read state is per-device; cron uses the shop timezone; unavailable external services show honest errors. Email/domain access and real-device notification permission are human handoffs, not reasons to defer independent fixes.

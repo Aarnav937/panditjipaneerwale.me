@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Search, Edit2, Trash2, Save, X, Image, Loader2 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
-import { products as localProducts, categories } from '../../data/products';
+import { categories } from '../../data/products';
 
 const ProductManager = () => {
     const [products, setProducts] = useState([]);
@@ -25,46 +25,18 @@ const ProductManager = () => {
         is_available: true
     });
 
-    // Load products
+    // Administrative data must come from the database; never fabricate stock.
     const loadProducts = useCallback(async () => {
         setLoading(true);
         try {
-            if (supabase) {
-                const { data, error } = await supabase
-                    .from('products')
-                    .select('*')
-                    .order('id', { ascending: true });
-
-                if (error) throw error;
-
-                if (data && data.length > 0) {
-                    setProducts(data);
-                } else {
-                    // Fall back to local products if DB is empty
-                    setProducts(localProducts.map(p => ({
-                        ...p,
-                        stock_quantity: 100,
-                        is_available: true
-                    })));
-                }
-            } else {
-                // No Supabase, use local products
-                setProducts(localProducts.map(p => ({
-                    ...p,
-                    stock_quantity: 100,
-                    is_available: true
-                })));
-            }
+            if (!supabase) throw new Error('Store database is not connected.');
+            const { data, error } = await supabase.from('products').select('*').order('id', { ascending: true });
+            if (error) throw error;
+            setProducts(data || []);
         } catch (error) {
-            console.error('Error loading products:', error);
-            setProducts(localProducts.map(p => ({
-                ...p,
-                stock_quantity: 100,
-                is_available: true
-            })));
-        } finally {
-            setLoading(false);
-        }
+            setProducts([]);
+            setMessage({ text: error.message || 'Could not load products. Please retry.', type: 'error' });
+        } finally { setLoading(false); }
     }, []);
 
     useEffect(() => {
@@ -88,6 +60,8 @@ const ProductManager = () => {
     const handleSaveProduct = async (product, isNew = false) => {
         setSaving(true);
         try {
+            if (!supabase) throw new Error('Store database is not connected.');
+            if (!product.name?.trim() || !Number.isFinite(Number(product.price)) || Number(product.price)<0 || !Number.isInteger(Number(product.stock_quantity)) || Number(product.stock_quantity)<0) throw new Error('Enter a valid product name, price and stock quantity.');
             if (supabase) {
                 if (isNew) {
                     const { data, error } = await supabase
@@ -98,7 +72,7 @@ const ProductManager = () => {
                             price: parseFloat(product.price),
                             description: product.description,
                             image: product.image || `images/products/product-${Date.now()}.webp`,
-                            stock_quantity: parseInt(product.stock_quantity) || 100,
+                            stock_quantity: Number(product.stock_quantity),
                             is_available: product.is_available !== false
                         }])
                         .select()
@@ -108,7 +82,7 @@ const ProductManager = () => {
                     setProducts(prev => [...prev, data]);
                     showMessage('Product added successfully!');
                 } else {
-                    const { error } = await supabase
+                    const { data, error } = await supabase
                         .from('products')
                         .update({
                             name: product.name,
@@ -119,21 +93,14 @@ const ProductManager = () => {
                             stock_quantity: parseInt(product.stock_quantity),
                             is_available: product.is_available
                         })
-                        .eq('id', product.id);
+                        .eq('id', product.id).select().single();
 
                     if (error) throw error;
-                    setProducts(prev => prev.map(p => p.id === product.id ? product : p));
+                    setProducts(prev => prev.map(p => p.id === product.id ? data : p));
                     showMessage('Product updated successfully!');
                 }
             } else {
-                // Local only mode
-                if (isNew) {
-                    const newId = Math.max(...products.map(p => p.id)) + 1;
-                    setProducts(prev => [...prev, { ...product, id: newId }]);
-                } else {
-                    setProducts(prev => prev.map(p => p.id === product.id ? product : p));
-                }
-                showMessage('Product saved (local only - no database)');
+                throw new Error('Store database is not connected.');
             }
 
             setEditingProduct(null);
@@ -160,11 +127,12 @@ const ProductManager = () => {
         if (!confirm('Are you sure you want to delete this product?')) return;
 
         try {
+            if (!supabase) throw new Error('Store database is not connected.');
             if (supabase) {
                 const { error } = await supabase
                     .from('products')
                     .delete()
-                    .eq('id', productId);
+                    .eq('id', productId).select('id').single();
 
                 if (error) throw error;
             }

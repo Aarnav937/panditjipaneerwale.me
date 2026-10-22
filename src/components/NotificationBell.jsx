@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, Check, Trash2, Package, Tag, ShoppingCart, AlertCircle } from 'lucide-react';
+import { Bell, Check, Trash2, Package, Tag, ShoppingCart, AlertCircle, X } from 'lucide-react';
 import { useNotifications } from '../context/NotificationContext';
+import { initializePushNotifications, unsubscribeFromPush } from '../lib/pushNotifications';
 
 const NotificationBell = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { notifications, unreadCount, markAsRead, markAllAsRead, deleteNotification } = useNotifications();
+    const [pushMessage, setPushMessage] = useState('');
+    const [pushBusy, setPushBusy] = useState(false);
+    async function changePush(enable) {
+        setPushBusy(true); setPushMessage('');
+        try { await (enable ? initializePushNotifications() : unsubscribeFromPush()); setPushMessage(enable ? 'Browser alerts enabled on this device.' : 'Browser alerts disabled on this device.'); }
+        catch (problem) { setPushMessage(problem.message); }
+        finally { setPushBusy(false); }
+    }
+    const { notifications, unreadCount, markAsRead, markAllAsRead, deleteNotification, error, loadNotifications } = useNotifications();
 
     const getIcon = (type) => {
         switch (type) {
@@ -33,6 +43,7 @@ const NotificationBell = () => {
         <div className="relative">
             {/* Bell Button */}
             <button
+                aria-label="Open notifications"
                 onClick={() => setIsOpen(!isOpen)}
                 className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
@@ -49,12 +60,12 @@ const NotificationBell = () => {
             </button>
 
             {/* Dropdown */}
-            <AnimatePresence>
+            {createPortal(<AnimatePresence>
                 {isOpen && (
                     <>
                         {/* Backdrop */}
                         <div
-                            className="fixed inset-0 z-40"
+                            className="fixed inset-0 z-[70]"
                             onClick={() => setIsOpen(false)}
                         />
 
@@ -63,7 +74,7 @@ const NotificationBell = () => {
                             initial={{ opacity: 0, y: -10, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                            className="absolute right-0 top-12 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 overflow-hidden"
+                            className="fixed left-4 right-4 top-24 max-h-[calc(100dvh-7rem)] overflow-y-auto sm:left-auto sm:right-6 sm:w-80 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-[80]"
                         >
                             {/* Header */}
                             <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
@@ -76,10 +87,17 @@ const NotificationBell = () => {
                                         <Check className="w-4 h-4" /> Mark all read
                                     </button>
                                 )}
+                                <button aria-label="Close notifications" onClick={() => setIsOpen(false)} className="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"><X className="h-5 w-5" /></button>
                             </div>
 
                             {/* List */}
+                            <div className="border-b border-gray-200 dark:border-gray-700 p-3 text-xs">
+                                <p className="mb-2 text-gray-500">Get store announcements and back-in-stock alerts on this device.</p>
+                                <div className="flex gap-3"><button disabled={pushBusy} onClick={() => changePush(true)} className="min-h-10 font-semibold text-orange-600 disabled:opacity-50">Enable browser alerts</button><button disabled={pushBusy} onClick={() => changePush(false)} className="min-h-10 text-gray-500">Disable</button></div>
+                                {pushMessage && <p role="status" className="mt-1 text-gray-600 dark:text-gray-300">{pushMessage}</p>}
+                            </div>
                             <div className="max-h-80 overflow-y-auto">
+                                {error && <p role="alert" className="p-4 text-sm text-red-600">{error} <button onClick={loadNotifications} className="underline">Retry</button></p>}
                                 {notifications.length === 0 ? (
                                     <div className="py-8 text-center text-gray-500">
                                         <Bell className="w-10 h-10 mx-auto mb-2 opacity-50" />
@@ -100,9 +118,9 @@ const NotificationBell = () => {
                                                     <p className="text-sm text-gray-900 dark:text-white font-medium">
                                                         {notification.title || notification.message}
                                                     </p>
-                                                    {notification.title && notification.message && (
+                                                    {notification.title && notification.body && (
                                                         <p className="text-xs text-gray-500 mt-1 truncate">
-                                                            {notification.message}
+                                                            {notification.body}
                                                         </p>
                                                     )}
                                                     <p className="text-xs text-gray-400 mt-1">
@@ -135,7 +153,7 @@ const NotificationBell = () => {
                         </motion.div>
                     </>
                 )}
-            </AnimatePresence>
+            </AnimatePresence>, document.body)}
         </div>
     );
 };

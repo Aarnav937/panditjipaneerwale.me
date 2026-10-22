@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
+import { useAutomaticRefresh } from '../../lib/useAutomaticRefresh';
 import { motion } from 'framer-motion';
 import { BarChart3, TrendingUp, Package, Users, DollarSign, ShoppingCart, Loader2, Calendar, RefreshCw } from 'lucide-react';
 import { loadAdminRecords, reportStartDate } from '../../lib/adminRecords';
@@ -18,8 +19,8 @@ const AnalyticsDashboard = () => {
         ordersByDay: []
     });
 
-    const loadAnalytics = useCallback(async () => {
-        setLoading(true);
+    const loadAnalytics = useCallback(async (background = false) => {
+        if (background !== true) setLoading(true);
         setErrorMessage('');
         try {
             const orders = await loadAdminRecords('orders', { startDate: reportStartDate(dateRange) });
@@ -31,9 +32,7 @@ const AnalyticsDashboard = () => {
         }
     }, [dateRange]);
 
-    useEffect(() => {
-        loadAnalytics();
-    }, [loadAnalytics]);
+    useAutomaticRefresh(loadAnalytics);
 
     const formatCurrency = (amount) => `AED ${parseFloat(amount).toFixed(2)}`;
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, Send, Loader2, Users, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { initializePushNotifications } from '../../lib/pushNotifications';
 
 const NotificationManager = () => {
     const [title, setTitle] = useState('');
@@ -28,14 +29,12 @@ const NotificationManager = () => {
                 setHistory(notifications || []);
 
                 // Get subscriber count
-                const { count, error: countError } = await supabase
-                    .from('push_subscriptions')
-                    .select('*', { count: 'exact', head: true });
-
-                if (!countError) setSubscriberCount(count || 0);
+                const { data: status, error: countError } = await supabase.rpc('store_operations_status');
+                if (countError) throw countError;
+                setSubscriberCount(status?.subscribers || 0);
             }
         } catch (error) {
-            console.error('Error loading notifications:', error);
+            setMessage({text:'Could not load announcements: '+error.message,type:'error'});
         } finally {
             setLoading(false);
         }
@@ -50,82 +49,23 @@ const NotificationManager = () => {
         setTimeout(() => setMessage(null), 5000);
     };
 
-    // Send push notification
+    // Publishing inserts one announcement; the database creates durable push jobs.
     const sendNotification = async () => {
-        if (!title.trim() || !body.trim()) {
-            showMessage('Please enter both title and message', 'error');
-            return;
-        }
-
+        if (!title.trim() || !body.trim()) { showMessage('Please enter both title and message', 'error'); return; }
         setSending(true);
         try {
-            // Get all push subscriptions
-            if (supabase) {
-                const { data: subscriptions, error: subError } = await supabase
-                    .from('push_subscriptions')
-                    .select('*');
-
-                if (subError && subError.code !== 'PGRST116') throw subError;
-
-                // Save notification to history
-                const { error: saveError } = await supabase
-                    .from('notifications')
-                    .insert([{
-                        title: title.trim(),
-                        body: body.trim(),
-                        sent_at: new Date().toISOString(),
-                        target: 'all'
-                    }]);
-
-                if (saveError && saveError.code !== 'PGRST116') {
-                    console.warn('Could not save notification to history:', saveError);
-                }
-
-                // Send to each subscriber via service worker
-                if (subscriptions && subscriptions.length > 0) {
-                    // In production, you'd send these to a backend endpoint
-                    // that uses web-push library to send actual push notifications
-                    console.log(`Would send to ${subscriptions.length} subscribers:`, { title, body });
-                    showMessage(`Notification queued for ${subscriptions.length} subscribers!`);
-                } else {
-                    showMessage('Notification saved! No subscribers yet.', 'warning');
-                }
-
-                // Also show notification locally for demo
-                if ('Notification' in window && Notification.permission === 'granted') {
-                    new Notification(title, { body, icon: '/icons/icon-192.png' });
-                }
-            } else {
-                // Demo mode without Supabase
-                if ('Notification' in window && Notification.permission === 'granted') {
-                    new Notification(title, { body });
-                    showMessage('Demo notification sent locally!');
-                } else {
-                    showMessage('Notifications not supported or not permitted', 'error');
-                }
-            }
-
-            setTitle('');
-            setBody('');
-            loadHistory();
-        } catch (error) {
-            console.error('Error sending notification:', error);
-            showMessage('Error sending notification: ' + error.message, 'error');
-        } finally {
-            setSending(false);
-        }
+            if (!supabase) throw new Error('Store database is not connected.');
+            const { error } = await supabase.from('notifications').insert([{ title:title.trim().slice(0,120), body:body.trim().slice(0,500), target:'all' }]).select('id').single();
+            if (error) throw error;
+            const { data:status,error:statusError } = await supabase.rpc('store_operations_status');
+            showMessage(statusError ? 'Announcement published. Delivery status could not be refreshed.' : status.subscribers ? `Announcement published and queued for ${status.subscribers} devices. Delivery runs automatically.` : 'Announcement published in the store. No devices have enabled browser alerts yet.');
+            setTitle(''); setBody(''); loadHistory();
+        } catch (error) { showMessage('Error sending notification: '+error.message,'error'); }
+        finally { setSending(false); }
     };
-
-    // Request notification permission
     const requestPermission = async () => {
-        if ('Notification' in window) {
-            const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                showMessage('Notifications enabled!');
-            } else {
-                showMessage('Notification permission denied', 'error');
-            }
-        }
+        try { await initializePushNotifications(); showMessage('Browser alerts enabled on this device.'); await loadHistory(); }
+        catch (error) { showMessage(error.message,'error'); }
     };
 
     return (
@@ -168,7 +108,7 @@ const NotificationManager = () => {
                         </div>
                         <div>
                             <p className="text-2xl font-bold">{history.length}</p>
-                            <p className="text-sm text-gray-400">Notifications Sent</p>
+                            <p className="text-sm text-gray-400">Store Announcements</p>
                         </div>
                     </div>
                 </div>
@@ -226,7 +166,7 @@ const NotificationManager = () => {
                             ) : (
                                 <Send className="w-5 h-5" />
                             )}
-                            Send to All Subscribers
+                            Publish Store Announcement
                         </button>
                         <button
                             onClick={requestPermission}

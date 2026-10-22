@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { useAutomaticRefresh } from '../../lib/useAutomaticRefresh';
 import { RefreshCw, Download, ShoppingBag } from 'lucide-react';
 import { db } from '../../lib/supabase';
 import { loadAdminRecords } from '../../lib/adminRecords';
@@ -13,14 +14,14 @@ export default function OrdersManager() {
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState('all');
   const [saving, setSaving] = useState(null);
-  const load = useCallback(async () => {
-    setLoading(true); setError('');
+  const load = useCallback(async (background = false) => {
+    if (background !== true) setLoading(true); setError('');
     try {
       setOrders(await loadAdminRecords('orders'));
     } catch (err) { setError(err.message || 'Could not load orders.'); }
     finally { setLoading(false); }
   }, []);
-  useEffect(() => { load(); }, [load]);
+  useAutomaticRefresh(load);
   const visible = orders.filter((order) => (status === 'all' || order.status === status) &&
     `${order.id} ${order.customer_name} ${order.customer_phone} ${order.customer_address}`.toLowerCase().includes(query.toLowerCase()));
   async function update(order, next) {

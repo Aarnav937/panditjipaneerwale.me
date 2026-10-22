@@ -5,9 +5,11 @@ import { products as defaultProducts } from '../data/products';
 import { formatAed, getSaleInfo } from '../lib/pricing';
 import { getDailyFeaturedDeals } from '../lib/discounts';
 
-const OffersRail = ({ onOpenProduct, products: propProducts }) => {
+const OffersRail = ({ onOpenProduct, products: propProducts, featureIds }) => {
   const sourceProducts = propProducts && propProducts.length > 0 ? propProducts : defaultProducts;
-  const cards = useMemo(() => getDailyFeaturedDeals(sourceProducts, 8), [sourceProducts]);
+  const cards = useMemo(() => featureIds?.length
+    ? featureIds.map(id => sourceProducts.find(p => p.id === id)).filter(Boolean)
+    : getDailyFeaturedDeals(sourceProducts, 8), [sourceProducts, featureIds]);
 
   if (cards.length === 0) return null;
 

@@ -43,6 +43,7 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
         setError(null);
 
         try {
+            if (!supabase) throw new Error('Email sign-in is temporarily unavailable. You can still place a guest order.');
             if (supabase) {
                 const { error } = await supabase.auth.signInWithOtp({
                     email: email.trim(),
@@ -76,6 +77,7 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
         setError(null);
 
         try {
+            if (!supabase) throw new Error('Email sign-in is temporarily unavailable. You can still place a guest order.');
             if (supabase) {
                 const { error } = await supabase.auth.verifyOtp({
                     email: email.trim(),
@@ -88,8 +90,6 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
                 // Store user info
                 localStorage.setItem('userEmail', email);
                 localStorage.setItem('isLoggedIn', 'true');
-            } else {
-                // Demo mode verification
             }
 
             setStep('success');
@@ -247,7 +247,7 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
                                             </form>
 
                                             <p className="text-gray-500 text-xs text-center mt-6">
-                                                We'll send a 6-digit code to your email
+                                                We'll send a sign-in code to your email. No account is needed to place an order.
                                             </p>
                                         </motion.div>
                                     )}
