@@ -41,6 +41,20 @@ Checkout stores order requests centrally and uses stable request IDs to prevent 
 
 ## Sources
 
+## Completion evidence
+
+The approved upgrade completed successfully: the management API reports `ACTIVE_HEALTHY`, SQL reports Postgres 17.11, and the dashboard shows 17.11.0.003 (latest). PostgREST is now 14.18. Auth's public health endpoint returned HTTP 200.
+
+All baseline counts were preserved. The rollback acceptance suite passed on the upgraded database, covering atomic receipts, duplicate prevention, tampered totals, invalid quantities/products, private-data permissions and the stock-return notification trigger. A separate real HTTP request to the deployed `create-order` function returned HTTP 200 with an AED 10 receipt; an identical retry returned HTTP 200 with the same ID. The precisely identified synthetic order/customer/items were removed, leaving the original 20 orders, 32 items, 12 customers and 161 products. No WhatsApp message was sent.
+
+Anonymous HTTP reads of customers, orders and admin membership all returned HTTP 401. A signed-in non-admin role simulation again returned zero private records. Invalid checkout input returned HTTP 400; a request without authentication returned HTTP 401.
+
+The website patch is commit `17605b7`. Its GitHub Pages deployment succeeded: https://github.com/Aarnav937/panditjipaneerwale.me/actions/runs/39753349022 . Live HTML now serves `index-D9qo2M5W.js` and `index-BkE0UujT.css`. Verification: 68 application tests, 3 security-audit regression tests, lint, production build, a native Sharp smoke test, lockfile registry/integrity checks and browser cart smoke checks passed.
+
+Four administrator email memberships are authorized, but only one corresponding Auth/password account exists. Actual successful administrator UI sign-in remains unverified; the other three passwords/accounts need owner completion. Do not describe all four logins, outgoing email, web push or a new midnight backend scheduler as configured by this patch.
+
+## References
+
 - https://nodejs.org/en/blog/vulnerability/october-2026-security-releases
 - https://supabase.com/changelog/postgres-15-19-17-11-breaking-changes
 - https://supabase.com/docs/guides/platform/upgrading
