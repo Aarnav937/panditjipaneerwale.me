@@ -23,7 +23,7 @@
     "images:report": "node generate_report.js"
   },
   "dependencies": {
-    "@google/generative-ai": "0.21.0",
+    "@google/generative-ai": "0.24.1",
     "@supabase/supabase-js": "2.118.0",
     "canvas-confetti": "1.9.4",
     "dotenv": "16.6.1",
