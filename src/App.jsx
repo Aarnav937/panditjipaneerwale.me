@@ -12,6 +12,7 @@ import OfferTicker from './components/OfferTicker';
 import OffersRail from './components/OffersRail';
 import PromotionalOfferModal from './components/PromotionalOfferModal';
 import { products as initialProducts, categories } from './data/products';
+import { OPENING_PROMOTION_PRODUCT_ID } from './data/store';
 import { getDailyDiscountedProducts } from './lib/discounts';
 import { loadStoreCatalog, loadDailyFeatureIds } from './lib/catalogApi';
 import { useStoreDay } from './lib/storeDay';
@@ -138,12 +139,6 @@ function App() {
   }, [isAdmin]);
 
   useEffect(() => {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setIsDarkMode(true);
-    }
-  }, []);
-
-  useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
@@ -169,7 +164,9 @@ function App() {
   }, []);
 
   const promotionalProduct = useMemo(
-    () => products.find((product) => product.promotionalPopup),
+    // The opening campaign is an explicit storefront choice. Legacy catalog flags
+    // must not replace it after backend prices and availability finish loading.
+    () => products.find((product) => product.id === OPENING_PROMOTION_PRODUCT_ID && product.is_available !== false),
     [products]
   );
 

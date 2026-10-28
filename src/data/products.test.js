@@ -107,7 +107,7 @@ describe('product catalog integrity', () => {
       expect(dailyCatalog.find((product) => product.id === 195).compareAtPrice).toBe(20);
       expect(getDailyFeaturedDeals(dailyCatalog, 8, dateSeed).map((product) => product.id)).toContain(195);
     }
-    expect(products.filter((product) => product.promotionalPopup).map((product) => product.id)).toEqual([194]);
+    expect(products.filter((product) => product.promotionalPopup).map((product) => product.id)).toEqual([193]);
   });
 
   it('keeps the cow curd offer, cart price and 1kg quantity consistent', () => {
@@ -120,7 +120,6 @@ describe('product catalog integrity', () => {
       compareAtPrice: 15,
       image: 'images/packs/product-194.png',
       featuredPromotion: true,
-      promotionalPopup: true,
     });
     expect(getSaleInfo(curd)).toMatchObject({ onSale: true, price: 10, compareAt: 15, percent: 33 });
     expect(parseProductUnit(curd.name)).toEqual({ weight: 1, volume: 0 });

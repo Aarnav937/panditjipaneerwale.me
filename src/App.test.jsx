@@ -1,8 +1,9 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import App from './App';
-vi.mock('./lib/catalogApi', () => ({ loadStoreCatalog: async () => null, loadDailyFeatureIds: async () => null }));
+import { loadStoreCatalog } from './lib/catalogApi';
+vi.mock('./lib/catalogApi', () => ({ loadStoreCatalog: vi.fn(async () => null), loadDailyFeatureIds: async () => null }));
 
 vi.mock('framer-motion', () => {
   const React = require('react');
@@ -28,7 +29,7 @@ vi.mock('framer-motion', () => {
   };
 });
 
-vi.mock('./components/Navbar', () => ({ default: () => null }));
+vi.mock('./components/Navbar', () => ({ default: ({ toggleTheme }) => <button onClick={toggleTheme}>Toggle theme</button> }));
 vi.mock('./components/Hero', () => ({ default: () => null }));
 vi.mock('./components/ProductCard', () => ({ default: () => null }));
 vi.mock('./components/Footer', () => ({ default: () => null }));
@@ -57,13 +58,16 @@ vi.mock('./context/AuthContext', () => ({
 describe('promotional offer scheduling', () => {
   beforeEach(() => {
     vi.useFakeTimers();
+    loadStoreCatalog.mockResolvedValue(null);
+    document.documentElement.classList.remove('dark');
   });
 
   afterEach(() => {
     vi.useRealTimers();
+    document.documentElement.classList.remove('dark');
   });
 
-  it('opens the dahi promotion on every page load even when an old session flag exists', async () => {
+  it('opens the milk promotion on every page load even when an old session flag exists', async () => {
     sessionStorage.setItem('promotion_seen_193', 'true');
 
     render(<App />);
@@ -75,7 +79,32 @@ describe('promotional offer scheduling', () => {
     });
 
     expect(screen.getByRole('dialog')).toHaveTextContent(
-      'Organic Cow Curd (Dahi) (1kg) promotional offer'
+      'Organic Fresh Milk (1.5L) promotional offer'
     );
+  });
+
+  it('keeps milk as the opening campaign when the backend still contains the older dahi popup flag', async () => {
+    loadStoreCatalog.mockResolvedValue([
+      { id: 194, name: 'Organic Cow Curd (Dahi) (1kg)', price: 10, promotionalPopup: true },
+      { id: 193, name: 'Organic Fresh Milk (1.5L)', price: 21, compareAtPrice: 25 },
+    ]);
+    render(<App />);
+    await act(async () => {});
+    await act(async () => { vi.advanceTimersByTime(1100); });
+    expect(screen.getByRole('dialog')).toHaveTextContent('Organic Fresh Milk (1.5L) promotional offer');
+  });
+
+  it('starts in light mode on a dark device and enables dark only after a manual toggle', async () => {
+    vi.spyOn(window, 'matchMedia').mockImplementation(query => ({ matches: query.includes('prefers-color-scheme: dark'), media: query, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
+    document.documentElement.classList.add('dark');
+    localStorage.setItem('theme', 'dark');
+    const { unmount } = render(<App />);
+    await act(async () => {});
+    expect(document.documentElement).not.toHaveClass('dark');
+    fireEvent.click(screen.getByRole('button', { name: 'Toggle theme' }));
+    expect(document.documentElement).toHaveClass('dark');
+    unmount();
+    render(<App />);
+    expect(document.documentElement).not.toHaveClass('dark');
   });
 });

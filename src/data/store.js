@@ -17,6 +17,9 @@ export const STORE = {
   deliveryNote: 'Free delivery across Abu Dhabi',
 };
 
+// Opening campaign; product price, image and availability still come from the catalog.
+export const OPENING_PROMOTION_PRODUCT_ID = 193;
+
 export const whatsappLink = (message) =>
   `https://wa.me/${STORE.whatsappNumber}?text=${encodeURIComponent(message)}`;
 
