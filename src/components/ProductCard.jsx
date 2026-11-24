@@ -38,7 +38,7 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
       whileHover={reduceMotion ? undefined : { y: -6, scale: 1.015 }}
       whileTap={reduceMotion ? undefined : { scale: 0.985 }}
       transition={{ type: 'spring', stiffness: 320, damping: 22 }}
-      className={`catalog-product group relative flex flex-col h-full bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-white/10 hover:border-amber-400/60 dark:hover:border-amber-400/40 shadow-sm hover:shadow-2xl hover:shadow-brand-orange/15 transition-all duration-300 overflow-hidden cursor-pointer ${
+      className={`catalog-product premium-frame group relative flex flex-col h-full bg-white dark:bg-[#1A0B0E] rounded-3xl hover:border-brand-royalGold dark:hover:border-brand-royalGold/60 shadow-premium hover:shadow-premium-hover transition-all duration-300 overflow-hidden cursor-pointer ${
         !isAvailable ? 'opacity-70 grayscale-[30%]' : ''
       }`}
     >
@@ -68,7 +68,7 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
 
         {/* Sale / Discount Badge */}
         {sale.onSale && (
-          <span className="absolute top-3 right-3 z-10 bg-gradient-to-r from-brand-orange to-red-500 text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md shadow-red-500/25">
+          <span className="absolute top-3 right-3 z-10 bg-gradient-to-br from-brand-maroon to-brand-maroonDeep text-brand-royalGoldLight text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md shadow-brand-maroon/30 ring-1 ring-brand-royalGold/70">
             {sale.percent}% OFF
           </span>
         )}
@@ -111,28 +111,28 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
       <div className="p-3.5 sm:p-5 flex flex-col flex-grow gap-1.5">
         {/* Category Pill */}
         <div className="flex items-center justify-between gap-2">
-          <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 truncate">
+          <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.16em] text-[#A0700F] dark:text-brand-royalGoldLight truncate">
             {product.category || 'Pure Dairy'}
           </span>
-          <span className="text-[10px] text-gray-400 font-medium hidden sm:inline">Abu Dhabi</span>
+          <span className="text-[10px] text-[#8A6A58] dark:text-gray-400 font-medium hidden sm:inline">Abu Dhabi</span>
         </div>
 
         {/* Product Name */}
-        <h3 className="text-sm sm:text-base font-bold text-brand-charcoal dark:text-white leading-snug line-clamp-2 min-h-[2.6em] group-hover:text-brand-orange transition-colors">
+        <h3 className="text-sm sm:text-base font-bold text-brand-ink dark:text-white leading-snug line-clamp-2 min-h-[2.6em] group-hover:text-brand-kesar transition-colors">
           {product.name}
         </h3>
 
         {/* Price & Add Action Row */}
-        <div className="mt-auto pt-3 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3 border-t border-gray-100 dark:border-white/5">
+        <div className="mt-auto pt-3 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3 border-t border-dashed border-[#E9DCC3] dark:border-white/10">
           <div>
             {sale.onSale && (
-              <p className="text-[11px] text-gray-400 line-through tabular-nums leading-none mb-0.5">
+              <p className="text-[11px] text-[#8A6A58] dark:text-gray-400 line-through tabular-nums leading-none mb-0.5">
                 AED {formatAed(sale.compareAt)}
               </p>
             )}
             <div className="flex items-baseline gap-1 leading-none">
               <span className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 font-bold">AED</span>
-              <span className="text-xl sm:text-2xl font-black text-brand-orange dark:text-amber-400 tabular-nums">
+              <span className="text-kesar text-xl sm:text-2xl font-black tabular-nums">
                 {formatAed(sale.price)}
               </span>
             </div>
@@ -150,7 +150,7 @@ const ProductCard = ({ product, addToCart, onViewDetails }) => {
               isAvailable
                 ? justAdded
                   ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30'
-                  : 'bg-gradient-to-r from-brand-orange to-amber-500 hover:from-brand-orangeDark hover:to-amber-600 text-white shadow-md shadow-brand-orange/25 hover:shadow-lg'
+                  : 'btn-kesar'
                 : 'bg-gray-200 dark:bg-slate-800 text-gray-400 cursor-not-allowed'
             }`}
           >

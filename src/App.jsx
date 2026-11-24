@@ -10,6 +10,8 @@ import MobileCartBar from './components/MobileCartBar';
 import OurStore from './components/OurStore';
 import OfferTicker from './components/OfferTicker';
 import OffersRail from './components/OffersRail';
+import AmbientBackground from './components/AmbientBackground';
+import { RoyalDivider, RoyalEyebrow } from './components/RoyalOrnament';
 import PromotionalOfferModal from './components/PromotionalOfferModal';
 import { products as initialProducts, categories } from './data/products';
 import { OPENING_PROMOTION_PRODUCT_ID } from './data/store';
@@ -319,8 +321,8 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col transition-colors duration-300 font-sans relative text-brand-charcoal dark:text-gray-100">
-      {/* Radiant Background */}
-      <div className="fixed inset-0 z-[-1] bg-fixed-gradient pointer-events-none" />
+      {/* 2.5D blurred orb background */}
+      <AmbientBackground />
 
       {/* Top Banner Ticker */}
       <OfferTicker />
@@ -377,8 +379,8 @@ function App() {
                     aria-pressed={isSelected}
                     className={`whitespace-nowrap px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold transition-all duration-200 border flex items-center gap-2 shrink-0 ${
                       isSelected
-                        ? 'bg-gradient-to-r from-brand-orange to-amber-500 text-white border-transparent shadow-md shadow-brand-orange/25 scale-[1.03]'
-                        : 'bg-white/90 dark:bg-slate-800 text-gray-700 dark:text-gray-300 border-gray-200/80 dark:border-white/10 hover:border-brand-orange/50 hover:bg-orange-50/40 dark:hover:bg-white/5'
+                        ? 'btn-kesar border-transparent scale-[1.03]'
+                        : 'bg-white/70 dark:bg-white/[0.04] backdrop-blur-md text-gray-700 dark:text-gray-300 border-white/80 dark:border-white/10 shadow-sm hover:border-brand-kesar/40 hover:text-brand-ink hover:bg-white dark:hover:bg-white/5'
                     }`}
                   >
                     <span className="text-base">{icon}</span>
@@ -387,7 +389,7 @@ function App() {
                       className={`text-[10px] px-2 py-0.5 rounded-full font-black ${
                         isSelected
                           ? 'bg-white/25 text-white'
-                          : 'bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-400'
+                          : 'bg-gray-100/80 dark:bg-white/10 text-gray-500 dark:text-gray-400'
                       }`}
                     >
                       {count}
@@ -402,7 +404,7 @@ function App() {
         {/* Section Heading & Sort Controls */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-7">
           <div className="flex items-baseline gap-3">
-            <h2 id="catalog-heading" className="font-display text-2xl sm:text-3xl font-extrabold text-brand-charcoal dark:text-white tracking-tight">
+            <h2 id="catalog-heading" className="font-display text-2xl sm:text-3xl font-extrabold text-brand-ink dark:text-white tracking-tight">
               {searchQuery ? (
                 <span>Search results for “{searchQuery}”</span>
               ) : selectedCategory === 'All' ? (
@@ -411,7 +413,7 @@ function App() {
                 selectedCategory
               )}
             </h2>
-            <span className="text-xs font-black text-brand-orange bg-amber-500/10 dark:bg-amber-500/20 px-3 py-1 rounded-full border border-amber-500/20">
+            <span className="text-xs font-black text-brand-royalGoldLight bg-brand-maroon px-3 py-1 rounded-full ring-1 ring-brand-royalGold/60 whitespace-nowrap">
               {filteredProducts.length} items
             </span>
           </div>
@@ -474,7 +476,7 @@ function App() {
                 setSearchQuery('');
                 setSelectedCategory('All');
               }}
-              className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-brand-orange to-amber-500 text-white text-xs font-black shadow-md hover:shadow-lg transition-all"
+              className="btn-kesar px-6 py-2.5 rounded-2xl text-xs font-black"
             >
               Reset Filters
             </button>
@@ -485,71 +487,47 @@ function App() {
       {/* Interactive Abu Dhabi Store Showcase */}
       {!searchQuery && <OurStore />}
 
-      {/* The Pandit Ji Quality Promise: Bento Grid */}
+      {/* The Pandit Ji Quality Promise: maroon palace band with gold jaali */}
       {!searchQuery && (
-        <section id="about" className="py-16 bg-white/70 dark:bg-slate-950/70 border-t border-amber-500/20">
-          <div className="container mx-auto px-4 max-w-7xl">
-            <div className="max-w-3xl mx-auto text-center mb-12">
-              <span className="text-xs font-black uppercase tracking-widest text-brand-orange mb-2 block">
-                Pure Indian Dairy Heritage
-              </span>
-              <h2 className="font-display text-2xl sm:text-4xl font-extrabold text-brand-charcoal dark:text-white mb-3">
-                Why Abu Dhabi Chooses Pandit Ji
+        <section id="about" className="relative overflow-hidden py-16 sm:py-24 bg-gradient-to-b from-brand-maroon to-brand-maroonDeep text-amber-50">
+          <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
+            <div className="jaali absolute inset-0 opacity-[0.09]" />
+            <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[46rem] h-[22rem] rounded-full bg-brand-kesar/30 blur-3xl" />
+            <div className="absolute -bottom-40 right-[-4rem] w-[30rem] h-[30rem] rounded-full bg-brand-marigold/15 blur-3xl" />
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-brand-royalGold to-transparent" />
+            <div className="absolute top-1.5 inset-x-0 h-px bg-gradient-to-r from-transparent via-brand-royalGold/40 to-transparent" />
+          </div>
+          <div className="relative container mx-auto px-4 max-w-7xl">
+            <div className="max-w-3xl mx-auto text-center mb-12 flex flex-col items-center">
+              <RoyalEyebrow tone="light" className="mb-4">Pure Indian Dairy Heritage</RoyalEyebrow>
+              <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-white mb-3 tracking-tight">
+                Why Abu Dhabi Chooses <span className="text-gold-foil italic pr-1">Pandit Ji</span>
               </h2>
-              <div className="w-16 h-1 bg-amber-500 mx-auto rounded-full mb-4" />
-              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+              <RoyalDivider tone="light" className="mb-4" />
+              <p className="text-sm sm:text-base text-amber-50/75 leading-relaxed">
                 Handcrafted daily with authentic Indian quality standards and doorstep delivery across Abu Dhabi.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-              <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-amber-500/20 shadow-sm hover:shadow-md transition-all">
-                <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-brand-orange flex items-center justify-center mb-4">
-                  <Sparkles className="w-6 h-6" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+              {[
+                { icon: Sparkles, title: 'Prepared Fresh Daily', body: 'Zero starches, palm oil, or artificial softeners. Pure farm dairy crafted for soft, melt-in-the-mouth texture.' },
+                { icon: Truck, title: 'Free Abu Dhabi Delivery', body: 'Temperature-controlled same-day delivery right to your apartment, villa, or office across Abu Dhabi.' },
+                { icon: HeartHandshake, title: '30-Sec WhatsApp Order', body: 'No complex checkouts or card entries. Select your products and chat directly with our store concierge.' },
+                { icon: ShieldCheck, title: 'Daily 05:00 AM Fresh Batch', body: 'Every batch of paneer, khoa, and malai is prepared early in the morning so you receive the freshest cuts.' },
+              ].map(({ icon: Icon, title, body }) => (
+                <div key={title} className="royal-frame group p-6 rounded-3xl bg-black/15 hover:bg-black/25 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-marigold via-brand-kesar to-brand-rani text-white flex items-center justify-center mb-5 shadow-lg shadow-black/40 ring-2 ring-brand-royalGold/60 group-hover:scale-105 transition-transform">
+                    <Icon className="w-6 h-6" strokeWidth={2.25} />
+                  </div>
+                  <h3 className="font-display font-bold text-lg text-brand-royalGoldLight mb-2">
+                    {title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-amber-50/75 leading-relaxed">
+                    {body}
+                  </p>
                 </div>
-                <h3 className="font-bold text-base text-brand-charcoal dark:text-white mb-2">
-                  Prepared Fresh Daily
-                </h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                  Zero starches, palm oil, or artificial softeners. Pure farm dairy crafted for soft, melt-in-the-mouth texture.
-                </p>
-              </div>
-
-              <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-amber-500/20 shadow-sm hover:shadow-md transition-all">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center mb-4">
-                  <Truck className="w-6 h-6" />
-                </div>
-                <h3 className="font-bold text-base text-brand-charcoal dark:text-white mb-2">
-                  Free Abu Dhabi Delivery
-                </h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                  Temperature-controlled same-day delivery right to your apartment, villa, or office across Abu Dhabi.
-                </p>
-              </div>
-
-              <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-amber-500/20 shadow-sm hover:shadow-md transition-all">
-                <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-600 flex items-center justify-center mb-4">
-                  <HeartHandshake className="w-6 h-6" />
-                </div>
-                <h3 className="font-bold text-base text-brand-charcoal dark:text-white mb-2">
-                  30-Sec WhatsApp Order
-                </h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                  No complex checkouts or card entries. Select your products and chat directly with our store concierge.
-                </p>
-              </div>
-
-              <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-amber-500/20 shadow-sm hover:shadow-md transition-all">
-                <div className="w-12 h-12 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center mb-4">
-                  <ShieldCheck className="w-6 h-6" />
-                </div>
-                <h3 className="font-bold text-base text-brand-charcoal dark:text-white mb-2">
-                  Daily 05:00 AM Fresh Batch
-                </h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                  Every batch of paneer, khoa, and malai is prepared early in the morning so you receive the freshest cuts.
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </section>

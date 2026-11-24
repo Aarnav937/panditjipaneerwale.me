@@ -7,8 +7,9 @@ const Footer = ({ onToggleAdmin }) => {
   const { t } = useLanguage();
 
   return (
-    <footer id="contact" className="bg-slate-950 text-white pt-16 pb-12 border-t border-amber-500/20 relative overflow-hidden">
-      <div className="accent-gold-line absolute top-0 left-0 right-0 opacity-70" />
+    <footer id="contact" className="bg-[#1C0409] text-white pt-16 pb-12 relative overflow-hidden">
+      <div className="accent-gold-line absolute top-0 left-0 right-0" />
+      <div aria-hidden="true" className="jaali absolute inset-0 opacity-[0.05] pointer-events-none" />
 
       <div className="container mx-auto px-4 max-w-7xl relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
@@ -16,14 +17,14 @@ const Footer = ({ onToggleAdmin }) => {
           {/* Brand Column */}
           <div className="space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-brand-orange flex items-center justify-center shadow-lg">
+              <div className="w-10 h-10 shrink-0 rounded-2xl bg-gradient-to-br from-brand-marigold via-brand-kesar to-brand-rani flex items-center justify-center shadow-lg ring-2 ring-brand-royalGold/60 ring-offset-2 ring-offset-[#1C0409]">
                 <span className="text-xl">🧀</span>
               </div>
               <span className="font-display text-2xl font-black text-white tracking-tight">
-                Pandit Ji <span className="text-brand-orange">Paneer Wale</span>
+                Pandit Ji <span className="text-gold-foil italic">Paneer Wale</span>
               </span>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-amber-50/65 text-sm leading-relaxed">
               Abu Dhabi's trusted destination for fresh paneer, organic milk, pure dairy, authentic Everest spices, and pantry staples.
             </p>
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-black">
@@ -34,17 +35,17 @@ const Footer = ({ onToggleAdmin }) => {
 
           {/* Contact Details */}
           <div>
-            <h4 className="text-xs font-black uppercase tracking-widest text-amber-400 mb-4">
+            <h4 className="text-xs font-black uppercase tracking-[0.24em] text-brand-royalGoldLight mb-4">
               {t('contactUs') || "Contact & Support"}
             </h4>
             <div className="space-y-3.5 text-gray-300 text-sm">
               <div className="flex items-start gap-2.5">
-                <MapPin className="mt-0.5 shrink-0 text-brand-orange w-4 h-4" />
+                <MapPin className="mt-0.5 shrink-0 text-brand-royalGold w-4 h-4" />
                 <span className="text-xs sm:text-sm">F9QJ+F6F Abu Dhabi, United Arab Emirates</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <Phone className="shrink-0 text-brand-orange w-4 h-4" />
-                <a href="tel:+971524676306" className="hover:text-brand-orange transition text-xs sm:text-sm font-bold">
+                <Phone className="shrink-0 text-brand-royalGold w-4 h-4" />
+                <a href="tel:+971524676306" className="hover:text-brand-marigold transition text-xs sm:text-sm font-bold">
                   +971 52 467 6306
                 </a>
               </div>
@@ -60,8 +61,8 @@ const Footer = ({ onToggleAdmin }) => {
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
-                <Mail className="shrink-0 text-brand-orange w-4 h-4" />
-                <a href="mailto:rrc.inttrading@gmail.com" className="hover:text-brand-orange transition text-xs sm:text-sm break-all font-medium">
+                <Mail className="shrink-0 text-brand-royalGold w-4 h-4" />
+                <a href="mailto:rrc.inttrading@gmail.com" className="hover:text-brand-marigold transition text-xs sm:text-sm break-all font-medium">
                   rrc.inttrading@gmail.com
                 </a>
               </div>
@@ -70,27 +71,27 @@ const Footer = ({ onToggleAdmin }) => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-xs font-black uppercase tracking-widest text-amber-400 mb-4">
+            <h4 className="text-xs font-black uppercase tracking-[0.24em] text-brand-royalGoldLight mb-4">
               {t('quickLinks') || "Quick Links"}
             </h4>
             <ul className="space-y-2.5 text-gray-400 text-sm font-medium">
               <li>
-                <a href="#" className="hover:text-brand-orange transition">
+                <a href="#" className="hover:text-brand-marigold transition">
                   {t('home')}
                 </a>
               </li>
               <li>
-                <a href="#products" className="hover:text-brand-orange transition">
+                <a href="#products" className="hover:text-brand-marigold transition">
                   Fresh Catalog ({products.length} Products)
                 </a>
               </li>
               <li>
-                <a href="#our-store" className="hover:text-brand-orange transition">
+                <a href="#our-store" className="hover:text-brand-marigold transition">
                   Visit Retail Store in Abu Dhabi
                 </a>
               </li>
               <li>
-                <a href="https://maps.google.com/?q=F9QJ+F6F+Abu+Dhabi" target="_blank" rel="noopener noreferrer" className="hover:text-brand-orange transition">
+                <a href="https://maps.google.com/?q=F9QJ+F6F+Abu+Dhabi" target="_blank" rel="noopener noreferrer" className="hover:text-brand-marigold transition">
                   Google Maps Directions
                 </a>
               </li>
@@ -99,11 +100,11 @@ const Footer = ({ onToggleAdmin }) => {
 
           {/* Assurance & WhatsApp */}
           <div>
-            <h4 className="text-xs font-black uppercase tracking-widest text-amber-400 mb-4">
+            <h4 className="text-xs font-black uppercase tracking-[0.24em] text-brand-royalGoldLight mb-4">
               Ordering & Assurance
             </h4>
             <div className="space-y-3 text-xs text-gray-400">
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+              <div className="p-4 rounded-2xl bg-white/[0.04] border border-brand-royalGold/30">
                 <p className="font-bold text-white mb-1.5 flex items-center gap-1.5">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" /> WhatsApp Direct Order
                 </p>
@@ -119,7 +120,7 @@ const Footer = ({ onToggleAdmin }) => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+        <div className="border-t border-brand-royalGold/25 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
           <div>
             <span>&copy; {new Date().getFullYear()} Pandit Ji Paneer Wale. All rights reserved.</span>
             {onToggleAdmin && (

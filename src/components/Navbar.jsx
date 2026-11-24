@@ -46,7 +46,7 @@ const Navbar = ({
 
   return (
     <>
-      <header ref={headerRef} className="store-header safe-area-top sticky top-0 z-50 transition-all duration-300 glass-capsule border-b border-gray-200/80 dark:border-white/10">
+      <header ref={headerRef} className="store-header safe-area-top sticky top-0 z-50 transition-all duration-300 glass-capsule !border-x-0 !border-t-0 border-b !border-b-brand-royalGold/40">
         {/* Top Mini Info Bar (Desktop) */}
         <div className="hidden lg:block border-b border-gray-100 dark:border-white/5 py-1 px-4 text-xs">
           <div className="container mx-auto flex items-center justify-between text-brand-muted dark:text-gray-400">
@@ -90,17 +90,17 @@ const Navbar = ({
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           >
-            <div className="store-brand-mark w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-brand-saffron to-brand-orange flex items-center justify-center shadow-md shadow-brand-orange/25 group-hover:scale-105 transition-transform duration-300">
+            <div className="store-brand-mark w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-marigold via-brand-kesar to-brand-rani flex items-center justify-center shadow-md shadow-brand-kesar/30 ring-2 ring-brand-royalGold/60 ring-offset-2 ring-offset-[#FFF6EA] dark:ring-offset-[#12070A] group-hover:scale-105 transition-transform duration-300">
               <span className="text-xl">🧀</span>
             </div>
             <div className="leading-tight">
               <div className="flex items-center gap-1">
-                <span className="font-display text-xl md:text-2xl font-black tracking-tight bg-gradient-to-r from-brand-charcoal via-brand-saffron to-brand-orange dark:from-white dark:via-amber-200 dark:to-brand-orange bg-clip-text text-transparent">
+                <span className="font-display text-xl md:text-2xl font-black tracking-tight bg-gradient-to-r from-brand-maroon via-brand-rani to-brand-kesar dark:from-amber-50 dark:via-brand-royalGoldLight dark:to-brand-marigold bg-clip-text text-transparent">
                   Pandit Ji
                 </span>
-                <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse hidden sm:inline-block" />
+                <Sparkles className="w-3.5 h-3.5 text-brand-royalGold animate-pulse hidden sm:inline-block" />
               </div>
-              <span className="block text-[10px] font-extrabold uppercase tracking-[0.18em] text-amber-600 dark:text-amber-400 -mt-0.5">
+              <span className="block text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#A0700F] dark:text-brand-royalGoldLight -mt-0.5">
                 <span className="md:hidden">Paneer Wale</span>
                 <span className="hidden md:inline">Paneer Wale • Abu Dhabi</span>
               </span>
@@ -263,7 +263,7 @@ const Navbar = ({
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => setIsCartOpen(true)}
-              className="relative flex items-center gap-2 px-4 py-2 rounded-2xl bg-gradient-to-r from-brand-orange to-amber-500 text-white font-black text-sm shadow-lg shadow-brand-orange/25 hover:shadow-xl transition-all"
+              className="btn-ink relative flex items-center gap-2 px-4 py-2 rounded-2xl font-black text-sm"
               aria-label="Open Cart"
             >
               <motion.div animate={cartPulse ? { scale: [1, 1.35, 1], rotate: [0, -10, 10, 0] } : {}} transition={{ duration: 0.35 }}>
@@ -271,7 +271,7 @@ const Navbar = ({
               </motion.div>
               <span className="hidden lg:inline">{t('yourCart') || "Bag"}</span>
               {cartCount > 0 ? (
-                <span className="bg-white text-brand-orange text-xs font-black px-1.5 py-0.5 rounded-full min-w-[1.2rem] h-[1.2rem] flex items-center justify-center">
+                <span className="bg-brand-marigold text-brand-ink text-xs font-black px-1.5 py-0.5 rounded-full min-w-[1.2rem] h-[1.2rem] flex items-center justify-center">
                   {cartCount > 99 ? '99+' : cartCount}
                 </span>
               ) : null}
@@ -457,7 +457,7 @@ const Navbar = ({
                       setIsAuthModalOpen(true);
                       setIsMobileMenuOpen(false);
                     }}
-                    className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-brand-orange to-amber-500 text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg"
+                    className="btn-kesar w-full py-3 px-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2"
                   >
                     <User className="w-4 h-4" /> Sign In / Register
                   </button>

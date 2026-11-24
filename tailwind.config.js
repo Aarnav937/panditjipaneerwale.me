@@ -34,6 +34,17 @@ export default {
           border: '#E5E7EB',
           forest: '#14342B',
           spice: '#D95D1E',
+          // Royal palette: saffron carries energy, maroon and gold carry the palace.
+          ink: '#3A0712',
+          inkSoft: '#5B0F1F',
+          maroon: '#5B0F1F',
+          maroonDeep: '#2A050D',
+          kesar: '#FF6A00',
+          marigold: '#FFB22C',
+          rani: '#C2410C',
+          royalGold: '#D4A537',
+          royalGoldLight: '#F3D27A',
+          ivory: '#FFF8EE',
         }
       },
       borderRadius: {
@@ -51,6 +62,8 @@ export default {
         'gold-glow': '0 4px 20px -2px rgba(212, 175, 55, 0.15)',
         'gold-glow-hover': '0 8px 30px -4px rgba(255, 102, 0, 0.25)',
         bar: '0 -8px 25px rgba(0, 0, 0, 0.06)',
+        premium: '0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 1px 2px rgba(16, 36, 29, 0.06), 0 12px 32px -12px rgba(16, 36, 29, 0.18)',
+        'premium-hover': '0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 2px 4px rgba(16, 36, 29, 0.06), 0 24px 48px -16px rgba(224, 40, 122, 0.22), 0 18px 36px -18px rgba(255, 90, 31, 0.35)',
       },
       animation: {
         'float-slow': 'float 8s ease-in-out infinite',

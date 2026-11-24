@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingBag, ArrowRight, Sparkles, MessageCircle, Star, ShieldCheck, Truck, Clock } from 'lucide-react';
+import { RoyalDivider } from './RoyalOrnament';
 const Hero = ({ onAddToCart }) => {
 
   const scrollToProducts = () => {
@@ -26,12 +27,6 @@ const Hero = ({ onAddToCart }) => {
 
   return (
     <section className="store-hero relative overflow-hidden pt-6 pb-14 md:pt-10 md:pb-20">
-      {/* Visual Ambient Glows */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-20 -left-20 w-96 h-96 bg-brand-orange/15 rounded-full blur-3xl" />
-        <div className="absolute top-1/3 right-0 w-[30rem] h-[30rem] bg-amber-400/10 rounded-full blur-3xl" />
-      </div>
-
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center max-w-7xl mx-auto">
           
@@ -41,12 +36,12 @@ const Hero = ({ onAddToCart }) => {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="hero-delivery-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-900 dark:text-amber-300 text-xs sm:text-sm font-bold mb-5 shadow-sm"
+              className="hero-delivery-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 dark:bg-white/5 backdrop-blur-md premium-frame text-brand-ink dark:text-amber-100 text-xs sm:text-sm font-bold mb-5 shadow-premium"
             >
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 live-dot shrink-0" />
               <span className="hidden md:inline">Abu Dhabi's #1 Fresh Artisan Dairy</span>
-              <span className="hidden md:inline text-amber-400">•</span>
-              <span className="text-brand-orange font-extrabold flex items-center gap-1">
+              <span className="hidden md:inline text-brand-gold">✦</span>
+              <span className="text-brand-kesar dark:text-brand-marigold font-extrabold flex items-center gap-1">
                 <Truck className="w-3.5 h-3.5" /> Free Same-Day Delivery
               </span>
             </motion.div>
@@ -56,20 +51,22 @@ const Hero = ({ onAddToCart }) => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold text-brand-charcoal dark:text-white tracking-tight leading-[1.12] mb-5"
+              className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold text-brand-ink dark:text-white tracking-tight leading-[1.12] mb-5"
             >
               Fresh Paneer,{' '}
-              <span className="bg-gradient-to-r from-brand-orange via-amber-500 to-brand-saffron bg-clip-text text-transparent">
+              <span className="text-kesar italic pr-1">
                 Delivered Fresh Daily.
               </span>
             </motion.h1>
+
+            <RoyalDivider className="hero-divider mx-auto lg:mx-0 -mt-1 mb-5 lg:-ml-2" />
 
             {/* Subtitle */}
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed mb-8 font-medium"
+              className="text-base sm:text-lg text-[#5C3A2E] dark:text-amber-50/80 max-w-2xl mx-auto lg:mx-0 leading-relaxed mb-8 font-medium"
             >
               Soft, melt-in-the-mouth paneer prepared fresh every morning in Abu Dhabi. No preservatives, no starches. Order in 30 seconds via WhatsApp.
             </motion.p>
@@ -85,15 +82,15 @@ const Hero = ({ onAddToCart }) => {
                 href={whatsappDirectOrder}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white font-bold text-base shadow-xl shadow-emerald-600/25 hover:shadow-emerald-600/35 transition-all transform hover:-translate-y-0.5 active:scale-98"
+                className="btn-ink w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-bold text-base transform hover:-translate-y-0.5 active:scale-98"
               >
-                <MessageCircle className="w-5 h-5 text-white" />
+                <MessageCircle className="w-5 h-5 text-emerald-300" />
                 <span>Order via WhatsApp</span>
               </a>
 
               <button
                 onClick={scrollToProducts}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-orange to-amber-500 hover:from-brand-orangeDark hover:to-amber-600 text-white font-bold text-base shadow-xl shadow-brand-orange/25 transition-all transform hover:-translate-y-0.5 active:scale-98"
+                className="btn-kesar w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-bold text-base transform hover:-translate-y-0.5 active:scale-98"
               >
                 <ShoppingBag className="w-5 h-5" />
                 <span>Explore 150+ Products</span>
@@ -106,7 +103,7 @@ const Hero = ({ onAddToCart }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="hero-assurances pt-6 border-t border-gray-200/80 dark:border-white/10 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-gray-600 dark:text-gray-300"
+              className="hero-assurances pt-6 border-t border-brand-royalGold/30 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-[#5C3A2E] dark:text-gray-300"
             >
               <div className="flex items-center gap-2">
                 <div className="flex text-amber-400">
@@ -115,7 +112,7 @@ const Hero = ({ onAddToCart }) => {
                   ))}
                 </div>
                 <span className="font-extrabold text-brand-charcoal dark:text-white">4.9 / 5.0</span>
-                <span className="text-gray-400">(1,450+ Happy Homes)</span>
+                <span className="text-[#7A5A48] dark:text-gray-400">(1,450+ Happy Homes)</span>
               </div>
 
               <div className="flex items-center gap-1.5 font-bold text-emerald-600 dark:text-emerald-400">
@@ -137,16 +134,17 @@ const Hero = ({ onAddToCart }) => {
             transition={{ delay: 0.25, duration: 0.5 }}
             className="lg:col-span-5 relative"
           >
-            <div className="hero-spotlight relative rounded-3xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 sm:p-7 border border-amber-500/30 dark:border-white/10 shadow-2xl shadow-brand-orange/15 overflow-hidden">
+            <div aria-hidden="true" className="hero-halo absolute inset-6 rounded-[2.5rem] pointer-events-none" />
+            <div className="hero-spotlight relative rounded-3xl bg-white/90 dark:bg-[#1A0B0E]/90 backdrop-blur-xl p-6 sm:p-7 royal-frame shadow-premium overflow-hidden">
               {/* Shimmer Accent */}
               <div className="accent-gold-line absolute top-0 left-0 right-0" />
 
               {/* Card Top Label */}
               <div className="flex justify-between items-center mb-4">
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-brand-orange/10 text-brand-orange font-extrabold text-xs uppercase tracking-wider">
-                  <Sparkles className="w-3.5 h-3.5" /> Signature Bestseller
+                <span className="btn-ink inline-flex items-center gap-1 px-3 py-1 rounded-full font-extrabold text-xs uppercase tracking-wider">
+                  <Sparkles className="w-3.5 h-3.5 text-brand-marigold" /> Signature Bestseller
                 </span>
-                <span className="bg-red-500 text-white text-xs font-black px-2.5 py-1 rounded-full shadow-md">
+                <span className="bg-gradient-to-r from-brand-kesar to-brand-rani text-white text-xs font-black px-2.5 py-1 rounded-full shadow-md shadow-brand-rani/30">
                   SAVE 5%
                 </span>
               </div>
@@ -172,7 +170,7 @@ const Hero = ({ onAddToCart }) => {
                   Soft, creamy and freshly made daily for rich curries, snacks, or grilling. In-store & online sale price.
                 </p>
                 <div className="flex items-baseline gap-2 pt-1">
-                  <span className="text-2xl font-black text-brand-orange dark:text-amber-400">AED 20</span>
+                  <span className="text-kesar text-2xl font-black">AED 20</span>
                   <span className="text-sm text-gray-400 line-through">AED 21</span>
                   <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 ml-auto">
                     Free Abu Dhabi Delivery
@@ -184,7 +182,7 @@ const Hero = ({ onAddToCart }) => {
               <button
                 type="button"
                 onClick={() => onAddToCart && onAddToCart(signaturePaneer)}
-                className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-brand-orange to-amber-500 hover:from-brand-orangeDark hover:to-amber-600 text-white font-extrabold text-sm shadow-lg shadow-brand-orange/25 active:scale-98 transition-all flex items-center justify-center gap-2"
+                className="btn-kesar w-full py-3.5 px-4 rounded-2xl font-extrabold text-sm active:scale-98 flex items-center justify-center gap-2"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>Add Fresh Paneer (500g) to Bag — AED 20</span>

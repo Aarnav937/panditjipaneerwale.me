@@ -1,12 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Clock, Phone, MessageCircle, Navigation, Sparkles } from 'lucide-react';
+import { RoyalDivider, RoyalEyebrow } from './RoyalOrnament';
 
 const OurStore = () => {
   const whatsappUrl = 'https://wa.me/971524676306?text=' + encodeURIComponent('Hello Pandit Ji Paneer Wale! I would like to visit or place an order from your Abu Dhabi store.');
 
   return (
-    <section id="our-store" className="relative py-16 md:py-20 bg-gradient-to-b from-amber-50/40 via-white to-amber-50/60 dark:from-slate-900/60 dark:via-slate-950 dark:to-slate-900/80 border-t border-amber-500/20 overflow-hidden">
+    <section id="our-store" className="relative py-16 md:py-24 bg-white/30 backdrop-blur-2xl dark:bg-black/20 border-t border-brand-royalGold/30 overflow-hidden">
       <div className="container mx-auto px-4 max-w-7xl relative z-10">
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-14 items-center">
           
@@ -19,7 +20,7 @@ const OurStore = () => {
             className="w-full lg:w-1/2 grid grid-cols-2 gap-3.5"
           >
             {/* Main Interior Photo */}
-            <div className="col-span-2 relative rounded-3xl overflow-hidden shadow-xl border-2 border-amber-500/30 group">
+            <div className="col-span-2 relative rounded-3xl overflow-hidden shadow-xl ring-1 ring-brand-royalGold/70 ring-offset-4 ring-offset-[#FFF3E2] dark:ring-offset-[#12070A] group">
               <img
                 src="/images/store-interior.webp"
                 alt="Pandit Ji Paneer Wale Store Interior"
@@ -39,7 +40,7 @@ const OurStore = () => {
             </div>
 
             {/* Shop Front Photo */}
-            <div className="rounded-2xl overflow-hidden shadow-md border border-amber-500/20 group">
+            <div className="rounded-2xl overflow-hidden shadow-md border border-brand-royalGold/50 group">
               <img
                 src="/images/shop-front.png"
                 alt="Shop Front in Abu Dhabi"
@@ -48,7 +49,7 @@ const OurStore = () => {
             </div>
 
             {/* Fresh Kitchen Photo */}
-            <div className="rounded-2xl overflow-hidden shadow-md border border-amber-500/20 group">
+            <div className="rounded-2xl overflow-hidden shadow-md border border-brand-royalGold/50 group">
               <img
                 src="/images/hero-kitchen.webp"
                 alt="Fresh Paneer Preparation"
@@ -65,20 +66,21 @@ const OurStore = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="w-full lg:w-1/2"
           >
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-500/10 text-amber-800 dark:text-amber-300 font-black text-xs tracking-wider uppercase mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-brand-orange" />
-              <span>Visit Us in Abu Dhabi</span>
-            </div>
+            <RoyalEyebrow className="mb-3">
+              <Sparkles className="w-3.5 h-3.5 text-brand-kesar" />
+              Visit Us in Abu Dhabi
+            </RoyalEyebrow>
 
-            <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold text-brand-charcoal dark:text-white tracking-tight leading-tight mb-2">
-              Our Physical Store & Dairy Hub
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-ink dark:text-white tracking-tight leading-tight mb-1">
+              Our Physical Store & <span className="text-kesar italic pr-1">Dairy Hub</span>
             </h2>
+            <RoyalDivider className="-ml-2 mb-3" />
 
-            <p className="text-brand-orange font-bold text-sm mb-4">
+            <p className="text-brand-rani dark:text-brand-marigold font-bold text-sm mb-4">
               Pandit Ji Paneer Wale • Abu Dhabi, United Arab Emirates
             </p>
 
-            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-6 font-medium">
+            <p className="text-[#5C3A2E] dark:text-gray-300 text-sm leading-relaxed mb-6 font-medium">
               Step right into our retail shop for warm customer service, custom dairy cuts, and pantry shopping, or have your orders delivered to your doorstep in Abu Dhabi with free delivery.
             </p>
 
@@ -105,7 +107,7 @@ const OurStore = () => {
               </li>
 
               <li className="flex items-start gap-3">
-                <div className="p-2.5 rounded-2xl bg-blue-50 dark:bg-slate-800 text-blue-600 shrink-0 mt-0.5 shadow-sm">
+                <div className="p-2.5 rounded-2xl bg-amber-50 dark:bg-slate-800 text-[#A0700F] shrink-0 mt-0.5 shadow-sm">
                   <Phone className="w-4 h-4" />
                 </div>
                 <div>
@@ -123,9 +125,9 @@ const OurStore = () => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm px-6 py-3.5 rounded-2xl shadow-xl shadow-emerald-600/25 transition-all hover:-translate-y-0.5"
+                className="btn-ink inline-flex items-center gap-2 font-black text-sm px-6 py-3.5 rounded-2xl hover:-translate-y-0.5"
               >
-                <MessageCircle className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4 text-emerald-300" />
                 <span>Chat with Store</span>
               </a>
 
@@ -133,9 +135,9 @@ const OurStore = () => {
                 href="https://maps.google.com/?q=F9QJ+F6F+Abu+Dhabi"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-white dark:bg-slate-800 text-brand-charcoal dark:text-white font-extrabold text-sm px-6 py-3.5 rounded-2xl border border-gray-200 dark:border-white/10 hover:border-brand-orange transition-all hover:-translate-y-0.5 shadow-sm"
+                className="btn-kesar inline-flex items-center gap-2 font-extrabold text-sm px-6 py-3.5 rounded-2xl hover:-translate-y-0.5"
               >
-                <Navigation className="w-4 h-4 text-brand-orange" />
+                <Navigation className="w-4 h-4" />
                 <span>Get Directions (Google Maps)</span>
               </a>
             </div>

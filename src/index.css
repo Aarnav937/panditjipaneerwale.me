@@ -9,7 +9,7 @@ html {
 }
 
 body {
-  background-color: #FAF5EA;
+  background-color: #FBF6EC;
   color: #111827;
   font-family: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -41,25 +41,211 @@ a,
   touch-action: manipulation;
 }
 
-/* Radiant Ambient Mesh Background */
-.bg-fixed-gradient {
-  background-color: #FAF5EA;
-  background-image:
-    radial-gradient(circle at 10% 10%, rgba(255, 102, 0, 0.15) 0%, transparent 45%),
-    radial-gradient(circle at 90% 15%, rgba(245, 158, 11, 0.14) 0%, transparent 40%),
-    radial-gradient(circle at 50% 90%, rgba(212, 175, 55, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 80% 60%, rgba(255, 102, 0, 0.07) 0%, transparent 40%);
-  background-size: 100% 100%;
+/* 2.5D ambient background: glossy spheres on three depth planes with depth-of-field blur. */
+.ambient-bg {
+  --orb-p: 0;
+  --orb-mx: 0;
+  --orb-my: 0;
+  background:
+    radial-gradient(120% 80% at 50% 0%, #FFF1DC 0%, #FDEAD3 45%, #F8DFC6 100%);
+  perspective: 1200px;
 }
 
-.dark .bg-fixed-gradient {
-  background-color: #070B11;
-  background-image:
-    radial-gradient(circle at 10% 10%, rgba(255, 102, 0, 0.14) 0%, transparent 45%),
-    radial-gradient(circle at 90% 15%, rgba(212, 175, 55, 0.1) 0%, transparent 40%),
-    radial-gradient(circle at 50% 90%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 60%, rgba(255, 102, 0, 0.06) 0%, transparent 40%);
-  background-size: 100% 100%;
+.dark .ambient-bg {
+  background: radial-gradient(120% 80% at 50% 0%, #2A0D0B 0%, #12070A 55%, #08040A 100%);
+}
+
+.ambient-plane {
+  position: absolute;
+  inset: -10%;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+/* Each plane slides at its own speed with scroll and tilts toward the pointer. */
+.ambient-plane--far {
+  transform:
+    translate3d(calc(var(--orb-mx) * -14px), calc(var(--orb-my) * -10px - var(--orb-p) * 6vh), -200px)
+    rotateY(calc(var(--orb-mx) * 2deg)) rotateX(calc(var(--orb-my) * -2deg));
+}
+
+.ambient-plane--mid {
+  transform:
+    translate3d(calc(var(--orb-mx) * -32px), calc(var(--orb-my) * -24px - var(--orb-p) * 22vh), -60px)
+    rotateY(calc(var(--orb-mx) * 4deg)) rotateX(calc(var(--orb-my) * -4deg));
+}
+
+.ambient-plane--near {
+  transform:
+    translate3d(calc(var(--orb-mx) * -60px), calc(var(--orb-my) * -44px - var(--orb-p) * 48vh), 40px)
+    rotateY(calc(var(--orb-mx) * 6deg)) rotateX(calc(var(--orb-my) * -6deg));
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 9999px;
+  will-change: transform;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+/* Depth of field: the further back, the heavier the blur. */
+.ambient-plane--far .ambient-orb { filter: blur(110px) saturate(1.25); opacity: 0.75; }
+.ambient-plane--mid .ambient-orb { filter: blur(56px) saturate(1.2); opacity: 0.8; }
+.ambient-plane--near .ambient-orb {
+  filter: blur(6px) saturate(1.15);
+  opacity: 0.95;
+  box-shadow: 0 4vmax 6vmax -2vmax rgba(160, 50, 20, 0.35);
+}
+
+/* Shaded like lit spheres: specular highlight top-left, core tone, shadowed rim. */
+.ambient-orb--saffron { background: radial-gradient(circle at 32% 28%, #FFE2B8 0%, #FFA14A 22%, #FF6A1A 55%, #C83A08 100%); }
+.ambient-orb--marigold { background: radial-gradient(circle at 32% 28%, #FFF4C9 0%, #FFD15C 24%, #FFB22C 55%, #D97B00 100%); }
+.ambient-orb--kesar { background: radial-gradient(circle at 32% 28%, #FFD9C2 0%, #FF8A50 24%, #FF5A1F 55%, #B8300A 100%); }
+.ambient-orb--rani { background: radial-gradient(circle at 32% 28%, #FFD0A8 0%, #FF7A2E 24%, #D9480F 58%, #7A1E0B 100%); }
+/* Burnished gold sphere: the royal note among the saffron. */
+.ambient-orb--cream { background: radial-gradient(circle at 32% 28%, #FFF8E1 0%, #F7DB8A 22%, #D4A537 58%, #8C6418 100%); }
+
+.dark .ambient-plane--far .ambient-orb { opacity: 0.45; }
+.dark .ambient-plane--mid .ambient-orb { opacity: 0.5; }
+.dark .ambient-plane--near .ambient-orb { opacity: 0.6; }
+
+@keyframes ambient-drift-a {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(6vmax, 4vmax, 0) scale(1.08); }
+}
+
+@keyframes ambient-drift-b {
+  from { transform: translate3d(0, 0, 0) scale(1.04); }
+  to { transform: translate3d(-5vmax, 6vmax, 0) scale(0.94); }
+}
+
+@keyframes ambient-drift-c {
+  from { transform: translate3d(0, 0, 0) scale(0.96); }
+  to { transform: translate3d(4vmax, -5vmax, 0) scale(1.06); }
+}
+
+.ambient-drift-a { animation-name: ambient-drift-a; }
+.ambient-drift-b { animation-name: ambient-drift-b; }
+.ambient-drift-c { animation-name: ambient-drift-c; }
+
+/* Soft frosted veil + paper grain on top keeps text readable and adds texture. */
+.ambient-veil {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 246, 232, 0.14);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0 0.12 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+.dark .ambient-veil {
+  background-color: rgba(6, 7, 8, 0.25);
+}
+
+/* Kesar accent: amber → saffron → burnt orange. Reserved for the moments that should pop. */
+.text-kesar {
+  background-image: linear-gradient(100deg, #FF9A00 0%, #FF6A00 45%, #D9480F 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.dark .text-kesar {
+  background-image: linear-gradient(100deg, #FFC14D 0%, #FF8A1F 55%, #FF6A00 100%);
+}
+
+/* Gold foil: a metallic sweep for royal headline accents. */
+.text-gold-foil {
+  background-image: linear-gradient(100deg, #A8730B 0%, #E9C35A 22%, #FFF0B8 38%, #D4A537 55%, #9C6A10 78%, #E2B649 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.btn-kesar {
+  position: relative;
+  isolation: isolate;
+  color: #fff;
+  background-image: linear-gradient(135deg, #FFA41F 0%, #FF7A00 45%, #E2540A 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 240, 200, 0.55),
+    inset 0 -2px 0 rgba(120, 40, 0, 0.22),
+    0 0 0 1px rgba(212, 165, 55, 0.35),
+    0 12px 26px -12px rgba(226, 84, 10, 0.65);
+  text-shadow: 0 1px 1px rgba(120, 40, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.btn-kesar:hover {
+  filter: saturate(1.08) brightness(1.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 240, 200, 0.6),
+    inset 0 -2px 0 rgba(120, 40, 0, 0.22),
+    0 0 0 1px rgba(212, 165, 55, 0.55),
+    0 18px 34px -14px rgba(226, 84, 10, 0.7);
+}
+
+.btn-kesar:focus-visible,
+.btn-ink:focus-visible {
+  outline: 2px solid #D4A537;
+  outline-offset: 2px;
+}
+
+/* Royal maroon with gold lettering: the palace counterweight to saffron. */
+.btn-ink {
+  color: #F7DB8A;
+  background-image: linear-gradient(160deg, #7A1528 0%, #4A0A18 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 150, 0.22),
+    0 0 0 1px rgba(212, 165, 55, 0.55),
+    0 12px 24px -12px rgba(74, 10, 24, 0.7);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.btn-ink:hover {
+  filter: brightness(1.15);
+}
+
+/* Gold hairline frame used by premium cards. */
+.premium-frame {
+  border: 1px solid rgba(212, 165, 55, 0.35);
+}
+
+.dark .premium-frame {
+  border-color: rgba(212, 165, 55, 0.22);
+}
+
+/* Palace frame: a gold border with an inner hairline, like a framed miniature. */
+.royal-frame {
+  position: relative;
+  border: 1px solid rgba(212, 165, 55, 0.6);
+}
+
+.royal-frame::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(212, 165, 55, 0.35);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Jaali: a quatrefoil lattice in gold, used on the dark royal bands. */
+.jaali {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23D4A537' stroke-width='1'%3E%3Cpath d='M28 4c6 6 6 18 0 24-6-6-6-18 0-24zM28 52c-6-6-6-18 0-24 6 6 6 18 0 24zM4 28c6-6 18-6 24 0-6 6-18 6-24 0zM52 28c-6 6-18 6-24 0 6-6 18-6 24 0z'/%3E%3Ccircle cx='28' cy='28' r='2.5'/%3E%3Cpath d='M0 0l8 8M56 0l-8 8M0 56l8-8M56 56l-8-8'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 56px 56px;
+}
+
+/* Halo behind the hero spotlight. */
+.hero-halo {
+  background: conic-gradient(from 210deg at 50% 50%, #FFB22C, #FF6A00, #D4A537, #FF8A1F, #FFB22C);
+  filter: blur(48px);
+  opacity: 0.45;
+}
+
+.dark .hero-halo {
+  opacity: 0.28;
 }
 
 /* Glassmorphism Primitives */
@@ -94,7 +280,7 @@ a,
 /* Shimmer accent line */
 .accent-gold-line {
   height: 3px;
-  background: linear-gradient(90deg, transparent, #D4AF37 15%, #FF6600 50%, #F59E0B 85%, transparent);
+  background: linear-gradient(90deg, transparent, #D4A537 12%, #FFF0B8 30%, #FF7A00 50%, #D4A537 70%, #FFB22C 86%, transparent);
   background-size: 200% 100%;
   animation: shimmer-line 3.2s linear infinite;
 }
@@ -210,9 +396,10 @@ a,
 
 /* Phone storefront: compact navigation, editorial spacing and swipeable offers. */
 @media (max-width: 767px) {
-  .bg-fixed-gradient {
-    background-image: radial-gradient(ellipse at 80% 0%, rgba(245, 158, 11, 0.08), transparent 45%);
-  }
+  /* Lighter blur on phones: same look, far less GPU work. */
+  .ambient-plane--far .ambient-orb { filter: blur(64px); }
+  .ambient-plane--mid .ambient-orb { filter: blur(36px); }
+  .ambient-plane--near .ambient-orb { filter: blur(5px); }
 
   .store-header {
     background: rgba(255, 252, 247, 0.96);
@@ -260,8 +447,7 @@ a,
   .hero-spotlight-info > div > span:last-child { width: 100%; margin-left: 0; font-size: 9px; }
   .hero-spotlight > button { grid-column: 1 / -1; min-height: 44px; padding: 10px; font-size: 11px; box-shadow: none; }
 
-  .daily-offers { padding-block: 24px 18px; border-color: rgba(180, 137, 80, 0.14); background: rgba(255, 252, 247, 0.6); }
-  .dark .daily-offers { background: rgba(15, 23, 42, 0.5); }
+  .daily-offers { padding-block: 24px 18px; }
   .daily-offers-heading { gap: 8px; margin-bottom: 16px; }
   .daily-offers-heading h2 { font-size: 25px; }
   .daily-offers-heading > div > div { font-size: 9px; letter-spacing: 0.15em; }
@@ -278,7 +464,7 @@ a,
   .catalog-categories { padding-block: 10px; margin-bottom: 24px; box-shadow: 0 6px 16px rgba(74, 47, 20, 0.035); border-color: rgba(180, 137, 80, 0.13); }
   .catalog-categories > div > div { gap: 8px; padding-bottom: 0; }
   .catalog-categories button { min-height: 44px; padding: 8px 12px; gap: 6px; border-radius: 14px; font-size: 11px; }
-  .catalog-categories button[aria-pressed='true'] { transform: none; background: #192d25; box-shadow: none; }
+  .catalog-categories button[aria-pressed='true'] { transform: none; box-shadow: none; }
   .catalog-categories button > span:first-child { font-size: 14px; }
   .catalog-grid { gap: 12px; }
   .catalog-product { border-radius: 18px; border-color: rgba(180, 137, 80, 0.15); box-shadow: 0 4px 16px rgba(74, 47, 20, 0.035); }
@@ -289,15 +475,12 @@ a,
   .catalog-product > div:last-child { padding: 12px; gap: 6px; }
   .catalog-product h3 { font-size: 12px; min-height: 34px; }
   .catalog-product > div:last-child > div:last-child { flex-direction: column; align-items: stretch; padding-top: 10px; gap: 8px; }
-  .catalog-product > div:last-child > div:last-child > button { min-height: 44px; border-radius: 11px; box-shadow: none; background: #192d25; }
-  .catalog-product > div:last-child > div:last-child > button.just-added { background: #059669; }
-  .catalog-product > div:last-child > div:last-child > button:disabled { background: #e5e7eb; }
-  .dark .catalog-product > div:last-child > div:last-child > button { background: #265a43; }
-  .dark .catalog-product > div:last-child > div:last-child > button:disabled { background: #1e293b; }
+  .catalog-product > div:last-child > div:last-child > button { min-height: 44px; border-radius: 12px; }
+  .catalog-product > div:last-child > div:last-child > button.btn-kesar { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 6px 14px -8px rgba(232, 54, 107, 0.5); }
   .store-bottom-nav { box-shadow: 0 -4px 24px rgba(16, 24, 20, 0.05); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .accent-gold-line, .offer-ticker-track, .live-dot, .live-orange { animation: none; }
+  .accent-gold-line, .offer-ticker-track, .live-dot, .live-orange, .ambient-orb { animation: none; }
 }
